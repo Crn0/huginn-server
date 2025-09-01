@@ -1,0 +1,43 @@
+
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+
+    /* If transpiling with TypeScript: */
+    "module": "NodeNext",
+    "outDir": "dist",
+    "sourceMap": true,
+    "lib": ["es2022", "ES2023.Array"],
+
+    // Lib
+    // "declaration": true,
+    // "declarationMap": true,
+
+
+    // Path alias
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"],
+      "sql/*": ["./src/generated/prisma/sql/*"]
+    },
+  },
+  "exclude": ["prisma", "dist"]
+}

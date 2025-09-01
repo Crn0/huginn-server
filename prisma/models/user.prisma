@@ -1,0 +1,11 @@
+model User {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  email      String    @unique @db.VarChar()
+  password   String?   @db.VarChar()
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
+
+  @@map("Users")
+}
