@@ -17,6 +17,11 @@ const createEnv = () => {
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
     GOOGLE_CALLBACK_URL: z.string().optional(),
+
+    CLOUDINARY_ROOT_FOLDER: z.string().default("dev"),
+    CLOUDINARY_NAME: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_SECRET: z.string(),
   });
 
   const envVars = Object.entries(process.env).reduce<
