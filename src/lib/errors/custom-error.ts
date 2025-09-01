@@ -6,7 +6,8 @@ export type ErrorKind =
   | "INTERNAL_SERVER_ERROR"
   | "NOT_FOUND_ERROR"
   | "VALIDATION_ERROR"
-  | "AUTHENTICATION_ERROR";
+  | "AUTHENTICATION_ERROR"
+  | "Storage_Error";
 
 export interface CustomErrorOptions {
   code: string;
