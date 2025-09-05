@@ -1,0 +1,17 @@
+model UserProfile {
+  primaryKey  Int       @id @default(autoincrement()) @map("primary_key")
+  id          String    @unique @default(uuid(7)) @db.Uuid
+  displayName String?   @map("display_name") @db.VarChar()
+  bio         String?   @db.VarChar()
+  location    String?   @db.VarChar()
+  birthday    DateTime? @db.Date
+  website     String?   @db.VarChar()
+
+  avatar          Media? @relation(name: "UserProfileAvatar", fields: [avatar_media_pk], references: [primaryKey], onDelete: Cascade)
+  avatar_media_pk Int?   @unique
+  banner          Media? @relation(name: "UserProfileBanner", fields: [banner_media_pk], references: [primaryKey], onDelete: Cascade)
+  banner_media_pk Int?   @unique
+
+  user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk Int  @unique
+}
