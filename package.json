@@ -14,7 +14,7 @@
     "prisma:format": "npx prisma format",
     "prisma:studio": "npx prisma studio",
     "prisma:migrate": "npx prisma migrate dev",
-    "prisma:createOnly": "npx prisma --create-only",
+    "prisma:createOnly": "npx prisma migrate dev --create-only",
     "prisma:generate": "npx prisma generate",
     "prisma:sql": "npx prisma generate --sql",
     "prisma:sql:watch": "npx prisma generate --sql --watch",
