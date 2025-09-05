@@ -1,15 +1,20 @@
-import type z from "zod";
 import { CustomError, type CustomErrorOptions } from "./custom-error.js";
+
+type ErrorField = {
+  code: string;
+  message: string;
+  path: string[];
+};
 
 export type ConflictErrorOptions = Omit<CustomErrorOptions, "status" | "code">;
 
 export class ConflictError extends CustomError<"CONFLICT_ERROR"> {
   readonly kind: "CONFLICT_ERROR" = "CONFLICT_ERROR" as const;
-  private _field: z.core.$ZodIssue;
+  private _field: ErrorField;
 
   constructor(
     message: string,
-    field: z.core.$ZodIssue,
+    field: ErrorField,
     ops?: ConflictErrorOptions
   ) {
     super(message, {
