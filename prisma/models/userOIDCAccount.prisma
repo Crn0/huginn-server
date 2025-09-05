@@ -1,0 +1,19 @@
+model UserOIDCAccount {
+  primaryKey  Int       @id @default(autoincrement()) @map("primary_key")
+  id          String    @unique @default(uuid(7)) @db.Uuid
+  sub         String    @db.VarChar()
+  accessToken String    @map("access_token") @db.Text
+  avatarUrl   String?   @map("avatar_url") @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime? @map("updated_at") @db.Timestamptz()
+
+  provider   AuthProvider @relation(fields: [providerPk], references: [primaryKey], onDelete: Cascade)
+  providerPk Int          @map("provider_pk")
+
+  user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk Int  @map("user_pk")
+
+  @@unique([providerPk, userPk])
+  @@unique([providerPk, sub])
+  @@map("UserOIDCAccounts")
+}
