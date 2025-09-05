@@ -10,8 +10,7 @@ export class ApiError extends CustomError<"API_ERROR"> {
       ...ops,
       status,
       code: ops?.code ?? "API_ERROR",
-      isOperational:
-        typeof ops?.isOperational === "boolean" ? ops.isOperational : true,
+      isOperational: typeof ops?.isOperational === "boolean" ? ops.isOperational : true,
     });
   }
 }

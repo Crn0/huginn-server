@@ -19,9 +19,10 @@ type AppError =
   | NotFoundError
   | ValidationError;
 
-const formatError = <T extends { code: string; message: string }>(
-  error: T
-) => ({ code: error.code, message: error.message });
+const formatError = <T extends { code: string; message: string }>(error: T) => ({
+  code: error.code,
+  message: error.message,
+});
 
 export const routeErrorHandler = (
   error: AppError,
@@ -54,11 +55,12 @@ export const routeErrorHandler = (
       res.status(error.status).json(formatError(error));
       break;
     }
-
+    case "NOT_FOUND_ERROR": {
+      res.status(error.status).json(formatError(error));
+      break;
+    }
     case "VALIDATION_ERROR": {
-      res
-        .status(error.status)
-        .json({ ...formatError(error), issues: error.issues });
+      res.status(error.status).json({ ...formatError(error), issues: error.issues });
       break;
     }
 

@@ -1,8 +1,4 @@
-import multer, {
-  MulterError,
-  type FileFilterCallback,
-  type Options,
-} from "multer";
+import multer, { MulterError, type FileFilterCallback, type Options } from "multer";
 import path from "node:path";
 import { v4 as uuidv4 } from "uuid";
 import { ValidationError } from "@/lib/errors/validation-error.js";
@@ -52,8 +48,7 @@ const fileExtension = (mimeType: string) => {
 };
 
 const fileFilter =
-  (fileType?: FileType) =>
-  (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+  (fileType?: FileType) => (_req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
     if (typeof fileType === "undefined") return cb(null, true);
 
     // Check ext
@@ -80,21 +75,16 @@ const fileFilter =
 
 const storage = {
   destination:
-    (path: string) =>
-    (_req: Request, _file: Express.Multer.File, cb: DestinationCallback) =>
+    (path: string) => (_req: Request, _file: Express.Multer.File, cb: DestinationCallback) =>
       cb(null, path),
-  filename: (
-    _req: Request,
-    file: Express.Multer.File,
-    cb: FileNameCallback
-  ) => {
+  filename: (_req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
     const name = `${file.fieldname}-${uuidv4()}${fileExtension(file.mimetype)}`;
     return cb(null, name);
   },
 };
 
 export const initMulter = ({ path, limits, fileType }: MulterOptions) => ({
-  multer: multer({
+  uploader: multer({
     limits,
     storage: multer.diskStorage({
       filename: storage.filename,

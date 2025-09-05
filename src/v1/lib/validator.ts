@@ -4,19 +4,9 @@ import { ValidationError } from "@/lib/errors/validation-error.js";
 
 import type { Request, Response, NextFunction } from "express";
 
-type RequestWithQuery<T extends z.ZodType> = Request<
-  never,
-  never,
-  never,
-  z.infer<T>
->;
+type RequestWithQuery<T extends z.ZodType> = Request<never, never, never, z.infer<T>>;
 
-type RequestWithParams<T extends z.ZodType> = Request<
-  z.infer<T>,
-  never,
-  never,
-  never
->;
+type RequestWithParams<T extends z.ZodType> = Request<z.infer<T>, never, never, never>;
 
 export const ZodBodyValidator =
   <T extends z.ZodType>(schema: T) =>

@@ -11,6 +11,8 @@ import path from "node:path";
 import { corsConfig } from "./configs/cors.js";
 import { routeErrorHandler } from "@/lib/errors/route-error-handler.js";
 
+import { router as v1Routes } from "v1/routes/index.js";
+
 const app = express();
 
 const dirname = import.meta.dirname;
@@ -26,17 +28,11 @@ app.use(compression());
 app.use(express.static(path.join(dirname, "..", "public")));
 
 // ROUTES
+app.use(v1Routes);
 
 process.stdin.resume();
 
-[
-  "exit",
-  "SIGINT",
-  "SIGUSR1",
-  "SIGUSR2",
-  "uncaughtException",
-  "SIGTERM",
-].forEach((eventType) => {
+["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM"].forEach((eventType) => {
   process.on(eventType, async () => {
     try {
       process.exit(0);

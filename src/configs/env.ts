@@ -24,17 +24,18 @@ const createEnv = () => {
     CLOUDINARY_SECRET: z.string(),
   });
 
-  const envVars = Object.entries(process.env).reduce<
-    Record<string, string | number>
-  >((acc, curr) => {
-    const [key, value] = curr;
+  const envVars = Object.entries(process.env).reduce<Record<string, string | number>>(
+    (acc, curr) => {
+      const [key, value] = curr;
 
-    if (value !== undefined) {
-      acc[key] = value;
-    }
+      if (value !== undefined) {
+        acc[key] = value;
+      }
 
-    return acc;
-  }, {});
+      return acc;
+    },
+    {}
+  );
 
   const parsedEnv = EnvSchema.safeParse(envVars);
 
@@ -42,7 +43,7 @@ const createEnv = () => {
     throw new Error(
       `Invalid env provided.
 The following variables are missing or invalid:
-${Object.entries(parsedEnv.error.flatten().fieldErrors)
+${Object.entries(z.treeifyError(parsedEnv.error))
   .map(([k, v]) => `- ${k}: ${v}`)
   .join("\n")}
 `

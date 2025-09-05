@@ -31,13 +31,9 @@ const onError = (error: NodeJS.ErrnoException) => {
 };
 
 const onListening =
-  (
-    server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>
-  ) =>
-  () => {
+  (server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) => () => {
     const addr = server.address();
-    const bind =
-      typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`;
+    const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr?.port}`;
     debug(`Listening on ${bind}`);
   };
 

@@ -9,21 +9,14 @@ import {
   type DeliveryType,
 } from "v1/lib/cloudinary.js";
 
-export const getMediaUrl = (
-  publicId: string,
-  transformation?: TransformationOptions
-) =>
+export const getMediaUrl = (publicId: string, transformation?: TransformationOptions) =>
   cloudinary.url(publicId, {
     transformation,
   });
 
 export const getUsage = async () => cloudinary.api.usage();
 
-export const uploadMedia = async (
-  folder: string,
-  media: string,
-  options: UploadApiOptions
-) => {
+export const uploadMedia = async (folder: string, media: string, options: UploadApiOptions) => {
   try {
     const response = await cloudinary.uploader.upload(media, {
       folder,
@@ -34,10 +27,7 @@ export const uploadMedia = async (
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(
-      err.message ?? "Something went wrong",
-      err.http_code ?? 500
-    );
+    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
   }
 };
 
@@ -51,10 +41,7 @@ export const deleteFolder = async (path: string, options?: AdminApiOptions) => {
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(
-      err.message ?? "Something went wrong",
-      err.http_code ?? 500
-    );
+    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
   }
 };
 
@@ -73,9 +60,6 @@ export const deleteMedia = async (
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(
-      err.message ?? "Something went wrong",
-      err.http_code ?? 500
-    );
+    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
   }
 };

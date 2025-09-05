@@ -23,10 +23,7 @@ export abstract class CustomError<TKind extends ErrorKind> extends Error {
 
   // abstract is(kind: ErrorKind):
 
-  constructor(
-    message: string,
-    { code, status, isOperational = true }: CustomErrorOptions
-  ) {
+  constructor(message: string, { code, status, isOperational = true }: CustomErrorOptions) {
     super(message);
     Object.setPrototypeOf(this, new.target.prototype);
 
