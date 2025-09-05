@@ -1,11 +1,23 @@
 model User {
-  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
-  id         String    @unique @default(uuid(7)) @db.Uuid
-  email      String    @unique @db.VarChar()
-  password   String?   @db.VarChar()
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt  DateTime? @map("updated_at") @db.Timestamptz
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
+  primaryKey   Int          @id @default(autoincrement()) @map("primary_key")
+  id           String       @unique @default(uuid(7)) @db.Uuid
+  email        String       @unique @db.VarChar()
+  username     String       @unique @db.VarChar()
+  password     String?      @db.VarChar()
+  accountLevel AccountLevel @default(value: DEMO) @map("account_level")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime?    @map("updated_at") @db.Timestamptz
+  deletedAt    DateTime?    @map("deleted_at") @db.Timestamptz
+
+  profile UserProfile?
+  openIds UserOIDCAccount[]
+  tokens  BlacklistedToken[]
 
   @@map("Users")
+}
+
+enum AccountLevel {
+  DEMO  @map("demo")
+  USER  @map("user")
+  ADMIN @map("admin")
 }
