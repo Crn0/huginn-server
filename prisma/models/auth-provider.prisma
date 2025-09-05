@@ -1,0 +1,13 @@
+model AuthProvider {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  key        String    @unique @db.VarChar() // e.g. "google", "github", "discord"
+  name       String    @db.VarChar() // display name
+  isActive   Boolean   @default(true) @map("is_active")
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz()
+
+  accounts UserOIDCAccount[]
+
+  @@map("Providers")
+}
