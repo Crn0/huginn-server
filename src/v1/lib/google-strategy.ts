@@ -21,7 +21,7 @@ interface BirthdayResponse {
 
 const birthdaySchema = z
   .object({ year: z.number(), month: z.number(), day: z.number() })
-  .transform(({ year, month, day }) => `${year}/${month}/${day}`);
+  .transform(({ year, month, day }) => new Date(`${year}/${month}/${day}`));
 
 const getBirthDay = async (accessToken: string) => {
   const response = await fetch(
