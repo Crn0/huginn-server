@@ -1,0 +1,131 @@
+model AuthProvider {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  key        String    @unique @db.VarChar() // e.g. "google", "github", "discord"
+  name       String    @db.VarChar() // display name
+  isActive   Boolean   @default(true) @map("is_active")
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz()
+
+  accounts UserOIDCAccount[]
+
+  @@map("Providers")
+}
+
+model BlacklistedToken {
+  primaryKey Int      @id @default(autoincrement()) @map("primary_key")
+  id         String   @unique @default(uuid(7)) @db.Uuid
+  jwtId      String   @unique() @map("jwt_id") @db.VarChar()
+  expiresAt  DateTime @map("expires_at") @db.Timestamptz()
+
+  type   TokenType
+  user   User      @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk Int       @map("user_pk")
+
+  @@map("BlacklistedTokens")
+}
+
+enum TokenType {
+  RefreshToken @map("refresh_token")
+  ActionToken  @map("action_token")
+}
+
+model Media {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  type       MediaType
+  filePath   String    @map("file_path") @db.VarChar()
+  bytes      Int
+  url        String    @db.Text
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
+
+  userProfileAvatar UserProfile? @relation(name: "UserProfileAvatar")
+  userProfileBanner UserProfile? @relation(name: "UserProfileBanner")
+}
+
+enum MediaType {
+  IMAGE @map("image")
+  GIF   @map("gif")
+  VIDEO @map("video")
+}
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
+  output          = "../../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  primaryKey  Int       @id @default(autoincrement()) @map("primary_key")
+  id          String    @unique @default(uuid(7)) @db.Uuid
+  displayName String?   @map("display_name") @db.VarChar()
+  bio         String?   @db.VarChar()
+  location    String?   @db.VarChar()
+  birthday    DateTime? @db.Date
+  website     String?   @db.VarChar()
+
+  avatar          Media? @relation(name: "UserProfileAvatar", fields: [avatar_media_pk], references: [primaryKey], onDelete: Cascade)
+  avatar_media_pk Int?   @unique
+  banner          Media? @relation(name: "UserProfileBanner", fields: [banner_media_pk], references: [primaryKey], onDelete: Cascade)
+  banner_media_pk Int?   @unique
+
+  user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk Int  @unique
+}
+
+model User {
+  primaryKey   Int          @id @default(autoincrement()) @map("primary_key")
+  id           String       @unique @default(uuid(7)) @db.Uuid
+  email        String       @unique @db.VarChar()
+  username     String       @unique @db.VarChar()
+  password     String?      @db.VarChar()
+  accountLevel AccountLevel @default(value: DEMO) @map("account_level")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime?    @map("updated_at") @db.Timestamptz
+  deletedAt    DateTime?    @map("deleted_at") @db.Timestamptz
+
+  profile UserProfile?
+  openIds UserOIDCAccount[]
+  tokens  BlacklistedToken[]
+
+  @@map("Users")
+}
+
+enum AccountLevel {
+  DEMO  @map("demo")
+  USER  @map("user")
+  ADMIN @map("admin")
+}
+
+model UserOIDCAccount {
+  primaryKey  Int       @id @default(autoincrement()) @map("primary_key")
+  id          String    @unique @default(uuid(7)) @db.Uuid
+  sub         String    @db.VarChar()
+  accessToken String    @map("access_token") @db.Text
+  avatarUrl   String?   @map("avatar_url") @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt   DateTime? @map("updated_at") @db.Timestamptz()
+
+  provider   AuthProvider @relation(fields: [providerPk], references: [primaryKey], onDelete: Cascade)
+  providerPk Int          @map("provider_pk")
+
+  user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk Int  @map("user_pk")
+
+  @@unique([providerPk, userPk])
+  @@unique([providerPk, sub])
+  @@map("UserOIDCAccounts")
+}
