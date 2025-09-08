@@ -39,6 +39,9 @@
       "sql/*": ["./src/generated/prisma/sql/*"],
       "v1/*": ["./src/v1/*"]
     },
+
+    // Types
+    "typeRoots": ["./src/types"]
   },
   "exclude": ["prisma", "dist"]
 }
