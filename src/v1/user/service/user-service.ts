@@ -1,3 +1,5 @@
+import argon2 from "argon2";
+
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
@@ -37,9 +39,12 @@ export const createUser = async (DTO: CreateUserDTO) => {
     retry += 1;
   } while (!(await userRepository.isUsernameAvailable(username)));
 
+  const password = await argon2.hash(DTO.password);
+
   const data = {
     ...DTO,
     username,
+    password,
     birthday: typeof DTO.birthday === "string" ? new Date(DTO.birthday) : null,
     accountLevel: "USER" as const,
   };
