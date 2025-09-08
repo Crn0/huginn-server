@@ -67,7 +67,7 @@ export const createGoogleStrategy = () =>
 
         const avatarUrl = photos?.[0]?.value ?? null;
 
-        if (isEmailVerified || !email) {
+        if (!isEmailVerified || !email) {
           debug(`Failed to authenticate: { isEmailVerified: ${isEmailVerified}, email: ${email}}`);
           throw new ForbiddenError("Something went wrong");
         }
