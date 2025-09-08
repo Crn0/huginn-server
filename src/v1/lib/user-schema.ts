@@ -72,6 +72,7 @@ export const userSchema = z.object({
     z.object({
       id: z.uuidv7(),
       name: z.enum(["GOOGLE"]),
+      avatarUrl: z.url().nullable(),
     })
   ),
 
