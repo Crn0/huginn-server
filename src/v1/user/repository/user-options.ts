@@ -6,7 +6,16 @@ export const createUserOptions = {
 
 export const getUserOptions = {
   include: {
-    profile: true,
-    openIds: true,
+    profile: {
+      include: {
+        avatar: true,
+        banner: true,
+      },
+    },
+    openIds: {
+      include: {
+        provider: true
+      }
+    },
   },
 } satisfies Prisma.UserDefaultArgs;
