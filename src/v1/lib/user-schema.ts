@@ -23,6 +23,7 @@ export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginSchema>;
 export type User = z.infer<typeof userSchema>;
+export type UserAccountLevel = z.infer<typeof accountLevelEnum>;
 
 export const createUserSchema = z.object({
   email: z.email().trim(),
@@ -44,12 +45,14 @@ export const userLoginSchema = z.object({
   }),
 });
 
+export const accountLevelEnum = z.enum(["DEMO", "USER", "ADMIN"]);
+
 export const userSchema = z.object({
   id: z.uuidv7(),
   // email: z.email().trim(),
   username: z.string(),
   // password: z.string(),
-  accountLevel: z.number(),
+  accountLevel: accountLevelEnum,
 
   profile: z.object({
     displayName: z.string().nullable(),

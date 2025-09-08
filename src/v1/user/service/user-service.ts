@@ -41,7 +41,7 @@ export const createUser = async (DTO: CreateUserDTO) => {
     ...DTO,
     username,
     birthday: typeof DTO.birthday === "string" ? new Date(DTO.birthday) : null,
-    accountLevel: 'USER' as const,
+    accountLevel: "USER" as const,
   };
 
   return userRepository.createUser(data);

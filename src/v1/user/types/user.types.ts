@@ -1,4 +1,4 @@
-type UserAccountLevel = "DEMO" | "USER" | "ADMIN"
+import type { UserAccountLevel } from "@/v1/lib/user-schema.js";
 
 export interface CreateUser {
   email: string;
