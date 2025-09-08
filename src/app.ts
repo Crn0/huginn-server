@@ -11,7 +11,7 @@ import path from "node:path";
 import { corsConfig } from "./configs/cors.js";
 import { routeErrorHandler } from "@/lib/errors/route-error-handler.js";
 
-import { router as v1Routes } from "v1/routes/index.js";
+import { router as v1Routes } from "v1/router/index.js";
 
 const app = express();
 
