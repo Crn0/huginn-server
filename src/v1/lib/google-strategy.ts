@@ -51,6 +51,7 @@ export const createGoogleStrategy = () =>
       clientID: env.GOOGLE_CLIENT_ID as string,
       clientSecret: env.GOOGLE_CLIENT_SECRET as string,
       callbackURL: env.GOOGLE_CALLBACK_URL,
+      scope: ["openid", "email", "profile", "https://www.googleapis.com/auth/user.birthday.read"],
       state: false,
     },
     async (accessToken, _refreshToken, profile, done) => {
