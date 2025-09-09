@@ -10,6 +10,8 @@ import type { Request, Response } from "express";
 export const logout = async (_req: Request, res: Response) => {
   const refreshToken = res.locals?.refreshToken;
 
+  res.clearCookie("refreshToken", cookieConfig);
+
   if (refreshToken) {
     const jwtId = refreshToken.jti as string;
     const exp = refreshToken.exp as number;
@@ -24,8 +26,6 @@ export const logout = async (_req: Request, res: Response) => {
     const expiresAt = new Date(exp * 1000).toISOString();
 
     await blackListToken({ jwtId, sub, expiresAt, type: "RefreshToken" });
-
-    res.clearCookie("refreshToken", cookieConfig);
   }
 
   return res.sendStatus(NO_CONTENT_REFRESH);
