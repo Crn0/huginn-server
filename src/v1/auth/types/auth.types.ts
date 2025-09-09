@@ -5,6 +5,6 @@ export interface AuthenticateGoogle {
   email: string;
   firstName: string;
   lastName: string;
-  birthday: string | null;
+  birthday: InstanceType<typeof Date> | null;
   avatarUrl: string | null;
 }
