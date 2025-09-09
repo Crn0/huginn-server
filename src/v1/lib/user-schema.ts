@@ -2,6 +2,8 @@ import z from "zod";
 
 const mediaSizeSchema = z.object({
   url: z.url(),
+  w: z.coerce.number(),
+  h: z.coerce.number(),
 });
 
 const profileMediaSchema = z.object({
@@ -24,6 +26,7 @@ export type CreateUserDTO = z.infer<typeof createUserSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginSchema>;
 export type User = z.infer<typeof userSchema>;
 export type UserAccountLevel = z.infer<typeof accountLevelEnum>;
+export type MediaSize = z.infer<typeof mediaSizeSchema>;
 
 export const createUserSchema = z.object({
   email: z.email().trim(),
