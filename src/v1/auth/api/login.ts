@@ -19,6 +19,8 @@ const ACCESS_TOKEN_EXPIRATION = 15 as const; // 15 mins
 export const login = async (req: Request, res: Response) => {
   const oldRefreshToken: string = req.cookies["refreshToken"];
 
+  res.clearCookie("refreshToken", cookieConfig);
+
   if (oldRefreshToken) {
     const verifiedToken = verifyToken(oldRefreshToken);
 
