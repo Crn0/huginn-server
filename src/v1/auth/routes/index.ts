@@ -5,12 +5,14 @@ import passport from "passport";
 import { createLocalStrategy } from "@/v1/lib/local-strategy.js";
 import { createGoogleStrategy } from "@/v1/lib/google-strategy.js";
 import { registerPost } from "./post.js";
+import { registerGet } from "./get.js";
 
 const router = Router();
 
 passport.use(createLocalStrategy());
 passport.use(createGoogleStrategy());
 
+registerGet(router);
 registerPost(router);
 
 export { router };
