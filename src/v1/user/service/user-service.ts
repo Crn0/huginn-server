@@ -1,5 +1,6 @@
 import argon2 from "argon2";
 
+import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
@@ -17,7 +18,7 @@ export const createUser = async (DTO: CreateUserDTO) => {
   if (!(await userRepository.isEmailAvailable(DTO.email))) {
     throw new ConflictError("Email conflict", {
       path: ["email"],
-      code: "email_conflict",
+      code: EMAIL_CONFLICT,
       message: "Email has already been taken.",
     });
   }
@@ -45,7 +46,6 @@ export const createUser = async (DTO: CreateUserDTO) => {
     ...DTO,
     username,
     password,
-    birthday: typeof DTO.birthday === "string" ? new Date(DTO.birthday) : null,
     accountLevel: "USER" as const,
   };
 
