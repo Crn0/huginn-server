@@ -1,4 +1,4 @@
-import { NO_CONTENT_REFRESH } from "@/v1/constants/http-status.js";
+import { NO_CONTENT } from "@/v1/constants/http-status.js";
 import {
   blackListToken,
   getBlackListedTokenByJwtId,
@@ -20,7 +20,7 @@ export const logout = async (_req: Request, res: Response) => {
     const refreshTokenBlackListed = await getBlackListedTokenByJwtId(jwtId);
 
     if (refreshTokenBlackListed) {
-      return res.sendStatus(NO_CONTENT_REFRESH);
+      return res.sendStatus(NO_CONTENT);
     }
 
     const expiresAt = new Date(exp * 1000).toISOString();
@@ -28,5 +28,5 @@ export const logout = async (_req: Request, res: Response) => {
     await blackListToken({ jwtId, sub, expiresAt, type: "RefreshToken" });
   }
 
-  return res.sendStatus(NO_CONTENT_REFRESH);
+  return res.sendStatus(NO_CONTENT);
 };
