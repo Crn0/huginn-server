@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import request from "supertest";
 
+import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
+import { generateEmail } from "@/v1/lib/generate-email.js";
 import { app } from "v1/__mocks__/server.js";
 
 const userRequest = request(app);
@@ -9,7 +11,7 @@ describe("POST /api/v1/auth/register", () => {
   const url = "/api/v1/auth/register";
 
   const form = {
-    email: "crno@test.com",
+    email: generateEmail(),
     displayName: "crno",
     password: "Crnocrno123",
     birthday: "1999-04-25",
@@ -125,7 +127,7 @@ describe("POST /api/v1/auth/register", () => {
         expect(res.body).toMatchObject({
           code: "CONFLICT_ERROR",
           field: {
-            code: "email_conflict",
+            code: EMAIL_CONFLICT,
             message: "Email has already been taken.",
             path: ["email"],
           },
