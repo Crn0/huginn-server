@@ -19,3 +19,7 @@ export const getUserOptions = {
     },
   },
 } satisfies Prisma.UserDefaultArgs;
+
+export const updateUserOptions = {
+  select: { id: true, username: true },
+} satisfies Prisma.UserDefaultArgs;
