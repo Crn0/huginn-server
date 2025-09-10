@@ -9,8 +9,8 @@ import {
   type DeliveryType,
 } from "v1/lib/cloudinary.js";
 
-export const getMediaUrl = (publicId: string, transformation?: TransformationOptions) =>
-  cloudinary.url(publicId, {
+export const getMediaUrl = (filePath: string, transformation?: TransformationOptions) =>
+  cloudinary.url(filePath, {
     transformation,
   });
 
@@ -46,7 +46,7 @@ export const deleteFolder = async (path: string, options?: AdminApiOptions) => {
 };
 
 export const deleteMedia = async (
-  publicId: string,
+  filePath: string,
   options: {
     resource_type?: ResourceType;
     type?: DeliveryType;
@@ -54,7 +54,7 @@ export const deleteMedia = async (
   } = { invalidate: true }
 ) => {
   try {
-    const res = await cloudinary.uploader.destroy(publicId, options);
+    const res = await cloudinary.uploader.destroy(filePath, options);
 
     return res;
   } catch (error) {
