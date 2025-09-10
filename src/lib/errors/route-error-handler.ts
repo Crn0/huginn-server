@@ -31,14 +31,15 @@ export const routeErrorHandler = (
   _next: NextFunction
 ) => {
   switch (error.kind) {
-    case "AUTHENTICATION_ERROR": {
+    case "AUTHENTICATION_ERROR":
+    case "BAD_REQUEST_ERROR":
+    case "FORBIDDEN_ERROR":
+    case "INTERNAL_SERVER_ERROR":
+    case "NOT_FOUND_ERROR": {
       res.status(error.status).json(formatError(error));
       break;
     }
-    case "BAD_REQUEST_ERROR": {
-      res.status(error.status).json(formatError(error));
-      break;
-    }
+
     case "CONFLICT_ERROR": {
       res.status(error.status).json({
         ...formatError(error),
@@ -46,19 +47,7 @@ export const routeErrorHandler = (
       });
       break;
     }
-    case "FORBIDDEN_ERROR": {
-      res.status(error.status).json(formatError(error));
-      break;
-    }
 
-    case "INTERNAL_SERVER_ERROR": {
-      res.status(error.status).json(formatError(error));
-      break;
-    }
-    case "NOT_FOUND_ERROR": {
-      res.status(error.status).json(formatError(error));
-      break;
-    }
     case "VALIDATION_ERROR": {
       res.status(error.status).json({ ...formatError(error), issues: error.issues });
       break;
@@ -66,8 +55,8 @@ export const routeErrorHandler = (
 
     default: {
       res.status(500).json({
-        ...formatError(error),
         code: "INTERNAL_SERVER_ERROR",
+        message: "Something went wrong.",
       });
     }
   }
