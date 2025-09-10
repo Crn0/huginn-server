@@ -1,19 +1,13 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
 
+import { testUserLoginForm } from "testing/seed.js";
 import { app } from "v1/__mocks__/server.js";
 
 const userRequest = request.agent(app);
 
 beforeAll(async () => {
-  const form = {
-    email: "noir@test.com",
-    displayName: "crno",
-    password: "Crnocrno123",
-    birthday: "1999-04-25",
-  };
-  await userRequest.post("/api/v1/auth/register").send(form);
-  await userRequest.post("/api/v1/auth/login").send(form);
+  await userRequest.post("/api/v1/auth/login").send(testUserLoginForm);
 });
 
 describe("POST /api/v1/auth/refresh-tokens", () => {

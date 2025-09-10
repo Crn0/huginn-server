@@ -1,26 +1,13 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import request from "supertest";
 
+import { testUserLoginForm } from "testing/seed.js";
 import { app } from "v1/__mocks__/server.js";
 
 const userRequest = request.agent(app);
 
-beforeAll(async () => {
-  await userRequest.post("/api/v1/auth/register").send({
-    email: "krno@test.com",
-    displayName: "crno",
-    password: "Crnocrno123",
-    birthday: "1999-04-25",
-  });
-});
-
 describe("POST /api/v1/auth/login", () => {
   const url = "/api/v1/auth/login" as const;
-
-  const form = {
-    email: "krno@test.com",
-    password: "Crnocrno123",
-  } as const;
 
   const invalidForm = {
     email: "crnocrnok@test.com",
@@ -29,7 +16,7 @@ describe("POST /api/v1/auth/login", () => {
 
   describe("Success cases", () => {
     it("returns an accessToken in the response body and sets an http-only refreshToken cookie", async () => {
-      const res = await userRequest.post(url).send(form);
+      const res = await userRequest.post(url).send(testUserLoginForm);
 
       const cookies = res.headers["set-cookie"] as string[] | undefined;
 
@@ -44,7 +31,7 @@ describe("POST /api/v1/auth/login", () => {
     describe("Authentication errors", () => {
       it("returns an authentication error when the credentials are invalid", async () => {
         const res = await userRequest.post(url).send({
-          ...form,
+          ...testUserLoginForm,
           email: invalidForm.email,
         });
 
@@ -58,10 +45,10 @@ describe("POST /api/v1/auth/login", () => {
     describe("Rate-limit errors", () => {
       it("returns a rate-limit error when the maximum attempts are exceeded", async () => {
         await Promise.all(
-          Array.from({ length: 10 }).map(async () => userRequest.post(url).send(form))
+          Array.from({ length: 10 }).map(async () => userRequest.post(url).send(testUserLoginForm))
         );
 
-        const res = await userRequest.post(url).send(form);
+        const res = await userRequest.post(url).send(testUserLoginForm);
 
         expect(res.headers["retry-after"]).toBe("60");
         expect(res.body).toMatchObject({
