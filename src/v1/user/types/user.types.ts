@@ -1,4 +1,6 @@
+import type { Prisma } from "@/generated/prisma/index.js";
 import type { UserAccountLevel } from "@/v1/lib/user-schema.js";
+import type { getUserOptions } from "../repository/user-options.js";
 
 export interface CreateUser {
   email: string;
@@ -20,3 +22,5 @@ export interface CreateUserOIDCAccount {
   accessToken: string; // OIDC access token
   avatarUrl: string | null;
 }
+
+export type GetUserBy = Prisma.UserGetPayload<{ include: typeof getUserOptions.include }>;
