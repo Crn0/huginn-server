@@ -13,7 +13,7 @@ export interface CreateUserOIDCAccount {
   email: string;
   username: string;
   displayName: string;
-  birthday: string | null;
+  birthday: InstanceType<typeof Date> | null;
   accountLevel: UserAccountLevel;
   providerPk: number;
   sub: string; // provider user ID
