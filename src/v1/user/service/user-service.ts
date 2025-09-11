@@ -75,3 +75,6 @@ export const getUserById = async (id: string) => {
 
 export const isUsernameAvailable = async (username: string) =>
   userRepository.isUsernameAvailable(username);
+
+export const patchUsernameById = async (id: string, username: string) =>
+  userRepository.patchUsernameById(id, username);
