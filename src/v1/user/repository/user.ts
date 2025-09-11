@@ -1,5 +1,6 @@
 import { prisma } from "@/db/client/prisma.js";
-import { createUserOptions, getUserOptions } from "./user-options.js";
+import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
+import { createUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
 
 import type { CreateUser } from "../types/user.types.js";
 
@@ -46,4 +47,20 @@ export const isUsernameAvailable = async (username: string) => {
   if (!user) return true;
 
   return false;
+};
+
+export const patchUsernameById = async (id: string, username: string) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      ...updateUserOptions,
+      where: { id },
+      data: { username },
+    });
+
+    return updatedUser;
+  } catch (error) {
+    const err = dbErrorHandler(error as NodeJS.ErrnoException)
+
+    throw err;
+  }
 };
