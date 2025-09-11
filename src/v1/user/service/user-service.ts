@@ -16,7 +16,7 @@ const MAX_USERNAME_RETRY = 20;
 
 export const createUser = async (DTO: CreateUserDTO) => {
   if (!(await userRepository.isEmailAvailable(DTO.email))) {
-    throw new ConflictError("Email conflict", {
+    throw new ConflictError("Unique constraint violation", {
       path: ["email"],
       code: EMAIL_CONFLICT,
       message: "Email has already been taken.",
