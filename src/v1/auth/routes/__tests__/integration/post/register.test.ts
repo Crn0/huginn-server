@@ -131,7 +131,7 @@ describe("POST /api/v1/auth/register", () => {
             message: "Email has already been taken.",
             path: ["email"],
           },
-          message: "Email conflict",
+          message: "Unique constraint violation",
         });
       });
     });
