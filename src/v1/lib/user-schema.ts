@@ -60,10 +60,7 @@ export const userSchema = z.object({
   profile: z.object({
     displayName: z.string().nullable(),
     bio: z.string().nullable(),
-    birthday: z.coerce
-      .date()
-      .transform((d) => d.toDateString())
-      .nullable(),
+    birthday: z.coerce.date().nullable(),
     location: z.string().nullable(),
     website: z.url().nullable(),
 
