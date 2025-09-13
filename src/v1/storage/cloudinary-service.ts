@@ -16,9 +16,9 @@ export const getMediaUrl = (filePath: string, transformation?: TransformationOpt
 
 export const getUsage = async () => cloudinary.api.usage();
 
-export const uploadMedia = async (folder: string, media: string, options: UploadApiOptions) => {
+export const uploadMedia = async (folder: string, mediaPath: string, options?: UploadApiOptions) => {
   try {
-    const response = await cloudinary.uploader.upload(media, {
+    const response = await cloudinary.uploader.upload(mediaPath, {
       folder,
       ...options,
     });
