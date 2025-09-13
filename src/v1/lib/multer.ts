@@ -63,7 +63,7 @@ const fileFilter =
     }
 
     return cb(
-      new ValidationError("Validation Error", [
+      new ValidationError("Validation failed: 1 errors detected in body", [
         {
           code: "custom",
           message: `Only ${fileType} formats are supported.`,
