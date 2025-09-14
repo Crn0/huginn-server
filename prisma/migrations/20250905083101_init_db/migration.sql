@@ -9,7 +9,7 @@ CREATE TYPE "public"."AccountLevel" AS ENUM ('demo', 'user', 'admin');
 
 -- CreateTable
 CREATE TABLE "public"."Providers" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "key" VARCHAR NOT NULL,
     "name" VARCHAR NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "public"."Providers" (
 
 -- CreateTable
 CREATE TABLE "public"."BlacklistedTokens" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "jwt_id" VARCHAR NOT NULL,
     "expires_at" TIMESTAMPTZ NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE "public"."BlacklistedTokens" (
 
 -- CreateTable
 CREATE TABLE "public"."Media" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "type" "public"."MediaType" NOT NULL,
     "file_path" VARCHAR NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE "public"."Media" (
 
 -- CreateTable
 CREATE TABLE "public"."UserProfile" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "display_name" VARCHAR,
     "bio" VARCHAR,
@@ -65,7 +65,7 @@ CREATE TABLE "public"."UserProfile" (
 
 -- CreateTable
 CREATE TABLE "public"."Users" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "email" VARCHAR NOT NULL,
     "username" VARCHAR NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE "public"."Users" (
 
 -- CreateTable
 CREATE TABLE "public"."UserOIDCAccounts" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "sub" VARCHAR NOT NULL,
     "access_token" TEXT NOT NULL,

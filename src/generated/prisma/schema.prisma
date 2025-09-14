@@ -46,6 +46,9 @@ model Media {
   userProfileBannerPk Int?         @unique @map("user_profile_banner_pk")
   userProfileBanner   UserProfile? @relation(name: "UserProfileBanner", map: "Media_user_profile_banner_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
 
+  // postPk Int? @unique @map("post_pk")
+  // tweet Tweet? @relation(fields: [postPk], references: [primaryKey], onDelete: Cascade)
+
   @@map("Medias")
 }
 
@@ -70,6 +73,24 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model Tweet {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  content    String?   @db.Text
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
+
+  authorPk  Int     @map("author_pk")
+  // author    User    @relation(fields: [authorPk], references: [primaryKey])
+  // medias    Media[]
+  replyToPk Int?    @map("reply_pk")
+  replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
+  replies   Tweet[] @relation(name: "PostReplies")
+
+  @@map("Tweets")
 }
 
 model UserProfile {
@@ -102,6 +123,7 @@ model User {
   profile UserProfile?
   openIds UserOIDCAccount[]
   tokens  BlacklistedToken[]
+  // tweets Tweet[]
 
   @@map("Users")
 }

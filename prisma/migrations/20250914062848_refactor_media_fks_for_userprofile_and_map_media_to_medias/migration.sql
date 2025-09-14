@@ -31,7 +31,7 @@ DROP TABLE "public"."Media";
 
 -- CreateTable
 CREATE TABLE "public"."Medias" (
-    "primary_key" BIGINT GENERATED ALWAYS AS IDENTITY,
+    "primary_key" INT GENERATED ALWAYS AS IDENTITY,
     "id" UUID NOT NULL,
     "type" "public"."MediaType" NOT NULL,
     "file_path" VARCHAR NOT NULL,

@@ -153,6 +153,17 @@ exports.Prisma.MediaScalarFieldEnum = {
   userProfileBannerPk: 'userProfileBannerPk'
 };
 
+exports.Prisma.TweetScalarFieldEnum = {
+  primaryKey: 'primaryKey',
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  authorPk: 'authorPk',
+  replyToPk: 'replyToPk'
+};
+
 exports.Prisma.UserProfileScalarFieldEnum = {
   primaryKey: 'primaryKey',
   id: 'id',
@@ -223,6 +234,7 @@ exports.Prisma.ModelName = {
   AuthProvider: 'AuthProvider',
   BlacklistedToken: 'BlacklistedToken',
   Media: 'Media',
+  Tweet: 'Tweet',
   UserProfile: 'UserProfile',
   User: 'User',
   UserOIDCAccount: 'UserOIDCAccount'
