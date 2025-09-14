@@ -13,7 +13,7 @@ const multer = initMulter({
   limits: {
     fileSize: MAX_FILE_SIZE,
   },
-  fileType: "png|jpg|jpeg|gif|webp"
+  fileType: "png|jpg|jpeg|gif|webp",
 });
 
 export const profileMediaProcessor = (req: Request, res: Response, next: NextFunction) =>
@@ -25,7 +25,7 @@ export const profileMediaProcessor = (req: Request, res: Response, next: NextFun
     { name: "banner", maxCount: 1 },
   ])(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
-      console.log(err)
+      console.log(err);
       const code = err.code;
       const field = err.field as string;
 

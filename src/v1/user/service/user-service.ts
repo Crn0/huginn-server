@@ -107,7 +107,7 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
   const data: PatchUserProfile = { ...rest };
 
   if (newProfileAvatar) {
-    const avatarId = profileAvatar?.id ?? generateId()
+    const avatarId = profileAvatar?.id ?? generateId();
 
     data.avatar = {
       ...newProfileAvatar,
@@ -117,7 +117,7 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
   }
 
   if (newProfileBanner) {
-    const bannerId = profileBanner?.id ?? generateId()
+    const bannerId = profileBanner?.id ?? generateId();
 
     data.banner = {
       ...newProfileBanner,
@@ -126,5 +126,5 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
     };
   }
 
-  return userRepository.patchUserProfile(id, data)
+  return userRepository.patchUserProfile(id, data);
 };

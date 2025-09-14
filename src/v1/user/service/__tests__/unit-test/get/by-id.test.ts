@@ -5,9 +5,12 @@ import * as userRepository from "@/v1/user/repository/user.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import { getUserById } from "v1/user/service/user-service.js";
 
-vi.mock(import("@/v1/user/repository/user.js"), async () => import("../__mocks__/user-repository.js"));
+vi.mock(
+  import("@/v1/user/repository/user.js"),
+  async () => import("../__mocks__/user-repository.js")
+);
 
-const mockedRepo = vi.mocked(userRepository )
+const mockedRepo = vi.mocked(userRepository);
 
 afterEach(() => {
   vi.clearAllMocks();

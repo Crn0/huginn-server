@@ -7,8 +7,8 @@ type Identity<T> = {
 };
 
 type Operation<T> = Promise<T> | (() => Promise<T>) | (() => T);
-type TransformError<TError> = (options: Identity<TError>) => TError 
- 
+type TransformError<TError> = (options: Identity<TError>) => TError;
+
 export function tryCatch<TResult, TError extends Error>(
   operation: Promise<TResult>,
   transformError?: TransformError<TError>
@@ -36,8 +36,8 @@ export function tryCatch<TResult, TError extends Error>(
 
     return onSuccess(result);
   } catch (error) {
-    const err = error as TError
-    
+    const err = error as TError;
+
     if (typeof transformError === "function") {
       return { error: transformError(err), data: null };
     }

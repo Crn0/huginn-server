@@ -1,8 +1,8 @@
 import z from "zod";
 
 export type PatchUserProfileDTO = z.infer<typeof patchUserProfileSchema> & {
-  avatar: z.infer<typeof userProfileMediaSchema>,
-  banner: z.infer<typeof userProfileMediaSchema>,
+  avatar: z.infer<typeof userProfileMediaSchema>;
+  banner: z.infer<typeof userProfileMediaSchema>;
 };
 
 export const MAX_FILE_SIZE = 10_000_000 as const; // 10mb
@@ -34,11 +34,19 @@ export const userProfileMediaSchema = z.object(
 );
 
 export const patchUserProfileSchema = z.object({
-  displayName: z.string().trim().max(36, {
-    message: "Use no more than 36 characters for the 'display name'",
-  }).optional(),
+  displayName: z
+    .string()
+    .trim()
+    .max(36, {
+      message: "Use no more than 36 characters for the 'display name'",
+    })
+    .optional(),
   bio: z.string().trim().max(160, { error: "Bio must be at most 160 characters" }).optional(),
   birthday: z.coerce.date().optional(),
-  location: z.string().trim().max(30, { error: "Location must be at most 30 characters" }).optional(),
+  location: z
+    .string()
+    .trim()
+    .max(30, { error: "Location must be at most 30 characters" })
+    .optional(),
   website: z.url().trim().max(160, { error: "Website must be at most 160 characters" }).optional(),
 });

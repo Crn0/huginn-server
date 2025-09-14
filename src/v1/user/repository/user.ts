@@ -61,7 +61,7 @@ export const patchUsernameById = async (id: string, username: string) => {
 
     return updatedUser;
   } catch (error) {
-    const err = dbErrorHandler(error as NodeJS.ErrnoException)
+    const err = dbErrorHandler(error as NodeJS.ErrnoException);
 
     throw err;
   }
@@ -75,11 +75,10 @@ export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
       data: {
         profile: {
           update: {
-              ...toPatchUserProfile(data),
+            ...toPatchUserProfile(data),
           },
-
         },
-       updatedAt: new Date(),
+        updatedAt: new Date(),
       },
     });
 

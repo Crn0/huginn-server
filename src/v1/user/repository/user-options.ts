@@ -14,8 +14,8 @@ export const getUserOptions = {
     },
     openIds: {
       include: {
-        provider: true
-      }
+        provider: true,
+      },
     },
   },
 } satisfies Prisma.UserDefaultArgs;

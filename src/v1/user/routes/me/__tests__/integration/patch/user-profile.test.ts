@@ -39,7 +39,7 @@ describe("PATCH /api/v1/users/me/profile", () => {
     "..",
     "assets",
     "test_avatar.png"
-  )
+  );
 
   const form = {
     displayName: "krno.Krno",

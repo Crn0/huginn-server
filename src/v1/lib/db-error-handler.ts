@@ -21,7 +21,7 @@ const prismaError = (error: Prisma.PrismaClientKnownRequestError) => {
 
 export const dbErrorHandler = <T extends Error>(error: T) => {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-  return  prismaError(error);
+    return prismaError(error);
   }
 
   return error;

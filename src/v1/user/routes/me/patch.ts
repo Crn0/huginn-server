@@ -10,7 +10,12 @@ import type { Router } from "express";
 export const mePatch = (router: Router) => {
   router.patch("/me/username", ZodBodyValidator(patchUsernameSchema), patchUsername);
 
-  router.patch("/me/profile", profileMediaProcessor, ZodBodyValidator(patchUserProfileSchema), patchUserProfile)
+  router.patch(
+    "/me/profile",
+    profileMediaProcessor,
+    ZodBodyValidator(patchUserProfileSchema),
+    patchUserProfile
+  );
 
   return router;
 };

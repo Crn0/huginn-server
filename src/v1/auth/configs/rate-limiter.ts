@@ -1,4 +1,4 @@
-import rateLimit, { type Options } from "express-rate-limit";
+import type { Options } from "express-rate-limit";
 
 import type { Request, Response, NextFunction } from "express";
 
