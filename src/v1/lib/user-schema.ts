@@ -77,6 +77,6 @@ export const userSchema = z.object({
   ),
 
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
-  updatedAt: z.iso.datetime().nullable(),
-  deletedAt: z.iso.datetime().nullable(),
+  updatedAt: z.coerce.date().transform((d) => d.toISOString()).nullable(),
+  deletedAt: z.coerce.date().transform((d) => d.toISOString()).nullable(),
 });
