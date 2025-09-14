@@ -1,8 +1,10 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { createUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
+import { toPatchUserProfile } from "../mapper/to-patch-user-profile.js";
 
 import type { CreateUser } from "../types/user.types.js";
+import type { PatchUserProfile } from "../types/repository.types.js";
 
 export const createUser = async (data: CreateUser) =>
   prisma.user.create({
@@ -60,6 +62,30 @@ export const patchUsernameById = async (id: string, username: string) => {
     return updatedUser;
   } catch (error) {
     const err = dbErrorHandler(error as NodeJS.ErrnoException)
+
+    throw err;
+  }
+};
+
+export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      ...updateUserOptions,
+      where: { id },
+      data: {
+        profile: {
+          update: {
+              ...toPatchUserProfile(data),
+          },
+
+        },
+       updatedAt: new Date(),
+      },
+    });
+
+    return updatedUser;
+  } catch (error) {
+    const err = dbErrorHandler(error as NodeJS.ErrnoException);
 
     throw err;
   }

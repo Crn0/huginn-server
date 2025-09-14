@@ -1,18 +1,30 @@
 import argon2 from "argon2";
 
+import { env } from "@/configs/env.js";
 import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
+import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import * as userRepository from "../repository/user.js";
 
 import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
+import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
+import type { PatchUserProfile } from "../types/repository.types.js";
 
 const debug = createDebug("user-service");
 const MAX_USERNAME_RETRY = 20;
+
+const uploadProfileMedia = async (folder: string, mediaPath?: string) => {
+  if (!mediaPath) return null;
+
+  const res = await uploadMedia(folder, mediaPath);
+
+  return Object.freeze({ filePath: res.public_id, url: res.secure_url, bytes: res.bytes });
+};
 
 export const createUser = async (DTO: CreateUserDTO) => {
   if (!(await userRepository.isEmailAvailable(DTO.email))) {
@@ -78,3 +90,36 @@ export const isUsernameAvailable = async (username: string) =>
 
 export const patchUsernameById = async (id: string, username: string) =>
   userRepository.patchUsernameById(id, username);
+
+export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO) => {
+  const { avatar, banner, ...rest } = DTO;
+
+  const { profile } = await getUserById(id);
+
+  const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/avatars/${id}`;
+
+  const profileAvatar = profile?.avatar;
+  const profileBanner = profile?.banner;
+  const newProfileAvatar = await uploadProfileMedia(mediaFolder, avatar?.path);
+  const newProfileBanner = await uploadProfileMedia(mediaFolder, banner?.path);
+
+  const data: PatchUserProfile = { ...rest };
+
+  if (newProfileAvatar) {
+    data.avatar = {
+      ...newProfileAvatar,
+      id: profileAvatar?.id ?? undefined,
+      type: avatar?.mimetype === "image/gif" ? "GIF" : "IMAGE",
+    };
+  }
+
+  if (newProfileBanner) {
+    data.banner = {
+      ...newProfileBanner,
+      id: profileBanner?.id ?? undefined,
+      type: banner?.mimetype === "image/gif" ? "GIF" : "IMAGE",
+    };
+  }
+
+  return userRepository.patchUserProfile(id, data)
+};
