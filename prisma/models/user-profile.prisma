@@ -7,10 +7,8 @@ model UserProfile {
   birthday    DateTime? @db.Date
   website     String?   @db.VarChar()
 
-  avatar          Media? @relation(name: "UserProfileAvatar", fields: [avatar_media_pk], references: [primaryKey], onDelete: Cascade)
-  avatar_media_pk Int?   @unique
-  banner          Media? @relation(name: "UserProfileBanner", fields: [banner_media_pk], references: [primaryKey], onDelete: Cascade)
-  banner_media_pk Int?   @unique
+  avatar Media? @relation(name: "UserProfileAvatar")
+  banner Media? @relation(name: "UserProfileBanner")
 
   user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
   userPk Int  @unique

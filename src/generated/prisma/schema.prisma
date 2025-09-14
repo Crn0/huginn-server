@@ -41,8 +41,12 @@ model Media {
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz
   deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
 
-  userProfileAvatar UserProfile? @relation(name: "UserProfileAvatar")
-  userProfileBanner UserProfile? @relation(name: "UserProfileBanner")
+  userProfileAvatarPk Int?         @unique @map("user_profile_avatar_pk")
+  userProfileAvatar   UserProfile? @relation(name: "UserProfileAvatar", map: "Media_user_profile_avatar_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
+  userProfileBannerPk Int?         @unique @map("user_profile_banner_pk")
+  userProfileBanner   UserProfile? @relation(name: "UserProfileBanner", map: "Media_user_profile_banner_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
+
+  @@map("Medias")
 }
 
 enum MediaType {
@@ -77,10 +81,8 @@ model UserProfile {
   birthday    DateTime? @db.Date
   website     String?   @db.VarChar()
 
-  avatar          Media? @relation(name: "UserProfileAvatar", fields: [avatar_media_pk], references: [primaryKey], onDelete: Cascade)
-  avatar_media_pk Int?   @unique
-  banner          Media? @relation(name: "UserProfileBanner", fields: [banner_media_pk], references: [primaryKey], onDelete: Cascade)
-  banner_media_pk Int?   @unique
+  avatar Media? @relation(name: "UserProfileAvatar")
+  banner Media? @relation(name: "UserProfileBanner")
 
   user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
   userPk Int  @unique

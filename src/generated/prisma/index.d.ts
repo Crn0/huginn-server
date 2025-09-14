@@ -3692,11 +3692,15 @@ export namespace Prisma {
   export type MediaAvgAggregateOutputType = {
     primaryKey: number | null
     bytes: number | null
+    userProfileAvatarPk: number | null
+    userProfileBannerPk: number | null
   }
 
   export type MediaSumAggregateOutputType = {
     primaryKey: number | null
     bytes: number | null
+    userProfileAvatarPk: number | null
+    userProfileBannerPk: number | null
   }
 
   export type MediaMinAggregateOutputType = {
@@ -3709,6 +3713,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    userProfileAvatarPk: number | null
+    userProfileBannerPk: number | null
   }
 
   export type MediaMaxAggregateOutputType = {
@@ -3721,6 +3727,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
+    userProfileAvatarPk: number | null
+    userProfileBannerPk: number | null
   }
 
   export type MediaCountAggregateOutputType = {
@@ -3733,6 +3741,8 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     deletedAt: number
+    userProfileAvatarPk: number
+    userProfileBannerPk: number
     _all: number
   }
 
@@ -3740,11 +3750,15 @@ export namespace Prisma {
   export type MediaAvgAggregateInputType = {
     primaryKey?: true
     bytes?: true
+    userProfileAvatarPk?: true
+    userProfileBannerPk?: true
   }
 
   export type MediaSumAggregateInputType = {
     primaryKey?: true
     bytes?: true
+    userProfileAvatarPk?: true
+    userProfileBannerPk?: true
   }
 
   export type MediaMinAggregateInputType = {
@@ -3757,6 +3771,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    userProfileAvatarPk?: true
+    userProfileBannerPk?: true
   }
 
   export type MediaMaxAggregateInputType = {
@@ -3769,6 +3785,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    userProfileAvatarPk?: true
+    userProfileBannerPk?: true
   }
 
   export type MediaCountAggregateInputType = {
@@ -3781,6 +3799,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
+    userProfileAvatarPk?: true
+    userProfileBannerPk?: true
     _all?: true
   }
 
@@ -3880,6 +3900,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date | null
     deletedAt: Date | null
+    userProfileAvatarPk: number | null
+    userProfileBannerPk: number | null
     _count: MediaCountAggregateOutputType | null
     _avg: MediaAvgAggregateOutputType | null
     _sum: MediaSumAggregateOutputType | null
@@ -3911,6 +3933,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    userProfileAvatarPk?: boolean
+    userProfileBannerPk?: boolean
     userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
     userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
@@ -3925,6 +3949,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    userProfileAvatarPk?: boolean
+    userProfileBannerPk?: boolean
+    userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
+    userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
 
   export type MediaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3937,6 +3965,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    userProfileAvatarPk?: boolean
+    userProfileBannerPk?: boolean
+    userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
+    userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
   }, ExtArgs["result"]["media"]>
 
   export type MediaSelectScalar = {
@@ -3949,15 +3981,23 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    userProfileAvatarPk?: boolean
+    userProfileBannerPk?: boolean
   }
 
-  export type MediaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "type" | "filePath" | "bytes" | "url" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["media"]>
+  export type MediaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "type" | "filePath" | "bytes" | "url" | "createdAt" | "updatedAt" | "deletedAt" | "userProfileAvatarPk" | "userProfileBannerPk", ExtArgs["result"]["media"]>
   export type MediaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
     userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
   }
-  export type MediaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type MediaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type MediaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
+    userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
+  }
+  export type MediaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userProfileAvatar?: boolean | Media$userProfileAvatarArgs<ExtArgs>
+    userProfileBanner?: boolean | Media$userProfileBannerArgs<ExtArgs>
+  }
 
   export type $MediaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Media"
@@ -3975,6 +4015,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date | null
       deletedAt: Date | null
+      userProfileAvatarPk: number | null
+      userProfileBannerPk: number | null
     }, ExtArgs["result"]["media"]>
     composites: {}
   }
@@ -4409,6 +4451,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Media", 'DateTime'>
     readonly updatedAt: FieldRef<"Media", 'DateTime'>
     readonly deletedAt: FieldRef<"Media", 'DateTime'>
+    readonly userProfileAvatarPk: FieldRef<"Media", 'Int'>
+    readonly userProfileBannerPk: FieldRef<"Media", 'Int'>
   }
     
 
@@ -4658,6 +4702,10 @@ export namespace Prisma {
      */
     data: MediaCreateManyInput | MediaCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MediaIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4728,6 +4776,10 @@ export namespace Prisma {
      * Limit how many Media to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MediaIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4867,15 +4919,11 @@ export namespace Prisma {
 
   export type UserProfileAvgAggregateOutputType = {
     primaryKey: number | null
-    avatar_media_pk: number | null
-    banner_media_pk: number | null
     userPk: number | null
   }
 
   export type UserProfileSumAggregateOutputType = {
     primaryKey: number | null
-    avatar_media_pk: number | null
-    banner_media_pk: number | null
     userPk: number | null
   }
 
@@ -4887,8 +4935,6 @@ export namespace Prisma {
     location: string | null
     birthday: Date | null
     website: string | null
-    avatar_media_pk: number | null
-    banner_media_pk: number | null
     userPk: number | null
   }
 
@@ -4900,8 +4946,6 @@ export namespace Prisma {
     location: string | null
     birthday: Date | null
     website: string | null
-    avatar_media_pk: number | null
-    banner_media_pk: number | null
     userPk: number | null
   }
 
@@ -4913,8 +4957,6 @@ export namespace Prisma {
     location: number
     birthday: number
     website: number
-    avatar_media_pk: number
-    banner_media_pk: number
     userPk: number
     _all: number
   }
@@ -4922,15 +4964,11 @@ export namespace Prisma {
 
   export type UserProfileAvgAggregateInputType = {
     primaryKey?: true
-    avatar_media_pk?: true
-    banner_media_pk?: true
     userPk?: true
   }
 
   export type UserProfileSumAggregateInputType = {
     primaryKey?: true
-    avatar_media_pk?: true
-    banner_media_pk?: true
     userPk?: true
   }
 
@@ -4942,8 +4980,6 @@ export namespace Prisma {
     location?: true
     birthday?: true
     website?: true
-    avatar_media_pk?: true
-    banner_media_pk?: true
     userPk?: true
   }
 
@@ -4955,8 +4991,6 @@ export namespace Prisma {
     location?: true
     birthday?: true
     website?: true
-    avatar_media_pk?: true
-    banner_media_pk?: true
     userPk?: true
   }
 
@@ -4968,8 +5002,6 @@ export namespace Prisma {
     location?: true
     birthday?: true
     website?: true
-    avatar_media_pk?: true
-    banner_media_pk?: true
     userPk?: true
     _all?: true
   }
@@ -5068,8 +5100,6 @@ export namespace Prisma {
     location: string | null
     birthday: Date | null
     website: string | null
-    avatar_media_pk: number | null
-    banner_media_pk: number | null
     userPk: number
     _count: UserProfileCountAggregateOutputType | null
     _avg: UserProfileAvgAggregateOutputType | null
@@ -5100,8 +5130,6 @@ export namespace Prisma {
     location?: boolean
     birthday?: boolean
     website?: boolean
-    avatar_media_pk?: boolean
-    banner_media_pk?: boolean
     userPk?: boolean
     avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
     banner?: boolean | UserProfile$bannerArgs<ExtArgs>
@@ -5116,11 +5144,7 @@ export namespace Prisma {
     location?: boolean
     birthday?: boolean
     website?: boolean
-    avatar_media_pk?: boolean
-    banner_media_pk?: boolean
     userPk?: boolean
-    avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
-    banner?: boolean | UserProfile$bannerArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userProfile"]>
 
@@ -5132,11 +5156,7 @@ export namespace Prisma {
     location?: boolean
     birthday?: boolean
     website?: boolean
-    avatar_media_pk?: boolean
-    banner_media_pk?: boolean
     userPk?: boolean
-    avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
-    banner?: boolean | UserProfile$bannerArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userProfile"]>
 
@@ -5148,25 +5168,19 @@ export namespace Prisma {
     location?: boolean
     birthday?: boolean
     website?: boolean
-    avatar_media_pk?: boolean
-    banner_media_pk?: boolean
     userPk?: boolean
   }
 
-  export type UserProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "displayName" | "bio" | "location" | "birthday" | "website" | "avatar_media_pk" | "banner_media_pk" | "userPk", ExtArgs["result"]["userProfile"]>
+  export type UserProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "displayName" | "bio" | "location" | "birthday" | "website" | "userPk", ExtArgs["result"]["userProfile"]>
   export type UserProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
     banner?: boolean | UserProfile$bannerArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
-    banner?: boolean | UserProfile$bannerArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserProfileIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    avatar?: boolean | UserProfile$avatarArgs<ExtArgs>
-    banner?: boolean | UserProfile$bannerArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -5185,8 +5199,6 @@ export namespace Prisma {
       location: string | null
       birthday: Date | null
       website: string | null
-      avatar_media_pk: number | null
-      banner_media_pk: number | null
       userPk: number
     }, ExtArgs["result"]["userProfile"]>
     composites: {}
@@ -5621,8 +5633,6 @@ export namespace Prisma {
     readonly location: FieldRef<"UserProfile", 'String'>
     readonly birthday: FieldRef<"UserProfile", 'DateTime'>
     readonly website: FieldRef<"UserProfile", 'String'>
-    readonly avatar_media_pk: FieldRef<"UserProfile", 'Int'>
-    readonly banner_media_pk: FieldRef<"UserProfile", 'Int'>
     readonly userPk: FieldRef<"UserProfile", 'Int'>
   }
     
@@ -8491,7 +8501,9 @@ export namespace Prisma {
     url: 'url',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    userProfileAvatarPk: 'userProfileAvatarPk',
+    userProfileBannerPk: 'userProfileBannerPk'
   };
 
   export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
@@ -8505,8 +8517,6 @@ export namespace Prisma {
     location: 'location',
     birthday: 'birthday',
     website: 'website',
-    avatar_media_pk: 'avatar_media_pk',
-    banner_media_pk: 'banner_media_pk',
     userPk: 'userPk'
   };
 
@@ -8822,6 +8832,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Media"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Media"> | Date | string | null
     deletedAt?: DateTimeNullableFilter<"Media"> | Date | string | null
+    userProfileAvatarPk?: IntNullableFilter<"Media"> | number | null
+    userProfileBannerPk?: IntNullableFilter<"Media"> | number | null
     userProfileAvatar?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
     userProfileBanner?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
   }
@@ -8836,6 +8848,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    userProfileAvatarPk?: SortOrderInput | SortOrder
+    userProfileBannerPk?: SortOrderInput | SortOrder
     userProfileAvatar?: UserProfileOrderByWithRelationInput
     userProfileBanner?: UserProfileOrderByWithRelationInput
   }
@@ -8843,6 +8857,8 @@ export namespace Prisma {
   export type MediaWhereUniqueInput = Prisma.AtLeast<{
     primaryKey?: number
     id?: string
+    userProfileAvatarPk?: number
+    userProfileBannerPk?: number
     AND?: MediaWhereInput | MediaWhereInput[]
     OR?: MediaWhereInput[]
     NOT?: MediaWhereInput | MediaWhereInput[]
@@ -8855,7 +8871,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Media"> | Date | string | null
     userProfileAvatar?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
     userProfileBanner?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
-  }, "primaryKey" | "id">
+  }, "primaryKey" | "id" | "userProfileAvatarPk" | "userProfileBannerPk">
 
   export type MediaOrderByWithAggregationInput = {
     primaryKey?: SortOrder
@@ -8867,6 +8883,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    userProfileAvatarPk?: SortOrderInput | SortOrder
+    userProfileBannerPk?: SortOrderInput | SortOrder
     _count?: MediaCountOrderByAggregateInput
     _avg?: MediaAvgOrderByAggregateInput
     _max?: MediaMaxOrderByAggregateInput
@@ -8887,6 +8905,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Media"> | Date | string
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Media"> | Date | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Media"> | Date | string | null
+    userProfileAvatarPk?: IntNullableWithAggregatesFilter<"Media"> | number | null
+    userProfileBannerPk?: IntNullableWithAggregatesFilter<"Media"> | number | null
   }
 
   export type UserProfileWhereInput = {
@@ -8900,8 +8920,6 @@ export namespace Prisma {
     location?: StringNullableFilter<"UserProfile"> | string | null
     birthday?: DateTimeNullableFilter<"UserProfile"> | Date | string | null
     website?: StringNullableFilter<"UserProfile"> | string | null
-    avatar_media_pk?: IntNullableFilter<"UserProfile"> | number | null
-    banner_media_pk?: IntNullableFilter<"UserProfile"> | number | null
     userPk?: IntFilter<"UserProfile"> | number
     avatar?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
     banner?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
@@ -8916,8 +8934,6 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     birthday?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
-    avatar_media_pk?: SortOrderInput | SortOrder
-    banner_media_pk?: SortOrderInput | SortOrder
     userPk?: SortOrder
     avatar?: MediaOrderByWithRelationInput
     banner?: MediaOrderByWithRelationInput
@@ -8927,8 +8943,6 @@ export namespace Prisma {
   export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
     primaryKey?: number
     id?: string
-    avatar_media_pk?: number
-    banner_media_pk?: number
     userPk?: number
     AND?: UserProfileWhereInput | UserProfileWhereInput[]
     OR?: UserProfileWhereInput[]
@@ -8941,7 +8955,7 @@ export namespace Prisma {
     avatar?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
     banner?: XOR<MediaNullableScalarRelationFilter, MediaWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "primaryKey" | "id" | "avatar_media_pk" | "banner_media_pk" | "userPk">
+  }, "primaryKey" | "id" | "userPk">
 
   export type UserProfileOrderByWithAggregationInput = {
     primaryKey?: SortOrder
@@ -8951,8 +8965,6 @@ export namespace Prisma {
     location?: SortOrderInput | SortOrder
     birthday?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
-    avatar_media_pk?: SortOrderInput | SortOrder
-    banner_media_pk?: SortOrderInput | SortOrder
     userPk?: SortOrder
     _count?: UserProfileCountOrderByAggregateInput
     _avg?: UserProfileAvgOrderByAggregateInput
@@ -8972,8 +8984,6 @@ export namespace Prisma {
     location?: StringNullableWithAggregatesFilter<"UserProfile"> | string | null
     birthday?: DateTimeNullableWithAggregatesFilter<"UserProfile"> | Date | string | null
     website?: StringNullableWithAggregatesFilter<"UserProfile"> | string | null
-    avatar_media_pk?: IntNullableWithAggregatesFilter<"UserProfile"> | number | null
-    banner_media_pk?: IntNullableWithAggregatesFilter<"UserProfile"> | number | null
     userPk?: IntWithAggregatesFilter<"UserProfile"> | number
   }
 
@@ -9281,6 +9291,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
+    userProfileBannerPk?: number | null
     userProfileAvatar?: UserProfileCreateNestedOneWithoutAvatarInput
     userProfileBanner?: UserProfileCreateNestedOneWithoutBannerInput
   }
@@ -9295,8 +9306,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
-    userProfileAvatar?: UserProfileUncheckedCreateNestedOneWithoutAvatarInput
-    userProfileBanner?: UserProfileUncheckedCreateNestedOneWithoutBannerInput
+    userProfileAvatarPk?: number | null
+    userProfileBannerPk?: number | null
   }
 
   export type MediaUpdateInput = {
@@ -9308,6 +9319,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileAvatar?: UserProfileUpdateOneWithoutAvatarNestedInput
     userProfileBanner?: UserProfileUpdateOneWithoutBannerNestedInput
   }
@@ -9322,8 +9334,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userProfileAvatar?: UserProfileUncheckedUpdateOneWithoutAvatarNestedInput
-    userProfileBanner?: UserProfileUncheckedUpdateOneWithoutBannerNestedInput
+    userProfileAvatarPk?: NullableIntFieldUpdateOperationsInput | number | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MediaCreateManyInput = {
@@ -9336,6 +9348,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
+    userProfileAvatarPk?: number | null
+    userProfileBannerPk?: number | null
   }
 
   export type MediaUpdateManyMutationInput = {
@@ -9347,6 +9361,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MediaUncheckedUpdateManyInput = {
@@ -9359,6 +9374,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProfileAvatarPk?: NullableIntFieldUpdateOperationsInput | number | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserProfileCreateInput = {
@@ -9381,9 +9398,9 @@ export namespace Prisma {
     location?: string | null
     birthday?: Date | string | null
     website?: string | null
-    avatar_media_pk?: number | null
-    banner_media_pk?: number | null
     userPk: number
+    avatar?: MediaUncheckedCreateNestedOneWithoutUserProfileAvatarInput
+    banner?: MediaUncheckedCreateNestedOneWithoutUserProfileBannerInput
   }
 
   export type UserProfileUpdateInput = {
@@ -9406,9 +9423,9 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
-    banner_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
     userPk?: IntFieldUpdateOperationsInput | number
+    avatar?: MediaUncheckedUpdateOneWithoutUserProfileAvatarNestedInput
+    banner?: MediaUncheckedUpdateOneWithoutUserProfileBannerNestedInput
   }
 
   export type UserProfileCreateManyInput = {
@@ -9419,8 +9436,6 @@ export namespace Prisma {
     location?: string | null
     birthday?: Date | string | null
     website?: string | null
-    avatar_media_pk?: number | null
-    banner_media_pk?: number | null
     userPk: number
   }
 
@@ -9441,8 +9456,6 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
-    banner_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
     userPk?: IntFieldUpdateOperationsInput | number
   }
 
@@ -9887,6 +9900,17 @@ export namespace Prisma {
     not?: NestedEnumMediaTypeFilter<$PrismaModel> | $Enums.MediaType
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type UserProfileNullableScalarRelationFilter = {
     is?: UserProfileWhereInput | null
     isNot?: UserProfileWhereInput | null
@@ -9902,11 +9926,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    userProfileAvatarPk?: SortOrder
+    userProfileBannerPk?: SortOrder
   }
 
   export type MediaAvgOrderByAggregateInput = {
     primaryKey?: SortOrder
     bytes?: SortOrder
+    userProfileAvatarPk?: SortOrder
+    userProfileBannerPk?: SortOrder
   }
 
   export type MediaMaxOrderByAggregateInput = {
@@ -9919,6 +9947,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    userProfileAvatarPk?: SortOrder
+    userProfileBannerPk?: SortOrder
   }
 
   export type MediaMinOrderByAggregateInput = {
@@ -9931,11 +9961,15 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+    userProfileAvatarPk?: SortOrder
+    userProfileBannerPk?: SortOrder
   }
 
   export type MediaSumOrderByAggregateInput = {
     primaryKey?: SortOrder
     bytes?: SortOrder
+    userProfileAvatarPk?: SortOrder
+    userProfileBannerPk?: SortOrder
   }
 
   export type EnumMediaTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -9946,6 +9980,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMediaTypeFilter<$PrismaModel>
     _max?: NestedEnumMediaTypeFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -9963,17 +10013,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type MediaNullableScalarRelationFilter = {
     is?: MediaWhereInput | null
     isNot?: MediaWhereInput | null
@@ -9987,15 +10026,11 @@ export namespace Prisma {
     location?: SortOrder
     birthday?: SortOrder
     website?: SortOrder
-    avatar_media_pk?: SortOrder
-    banner_media_pk?: SortOrder
     userPk?: SortOrder
   }
 
   export type UserProfileAvgOrderByAggregateInput = {
     primaryKey?: SortOrder
-    avatar_media_pk?: SortOrder
-    banner_media_pk?: SortOrder
     userPk?: SortOrder
   }
 
@@ -10007,8 +10042,6 @@ export namespace Prisma {
     location?: SortOrder
     birthday?: SortOrder
     website?: SortOrder
-    avatar_media_pk?: SortOrder
-    banner_media_pk?: SortOrder
     userPk?: SortOrder
   }
 
@@ -10020,15 +10053,11 @@ export namespace Prisma {
     location?: SortOrder
     birthday?: SortOrder
     website?: SortOrder
-    avatar_media_pk?: SortOrder
-    banner_media_pk?: SortOrder
     userPk?: SortOrder
   }
 
   export type UserProfileSumOrderByAggregateInput = {
     primaryKey?: SortOrder
-    avatar_media_pk?: SortOrder
-    banner_media_pk?: SortOrder
     userPk?: SortOrder
   }
 
@@ -10048,22 +10077,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumAccountLevelFilter<$PrismaModel = never> = {
@@ -10296,20 +10309,16 @@ export namespace Prisma {
     connect?: UserProfileWhereUniqueInput
   }
 
-  export type UserProfileUncheckedCreateNestedOneWithoutAvatarInput = {
-    create?: XOR<UserProfileCreateWithoutAvatarInput, UserProfileUncheckedCreateWithoutAvatarInput>
-    connectOrCreate?: UserProfileCreateOrConnectWithoutAvatarInput
-    connect?: UserProfileWhereUniqueInput
-  }
-
-  export type UserProfileUncheckedCreateNestedOneWithoutBannerInput = {
-    create?: XOR<UserProfileCreateWithoutBannerInput, UserProfileUncheckedCreateWithoutBannerInput>
-    connectOrCreate?: UserProfileCreateOrConnectWithoutBannerInput
-    connect?: UserProfileWhereUniqueInput
-  }
-
   export type EnumMediaTypeFieldUpdateOperationsInput = {
     set?: $Enums.MediaType
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserProfileUpdateOneWithoutAvatarNestedInput = {
@@ -10323,26 +10332,6 @@ export namespace Prisma {
   }
 
   export type UserProfileUpdateOneWithoutBannerNestedInput = {
-    create?: XOR<UserProfileCreateWithoutBannerInput, UserProfileUncheckedCreateWithoutBannerInput>
-    connectOrCreate?: UserProfileCreateOrConnectWithoutBannerInput
-    upsert?: UserProfileUpsertWithoutBannerInput
-    disconnect?: UserProfileWhereInput | boolean
-    delete?: UserProfileWhereInput | boolean
-    connect?: UserProfileWhereUniqueInput
-    update?: XOR<XOR<UserProfileUpdateToOneWithWhereWithoutBannerInput, UserProfileUpdateWithoutBannerInput>, UserProfileUncheckedUpdateWithoutBannerInput>
-  }
-
-  export type UserProfileUncheckedUpdateOneWithoutAvatarNestedInput = {
-    create?: XOR<UserProfileCreateWithoutAvatarInput, UserProfileUncheckedCreateWithoutAvatarInput>
-    connectOrCreate?: UserProfileCreateOrConnectWithoutAvatarInput
-    upsert?: UserProfileUpsertWithoutAvatarInput
-    disconnect?: UserProfileWhereInput | boolean
-    delete?: UserProfileWhereInput | boolean
-    connect?: UserProfileWhereUniqueInput
-    update?: XOR<XOR<UserProfileUpdateToOneWithWhereWithoutAvatarInput, UserProfileUpdateWithoutAvatarInput>, UserProfileUncheckedUpdateWithoutAvatarInput>
-  }
-
-  export type UserProfileUncheckedUpdateOneWithoutBannerNestedInput = {
     create?: XOR<UserProfileCreateWithoutBannerInput, UserProfileUncheckedCreateWithoutBannerInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutBannerInput
     upsert?: UserProfileUpsertWithoutBannerInput
@@ -10368,6 +10357,18 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutProfileInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type MediaUncheckedCreateNestedOneWithoutUserProfileAvatarInput = {
+    create?: XOR<MediaCreateWithoutUserProfileAvatarInput, MediaUncheckedCreateWithoutUserProfileAvatarInput>
+    connectOrCreate?: MediaCreateOrConnectWithoutUserProfileAvatarInput
+    connect?: MediaWhereUniqueInput
+  }
+
+  export type MediaUncheckedCreateNestedOneWithoutUserProfileBannerInput = {
+    create?: XOR<MediaCreateWithoutUserProfileBannerInput, MediaUncheckedCreateWithoutUserProfileBannerInput>
+    connectOrCreate?: MediaCreateOrConnectWithoutUserProfileBannerInput
+    connect?: MediaWhereUniqueInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -10402,12 +10403,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProfileInput, UserUpdateWithoutProfileInput>, UserUncheckedUpdateWithoutProfileInput>
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type MediaUncheckedUpdateOneWithoutUserProfileAvatarNestedInput = {
+    create?: XOR<MediaCreateWithoutUserProfileAvatarInput, MediaUncheckedCreateWithoutUserProfileAvatarInput>
+    connectOrCreate?: MediaCreateOrConnectWithoutUserProfileAvatarInput
+    upsert?: MediaUpsertWithoutUserProfileAvatarInput
+    disconnect?: MediaWhereInput | boolean
+    delete?: MediaWhereInput | boolean
+    connect?: MediaWhereUniqueInput
+    update?: XOR<XOR<MediaUpdateToOneWithWhereWithoutUserProfileAvatarInput, MediaUpdateWithoutUserProfileAvatarInput>, MediaUncheckedUpdateWithoutUserProfileAvatarInput>
+  }
+
+  export type MediaUncheckedUpdateOneWithoutUserProfileBannerNestedInput = {
+    create?: XOR<MediaCreateWithoutUserProfileBannerInput, MediaUncheckedCreateWithoutUserProfileBannerInput>
+    connectOrCreate?: MediaCreateOrConnectWithoutUserProfileBannerInput
+    upsert?: MediaUpsertWithoutUserProfileBannerInput
+    disconnect?: MediaWhereInput | boolean
+    delete?: MediaWhereInput | boolean
+    connect?: MediaWhereUniqueInput
+    update?: XOR<XOR<MediaUpdateToOneWithWhereWithoutUserProfileBannerInput, MediaUpdateWithoutUserProfileBannerInput>, MediaUncheckedUpdateWithoutUserProfileBannerInput>
   }
 
   export type UserProfileCreateNestedOneWithoutUserInput = {
@@ -10760,6 +10773,33 @@ export namespace Prisma {
     _max?: NestedEnumMediaTypeFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -10789,33 +10829,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumAccountLevelFilter<$PrismaModel = never> = {
@@ -10986,8 +10999,8 @@ export namespace Prisma {
     location?: string | null
     birthday?: Date | string | null
     website?: string | null
-    banner_media_pk?: number | null
     userPk: number
+    banner?: MediaUncheckedCreateNestedOneWithoutUserProfileBannerInput
   }
 
   export type UserProfileCreateOrConnectWithoutAvatarInput = {
@@ -11014,8 +11027,8 @@ export namespace Prisma {
     location?: string | null
     birthday?: Date | string | null
     website?: string | null
-    avatar_media_pk?: number | null
     userPk: number
+    avatar?: MediaUncheckedCreateNestedOneWithoutUserProfileAvatarInput
   }
 
   export type UserProfileCreateOrConnectWithoutBannerInput = {
@@ -11053,8 +11066,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    banner_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
     userPk?: IntFieldUpdateOperationsInput | number
+    banner?: MediaUncheckedUpdateOneWithoutUserProfileBannerNestedInput
   }
 
   export type UserProfileUpsertWithoutBannerInput = {
@@ -11087,8 +11100,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
     userPk?: IntFieldUpdateOperationsInput | number
+    avatar?: MediaUncheckedUpdateOneWithoutUserProfileAvatarNestedInput
   }
 
   export type MediaCreateWithoutUserProfileAvatarInput = {
@@ -11100,6 +11113,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
+    userProfileBannerPk?: number | null
     userProfileBanner?: UserProfileCreateNestedOneWithoutBannerInput
   }
 
@@ -11113,7 +11127,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
-    userProfileBanner?: UserProfileUncheckedCreateNestedOneWithoutBannerInput
+    userProfileBannerPk?: number | null
   }
 
   export type MediaCreateOrConnectWithoutUserProfileAvatarInput = {
@@ -11130,6 +11144,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
+    userProfileBannerPk?: number | null
     userProfileAvatar?: UserProfileCreateNestedOneWithoutAvatarInput
   }
 
@@ -11143,7 +11158,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
-    userProfileAvatar?: UserProfileUncheckedCreateNestedOneWithoutAvatarInput
+    userProfileBannerPk?: number | null
   }
 
   export type MediaCreateOrConnectWithoutUserProfileBannerInput = {
@@ -11203,6 +11218,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileBanner?: UserProfileUpdateOneWithoutBannerNestedInput
   }
 
@@ -11216,7 +11232,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userProfileBanner?: UserProfileUncheckedUpdateOneWithoutBannerNestedInput
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type MediaUpsertWithoutUserProfileBannerInput = {
@@ -11239,6 +11255,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileAvatar?: UserProfileUpdateOneWithoutAvatarNestedInput
   }
 
@@ -11252,7 +11269,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    userProfileAvatar?: UserProfileUncheckedUpdateOneWithoutAvatarNestedInput
+    userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUpsertWithoutProfileInput = {
@@ -11312,8 +11329,8 @@ export namespace Prisma {
     location?: string | null
     birthday?: Date | string | null
     website?: string | null
-    avatar_media_pk?: number | null
-    banner_media_pk?: number | null
+    avatar?: MediaUncheckedCreateNestedOneWithoutUserProfileAvatarInput
+    banner?: MediaUncheckedCreateNestedOneWithoutUserProfileBannerInput
   }
 
   export type UserProfileCreateOrConnectWithoutUserInput = {
@@ -11407,8 +11424,8 @@ export namespace Prisma {
     location?: NullableStringFieldUpdateOperationsInput | string | null
     birthday?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
-    banner_media_pk?: NullableIntFieldUpdateOperationsInput | number | null
+    avatar?: MediaUncheckedUpdateOneWithoutUserProfileAvatarNestedInput
+    banner?: MediaUncheckedUpdateOneWithoutUserProfileBannerNestedInput
   }
 
   export type UserOIDCAccountUpsertWithWhereUniqueWithoutUserInput = {

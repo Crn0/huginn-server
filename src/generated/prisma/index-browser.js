@@ -148,7 +148,9 @@ exports.Prisma.MediaScalarFieldEnum = {
   url: 'url',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  userProfileAvatarPk: 'userProfileAvatarPk',
+  userProfileBannerPk: 'userProfileBannerPk'
 };
 
 exports.Prisma.UserProfileScalarFieldEnum = {
@@ -159,8 +161,6 @@ exports.Prisma.UserProfileScalarFieldEnum = {
   location: 'location',
   birthday: 'birthday',
   website: 'website',
-  avatar_media_pk: 'avatar_media_pk',
-  banner_media_pk: 'banner_media_pk',
   userPk: 'userPk'
 };
 
