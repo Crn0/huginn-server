@@ -17,7 +17,7 @@ beforeAll(async () => {
   accessToken = login.body.token;
 });
 
-describe("POST /api/v1/users/me/username", () => {
+describe("PATCH /api/v1/users/me/username", () => {
   const url = "/api/v1/users/me/username";
 
   const form = {
