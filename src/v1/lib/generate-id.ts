@@ -1,3 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { v7 as uuidv7 } from 'uuid';
 
-export const generateId = () => faker.string.uuid();
+
+export const generateId = () => uuidv7()

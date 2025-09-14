@@ -17,6 +17,7 @@ const upsertProfileMedia = (media: UserProfileMedia) =>
         bytes: media.bytes,
       },
       create: {
+        id: media.id,
         filePath: media.filePath,
         url: media.url,
         type: media.type,

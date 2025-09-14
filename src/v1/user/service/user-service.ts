@@ -8,6 +8,7 @@ import { generateUsername } from "@/v1/lib/generate-username.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
+import { generateId } from "@/v1/lib/generate-id.js";
 import * as userRepository from "../repository/user.js";
 
 import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
@@ -106,17 +107,21 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
   const data: PatchUserProfile = { ...rest };
 
   if (newProfileAvatar) {
+    const avatarId = profileAvatar?.id ?? generateId()
+
     data.avatar = {
       ...newProfileAvatar,
-      id: profileAvatar?.id ?? undefined,
+      id: avatarId,
       type: avatar?.mimetype === "image/gif" ? "GIF" : "IMAGE",
     };
   }
 
   if (newProfileBanner) {
+    const bannerId = profileBanner?.id ?? generateId()
+
     data.banner = {
       ...newProfileBanner,
-      id: profileBanner?.id ?? undefined,
+      id: bannerId,
       type: banner?.mimetype === "image/gif" ? "GIF" : "IMAGE",
     };
   }

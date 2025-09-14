@@ -1,7 +1,7 @@
 type UserProfileMediaType = "GIF" | "IMAGE"
 
 export interface UserProfileMedia {
-  id?: string | undefined
+  id: string
   type: UserProfileMediaType
   filePath: string
   url: string
