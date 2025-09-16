@@ -2,41 +2,65 @@ import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { createUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
 import { toPatchUserProfile } from "../mapper/to-patch-user-profile.js";
+import { tryCatch } from "@/v1/lib/try-catch.js";
 
 import type { CreateUser } from "../types/user.types.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
 
-export const createUser = async (data: CreateUser) =>
-  prisma.user.create({
-    ...createUserOptions,
-    data: {
-      email: data.email,
-      username: data.username,
-      password: data.password,
-      accountLevel: data.accountLevel,
-      profile: {
-        create: {
-          birthday: data.birthday,
-          displayName: data.displayName,
+export const createUser = async (data: CreateUser) => {
+  const { error, data: createdUser } = await tryCatch(
+    prisma.user.create({
+      ...createUserOptions,
+      data: {
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        accountLevel: data.accountLevel,
+        profile: {
+          create: {
+            birthday: data.birthday,
+            displayName: data.displayName,
+          },
         },
       },
-    },
-  });
+    }),
+    dbErrorHandler
+  );
 
-export const getUserByEmail = async (email: string) =>
-  prisma.user.findUnique({
-    ...getUserOptions,
-    where: { email },
-  });
+  if (error) throw error;
 
-export const getUserById = async (id: string) =>
-  prisma.user.findUnique({
-    ...getUserOptions,
-    where: { id },
-  });
+  return createdUser;
+};
+
+export const getUserByEmail = async (email: string) => {
+  const { error, data: user } = await tryCatch(
+    prisma.user.findUnique({ ...getUserOptions, where: { email } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return user;
+};
+
+export const getUserById = async (id: string) => {
+  const { error, data: user } = await tryCatch(
+    prisma.user.findUnique({ ...getUserOptions, where: { id } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return user;
+};
 
 export const isEmailAvailable = async (email: string) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const { error, data: user } = await tryCatch(
+    prisma.user.findUnique({ where: { email } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
 
   if (!user) return true;
 
@@ -44,7 +68,12 @@ export const isEmailAvailable = async (email: string) => {
 };
 
 export const isUsernameAvailable = async (username: string) => {
-  const user = await prisma.user.findUnique({ where: { username } });
+  const { error, data: user } = await tryCatch(
+    prisma.user.findUnique({ where: { username } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
 
   if (!user) return true;
 
@@ -52,24 +81,23 @@ export const isUsernameAvailable = async (username: string) => {
 };
 
 export const patchUsernameById = async (id: string, username: string) => {
-  try {
-    const updatedUser = await prisma.user.update({
+  const { error, data: updatedUser } = await tryCatch(
+    prisma.user.update({
       ...updateUserOptions,
       where: { id },
       data: { username },
-    });
+    }),
+    dbErrorHandler
+  );
 
-    return updatedUser;
-  } catch (error) {
-    const err = dbErrorHandler(error as NodeJS.ErrnoException);
+  if (error) throw error;
 
-    throw err;
-  }
+  return updatedUser;
 };
 
 export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
-  try {
-    const updatedUser = await prisma.user.update({
+  const { error, data: updatedUser } = await tryCatch(
+    prisma.user.update({
       ...updateUserOptions,
       where: { id },
       data: {
@@ -80,12 +108,11 @@ export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
         },
         updatedAt: new Date(),
       },
-    });
+    }),
+    dbErrorHandler
+  );
 
-    return updatedUser;
-  } catch (error) {
-    const err = dbErrorHandler(error as NodeJS.ErrnoException);
+  if (error) throw error;
 
-    throw err;
-  }
+  return updatedUser;
 };
