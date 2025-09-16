@@ -31,16 +31,17 @@ export function tryCatch<TResult, TError extends Error>(
     if (isPromise(result)) {
       return Promise.resolve(result)
         .then((data) => onSuccess(data))
-        .catch((error) => onFailure(error));
+        .catch((error) => {
+          const err =
+            typeof transformError === "function" ? transformError(error as TError) : error;
+
+          return onFailure<TError>(err);
+        });
     }
 
     return onSuccess(result);
   } catch (error) {
-    const err = error as TError;
-
-    if (typeof transformError === "function") {
-      return { error: transformError(err), data: null };
-    }
+    const err = typeof transformError === "function" ? transformError(error as TError) : error;
 
     return onFailure<TError>(err);
   }
