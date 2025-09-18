@@ -42,6 +42,8 @@ const fileExtension = (mimeType: string) => {
       return ".pdf";
     case "application/epub+zip":
       return ".epub";
+    case "video/mp4":
+      return ".mp4";
     default:
       return "";
   }
