@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { MAX_FILE_SIZE } from "../schema/patch-user-profile.js";
 import { ValidationError } from "@/lib/errors/validation-error.js";
+import { BadRequestError } from "@/lib/errors/bad-request-error.js";
 import { initMulter } from "@/v1/lib/multer.js";
 
 import type { Request, Response, NextFunction } from "express";
@@ -25,11 +26,14 @@ export const profileMediaProcessor = (req: Request, res: Response, next: NextFun
     { name: "banner", maxCount: 1 },
   ])(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
-      console.log(err);
       const code = err.code;
       const field = err.field as string;
 
-      if (code === "LIMIT_UNEXPECTED_FILE" || code === "LIMIT_FILE_COUNT") {
+      if (code === "LIMIT_UNEXPECTED_FILE") {
+        return next(new BadRequestError(`Invalid field: ${field}`));
+      }
+
+      if (code === "LIMIT_FILE_COUNT") {
         return next(
           new ValidationError("Validation failed: 1 errors detected in body", [
             {
