@@ -49,6 +49,14 @@ describe("PATCH /api/v1/users/me/profile", () => {
     website: "https://example.com",
   } as const;
 
+  const invalidForm = {
+    displayName: Array.from({ length: 40 }, () => "Crno").join(""),
+    bio: Array.from({ length: 101 }, () => "hello world!").join(""),
+    birthday: "25-04-1999",
+    location: Array.from({ length: 40 }, () => "foo land").join(""),
+    website: "https//:example.com",
+  } as const;
+
   describe("Success cases", () => {
     const checkFieldUpdate =
       <K extends keyof typeof form>(field: K, expected: (typeof form)[K]) =>
@@ -135,7 +143,106 @@ describe("PATCH /api/v1/users/me/profile", () => {
     );
   });
 
-  describe.skip("Failure cases", () => {
-    describe.skip("Validation errors", () => {});
+  describe("Failure cases", () => {
+    describe("Validation errors", () => {
+      const scenarios = [
+        {
+          scenario: "displayName is invalid",
+          payload: { ...form, displayName: invalidForm.displayName },
+          responseBody: {
+            code: "VALIDATION_ERROR",
+            message: "Validation failed: 1 errors detected in body",
+            issues: [
+              {
+                origin: "string",
+                code: "too_big",
+                maximum: 36,
+                inclusive: true,
+                path: ["displayName"],
+                message: "Use no more than 36 characters for the 'display name'",
+              },
+            ],
+          },
+        },
+        {
+          scenario: "bio is invalid",
+          payload: { ...form, bio: invalidForm.bio },
+          responseBody: {
+            code: "VALIDATION_ERROR",
+            message: "Validation failed: 1 errors detected in body",
+            issues: [
+              {
+                origin: "string",
+                code: "too_big",
+                maximum: 160,
+                inclusive: true,
+                path: ["bio"],
+                message: "Bio must be at most 160 characters",
+              },
+            ],
+          },
+        },
+         {
+          scenario: "birthday is invalid",
+          payload: { ...form, birthday: invalidForm.birthday },
+          responseBody: {
+            code: "VALIDATION_ERROR",
+            message: "Validation failed: 1 errors detected in body",
+            issues: [
+              {
+                code: "invalid_type",
+                path: ["birthday"],
+                message: "Invalid input: expected date, received Date"
+              },
+            ],
+          },
+        },
+        {
+          scenario: "location is invalid",
+          payload: { ...form, location: invalidForm.location },
+          responseBody: {
+            code: "VALIDATION_ERROR",
+            message: "Validation failed: 1 errors detected in body",
+            issues: [
+              {
+                code: "too_big",
+                path: ["location"],
+                message:
+                 "Location must be at most 30 characters",
+              },
+            ],
+          },
+        },
+        {
+          scenario: "website is invalid",
+          payload: { ...form, website: invalidForm.website },
+          responseBody: {
+            code: "VALIDATION_ERROR",
+            message: "Validation failed: 1 errors detected in body",
+            issues: [
+              {
+                code: "invalid_format",
+                format: "url",
+                path: ["website"],
+                message: "Invalid URL",
+              },
+            ],
+          },
+        },
+      ] as const;
+
+      it.each(scenarios)(
+        "returns a validation error when $scenario",
+        async ({ payload, responseBody }) => {
+          const res = await userRequest
+            .patch(url)
+            .set("Authorization", `Bearer ${accessToken}`)
+            .send(payload);
+
+          expect(res.status).toBe(422)
+          expect(res.body).toMatchObject(responseBody);
+        }
+      );
+    });
   });
 });
