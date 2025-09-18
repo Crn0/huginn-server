@@ -2,6 +2,7 @@ import { Prisma } from "@/generated/prisma/index.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { USERNAME_CONFLICT } from "../constants/error-codes.js";
+import { BadRequestError } from "@/lib/errors/bad-request-error.js";
 
 const prismaError = (error: Prisma.PrismaClientKnownRequestError) => {
   if (error.code === "P2002") {
@@ -10,6 +11,10 @@ const prismaError = (error: Prisma.PrismaClientKnownRequestError) => {
       code: USERNAME_CONFLICT,
       message: "Username has already been taken.",
     });
+  }
+
+  if (error.code === 'P2023') {
+    return new BadRequestError("Invalid cursor")
   }
 
   if (error.code === "P2025") {
