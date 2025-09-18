@@ -61,6 +61,7 @@
     "@types/node": "^24.3.0",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/passport-local": "^1.0.38",
+    "@types/supertest": "^6.0.3",
     "eslint": "^9.34.0",
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
