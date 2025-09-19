@@ -9,7 +9,7 @@ const mediaSizeSchema = z.object({
 const profileMediaSchema = z.object({
   id: z.uuidv7(),
   url: z.url(),
-  type: z.enum(["image", "gif"]),
+  type: z.enum(["IMAGE", "GIF"]),
   sizes: z.object({
     small: mediaSizeSchema,
     medium: mediaSizeSchema,
