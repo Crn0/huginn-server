@@ -9,6 +9,7 @@ export default async () => {
     await prisma.$transaction([
       prisma.userOIDCAccount.deleteMany(),
       prisma.userProfile.deleteMany(),
+      prisma.tweet.deleteMany(),
       prisma.user.deleteMany(),
       prisma.blacklistedToken.deleteMany(),
       prisma.authProvider.deleteMany(),
