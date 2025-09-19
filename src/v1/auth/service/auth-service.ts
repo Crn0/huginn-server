@@ -1,13 +1,11 @@
 import argon2 from "argon2";
 
-import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { AuthenticationError } from "@/lib/errors/auth-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
 import { generateDisplayName } from "@/v1/lib/generate-display-name.js";
-import { userSchema } from "@/v1/lib/user-schema.js";
 import { getUserByEmail, isUsernameAvailable } from "@/v1/user/service/user-service.js";
 import { getAuthProviderByKey } from "@/v1/auth-provider/service/auth-provider-service.js";
 import {
@@ -35,15 +33,7 @@ export const authenticateLocal = async (email: string, password: string) => {
     throw new AuthenticationError(INVALID_CREDENTIALS);
   }
 
-  const parsedUser = userSchema.safeParse(user);
-
-  if (!parsedUser.success) {
-    debug("user validation failed", parsedUser.error.issues);
-
-    throw new InternalServerError("Internal Server Error");
-  }
-
-  return parsedUser.data;
+  return user
 };
 
 export const authenticateGoogle = async (DTO: AuthenticateGoogle) => {
