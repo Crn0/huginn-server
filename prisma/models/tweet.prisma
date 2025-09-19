@@ -1,0 +1,17 @@
+model Tweet {
+  primaryKey Int       @id @default(autoincrement()) @map("primary_key")
+  id         String    @unique @default(uuid(7)) @db.Uuid
+  content    String?   @db.Text
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
+
+  authorPk  Int     @map("author_pk")
+  author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
+  medias    Media[]
+  replyToPk Int?    @map("reply_pk")
+  replyTo   Tweet?   @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
+  replies   Tweet[]  @relation(name: "PostReplies")
+
+  @@map("Tweets")
+}

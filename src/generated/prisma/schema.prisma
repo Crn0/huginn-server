@@ -45,9 +45,7 @@ model Media {
   userProfileAvatar   UserProfile? @relation(name: "UserProfileAvatar", map: "Media_user_profile_avatar_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
   userProfileBannerPk Int?         @unique @map("user_profile_banner_pk")
   userProfileBanner   UserProfile? @relation(name: "UserProfileBanner", map: "Media_user_profile_banner_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
-
-  // postPk Int? @unique @map("post_pk")
-  // tweet Tweet? @relation(fields: [postPk], references: [primaryKey], onDelete: Cascade)
+  tweets              Tweet[]
 
   @@map("Medias")
 }
@@ -84,8 +82,8 @@ model Tweet {
   deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
 
   authorPk  Int     @map("author_pk")
-  // author    User    @relation(fields: [authorPk], references: [primaryKey])
-  // medias    Media[]
+  author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
+  medias    Media[]
   replyToPk Int?    @map("reply_pk")
   replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
   replies   Tweet[] @relation(name: "PostReplies")
@@ -123,7 +121,7 @@ model User {
   profile UserProfile?
   openIds UserOIDCAccount[]
   tokens  BlacklistedToken[]
-  // tweets Tweet[]
+  tweets  Tweet[]
 
   @@map("Users")
 }
