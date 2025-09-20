@@ -7,8 +7,8 @@ import type { GetUserBy } from "../types/user.types.js";
 export const toUserResponse = (user: GetUserBy) => {
   const profile = {
     ...user.profile,
-    avatar: transformProfileMedia(user.profile!.avatar),
-    banner: transformProfileMedia(user.profile!.banner),
+    avatar: transformProfileMedia(user.profile?.avatar ?? null),
+    banner: transformProfileMedia(user.profile?.banner ?? null),
   };
 
   const parsedUser = userSchema.safeParse({
