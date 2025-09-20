@@ -12,7 +12,7 @@ export const createTweet = async (req: Request, res: Response) => {
   const DTO: CreateTweetDTO = {
     content: req.body.content,
     authorId: req.user!.id,
-    medias: req.files as TweetMedia[],
+    medias: (req.files as TweetMedia[]) ?? [],
   };
 
   const { error, data: tweet } = await tryCatch(create(DTO));
