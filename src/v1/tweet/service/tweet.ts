@@ -1,10 +1,14 @@
 import { env } from "@/configs/env.js";
 import * as tweetRepository from "../repository/tweet.js";
+import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
 import { createMedias } from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
+import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
+
+const TWEETS_PAGE_SIZE = 20 as const;
 
 const handleMediasUpload = async <T extends Partial<CreateTweet>>(
   data: T,
@@ -46,4 +50,37 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
   await handleMediasUpload(data, DTO.medias);
 
   return tweetRepository.replyTweet(data);
+};
+
+export const getTweetById = async (id: string) => tweetRepository.getTweetById(id);
+
+export const getTweetsByAuthorId = async (authorId: string, cursor: PaginationCursor) => {
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+  } as const;
+
+  const res = await tweetRepository.getTweetsByAuthorId(authorId, options);
+
+  const tweets =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const reversedTweets = tweets.toReversed();
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextHref =
+    direction === "backward" || hasMore ? `/tweets?after=${tweets.at?.(-1)?.id}` : null;
+
+  const prevHref =
+    direction === "forward" || (direction === "backward" && hasMore)
+      ? `/tweets?before=${tweets.at?.(0)?.id}`
+      : null;
+
+  return Object.freeze({
+    tweets: reversedTweets,
+    nextHref,
+    prevHref,
+  });
 };
