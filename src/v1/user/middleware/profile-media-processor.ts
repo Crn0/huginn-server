@@ -7,7 +7,7 @@ import { initMulter } from "@/v1/lib/multer.js";
 
 import type { Request, Response, NextFunction } from "express";
 
-const tempPath = path.join(import.meta.dirname, "..", "..", "__temp__");
+const tempPath = path.join(import.meta.dirname, "..", "..", "..", "temp");
 
 const multer = initMulter({
   path: tempPath,
