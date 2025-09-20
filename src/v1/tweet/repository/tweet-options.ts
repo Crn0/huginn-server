@@ -22,3 +22,21 @@ export const replyTweetOptions = {
     replyTo: { select: { id: true } },
   },
 } satisfies Prisma.TweetDefaultArgs;
+
+export const getTweetOptions = {
+  include: {
+    ...baseOptions.include,
+    replies: { select: { id: true } },
+  },
+} satisfies Prisma.TweetDefaultArgs;
+
+export const updateTweetOptions = {
+  ...baseOptions,
+} satisfies Prisma.TweetDefaultArgs;
+
+export const deleteTweetOptions = {
+  select: {
+    id: true,
+    author: { select: { id: true, username: true } },
+  },
+} satisfies Prisma.TweetDefaultArgs;
