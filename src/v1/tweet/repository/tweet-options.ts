@@ -15,3 +15,10 @@ const baseOptions = {
 export const createTweetOptions = {
   ...baseOptions,
 } satisfies Prisma.TweetDefaultArgs;
+
+export const replyTweetOptions = {
+  include: {
+    ...baseOptions.include,
+    replyTo: { select: { id: true } },
+  },
+} satisfies Prisma.TweetDefaultArgs;

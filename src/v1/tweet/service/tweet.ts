@@ -3,7 +3,8 @@ import * as tweetRepository from "../repository/tweet.js";
 import { createMedias } from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
-import type { CreateTweet } from "../types/repository.types.js";
+import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
+import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 
 const handleMediasUpload = async <T extends Partial<CreateTweet>>(
   data: T,
@@ -32,4 +33,17 @@ export const createTweet = async (DTO: CreateTweetDTO) => {
   await handleMediasUpload(data, DTO.medias);
 
   return tweetRepository.createTweet(data);
+};
+
+export const replyTweet = async (DTO: ReplyTweetDTO) => {
+  const data: ReplyTweet = {
+    authorId: DTO.authorId,
+    replyTo: DTO.replyTo,
+    content: DTO.content,
+    medias: [],
+  };
+
+  await handleMediasUpload(data, DTO.medias);
+
+  return tweetRepository.replyTweet(data);
 };
