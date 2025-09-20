@@ -12,6 +12,7 @@ import { toReplyTweet } from "../mapper/to-reply-tweet.js";
 
 import type {
   CreateTweet,
+  GetTweetsOption,
   PatchTweet,
   ReplyTweet,
   TweetPaginationOption,
@@ -63,7 +64,7 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const getTweetsByAuthorId = async (authorId: string, option: TweetPaginationOption) => {
+export const GetTweetOptionByAuthorId = async (authorId: string, option: TweetPaginationOption) => {
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
       ...getTweetOptions,
@@ -77,6 +78,20 @@ export const getTweetsByAuthorId = async (authorId: string, option: TweetPaginat
 
   return tweets;
 };
+
+export const getTweets= async (option: GetTweetsOption) => {
+    const { error, data: tweets } = await tryCatch(
+    prisma.tweet.findMany({
+      ...getTweetOptions,
+      ...option,
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return tweets;
+}
 
 export const patchTweetById = async (id: string, data: PatchTweet) => {
   const { error, data: updatedTweet } = await tryCatch(
