@@ -64,7 +64,7 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const GetTweetOptionByAuthorId = async (authorId: string, option: TweetPaginationOption) => {
+export const getTweetsByAuthorId = async (authorId: string, option: TweetPaginationOption) => {
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
       ...getTweetOptions,
