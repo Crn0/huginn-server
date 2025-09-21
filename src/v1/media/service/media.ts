@@ -1,4 +1,4 @@
-import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
+import * as storage from "@/v1/storage/cloudinary-service.js";
 
 import * as mediaRepository from "../repository/media.js";
 
@@ -20,7 +20,7 @@ const getResourceType = (format: SupportedFile) => {
 export const createMedias = async (folderPath: string, mediaFiles: MediaFiles) => {
   const uploadResponse = await Promise.allSettled(
     mediaFiles.map((file) =>
-      uploadMedia(folderPath, file.path, { resource_type: getResourceType(file.mimetype) })
+      storage.uploadMedia(folderPath, file.path, { resource_type: getResourceType(file.mimetype) })
     )
   );
 
@@ -36,4 +36,20 @@ export const createMedias = async (folderPath: string, mediaFiles: MediaFiles) =
     );
 
   return mediaRepository.createMedias(uploadedMedias);
+};
+
+export const getMediasByTweetId = async (tweetId: string) => mediaRepository.getMediasByTweetId(tweetId);
+
+export const deleteMediasByTweetId = async (tweetId: string) => {
+  const medias = await mediaRepository.getMediasByTweetId(tweetId);
+
+  const mediasToDelete = medias.filter((m) => m.tweets.length === 1);
+
+  if (!mediasToDelete.length) return { count: 0 };
+
+  await Promise.all(mediasToDelete.map((m) => storage.deleteMedia(m.filePath)));
+
+  const idsToDelete = mediasToDelete.map((m) => m.id);
+
+  return mediaRepository.deleteMediasByIds(idsToDelete);
 };
