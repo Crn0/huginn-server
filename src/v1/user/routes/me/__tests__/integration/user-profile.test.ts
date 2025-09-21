@@ -1,12 +1,12 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import path from "node:path";
 import request from "supertest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { env } from "@/configs/env.js";
 import { testUserLoginForm } from "testing/seed.js";
 import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
 import { app } from "v1/__mocks__/server.js";
 import { getUserByEmail } from "@/v1/user/service/user-service.js";
-import path from "node:path";
 
 const userRequest = request.agent(app);
 
@@ -31,7 +31,6 @@ describe("PATCH /api/v1/users/me/profile", () => {
 
   const testFile = path.join(
     import.meta.dirname,
-    "..",
     "..",
     "..",
     "..",

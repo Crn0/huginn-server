@@ -1,5 +1,5 @@
-import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { prisma } from "@/db/client/prisma.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";

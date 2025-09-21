@@ -1,8 +1,9 @@
-import { beforeAll, describe, expect, it } from "vitest";
 import path from "path";
 import request from "supertest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 import { env } from "@/configs/env.js";
+import { tryCatch } from "@/v1/lib/try-catch.js";
 import { testUserLoginForm } from "testing/seed.js";
 import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
 import { app } from "v1/__mocks__/server.js";
@@ -10,28 +11,36 @@ import { app } from "v1/__mocks__/server.js";
 const userRequest = request.agent(app);
 
 let accessToken: string;
+let tweetId: string;
 
 beforeAll(async () => {
   const login = await userRequest.post("/api/v1/auth/login").send(testUserLoginForm);
 
   accessToken = login.body.token;
 
+  const parentTweet = await userRequest
+    .post("/api/v1/tweets")
+    .set("Authorization", `Bearer ${accessToken}`)
+    .send({ content: "parent tweet :)" });
+
+  tweetId = parentTweet.body.id;
+
   return async () => {
     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
 
     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-    await deleteFolder(mediaFolder);
+    await tryCatch(deleteFolder(mediaFolder));
   };
 });
 
-describe("POST /api/v1/tweets", () => {
-  const url = "/api/v1/tweets" as const;
+describe("POST /api/v1/tweets/:tweetId/replies", () => {
+  const baseUrl = "/api/v1/tweets" as const;
 
   const form = {
-    content: "test tweet",
+    content: "reply tweet",
     medias: [
-      path.join(import.meta.dirname, "..", "..", "..", "..", "..", "assets", "test_avatar.png"),
+      path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png"),
     ],
   } as const;
 
@@ -40,7 +49,9 @@ describe("POST /api/v1/tweets", () => {
   } as const;
 
   describe("Success cases", () => {
-    it("returns an id and content", async () => {
+    it("returns an id, content and replyTo object", async () => {
+      const url = `${baseUrl}/${tweetId}/replies`;
+
       const res = await userRequest
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
@@ -51,6 +62,7 @@ describe("POST /api/v1/tweets", () => {
       expect(res.body).toMatchObject({
         id: expect.any(String),
         content: expect.any(String),
+        replyTo: { id: expect.any(String) },
       });
     });
   });
@@ -58,6 +70,8 @@ describe("POST /api/v1/tweets", () => {
   describe("Failure cases", () => {
     describe("Validation errors", () => {
       it("returns a validation error when content is invalid", async () => {
+        const url = `${baseUrl}/${tweetId}/replies`;
+
         const res = await userRequest
           .post(url)
           .set("Authorization", `Bearer ${accessToken}`)
@@ -75,6 +89,28 @@ describe("POST /api/v1/tweets", () => {
               inclusive: true,
               path: ["content"],
               message: "Content must contain at most 1000 characters.",
+            },
+          ],
+        });
+      });
+
+      it("returns a validation error when tweetId is invalid", async () => {
+        const url = `${baseUrl}/invalid-tweet-id/replies`;
+
+        const res = await userRequest
+          .post(url)
+          .set("Authorization", `Bearer ${accessToken}`)
+          .send(form);
+
+        expect(res.status).toBe(422);
+        expect(res.body).toMatchObject({
+          code: "VALIDATION_ERROR",
+          message: "Validation failed: 1 errors detected in body",
+          issues: [
+            {
+              code: "invalid_format",
+              path: ["tweetId"],
+              message: "Invalid tweet ID",
             },
           ],
         });

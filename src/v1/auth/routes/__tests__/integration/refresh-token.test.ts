@@ -1,5 +1,5 @@
-import { beforeAll, describe, expect, it } from "vitest";
 import request from "supertest";
+import { describe, expect, it, beforeAll } from "vitest";
 
 import { testUserLoginForm } from "testing/seed.js";
 import { app } from "v1/__mocks__/server.js";

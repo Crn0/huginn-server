@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import request from "supertest";
+import { describe, expect, it } from "vitest";
 
 import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import { generateEmail } from "@/v1/lib/generate-email.js";
