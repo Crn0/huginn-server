@@ -7,6 +7,7 @@ import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
+import type { PatchTweetDTO } from "../schema/patch-tweet.js";
 
 const TWEETS_PAGE_SIZE = 20 as const;
 
@@ -87,3 +88,5 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
     prevHref,
   });
 };
+
+export const patchTweetById = async (id: string, DTO: PatchTweetDTO) => tweetRepository.patchTweetById(id, DTO);
