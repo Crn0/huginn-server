@@ -2,9 +2,9 @@ import z from "zod";
 
 import { MAX_CONTENT_LENGTH } from "../constants/index.js";
 
-export type PatchTweetDTO = z.infer<typeof createTweetSchema>;
+export type PatchTweetDTO = z.infer<typeof patchTweetSchema>;
 
-export const createTweetSchema = z.object({
+export const patchTweetSchema = z.object({
   content: z
     .string()
     .trim()
