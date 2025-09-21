@@ -54,7 +54,10 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
 
 export const getTweetById = async (id: string) => tweetRepository.getTweetById(id);
 
-export const getTweetsByAuthorId = async (authorId: string, cursor: PaginationCursor) => {
+export const getTweetsByAuthorId = async (authorId: string) => tweetRepository.getTweetsByAuthorId(authorId);
+;
+
+export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: PaginationCursor) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
 
   const options = {
