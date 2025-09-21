@@ -5,14 +5,14 @@ import { ZodBodyValidator } from "@/v1/lib/validator.js";
 import { loginRateLimitOptions, refreshRateLimitOptions } from "../configs/rate-limiter.js";
 import { authenticatePassportLocal } from "../middleware/authenticate-local.js";
 import { readRefreshToken } from "../middleware/read-refresh-token.js";
-import { register } from "../api/register.js";
+import { register as registerApi } from "../api/register.js";
 import { login } from "../api/login.js";
 import { logout } from "../api/logout.js";
 
 import type { Router } from "express";
 
-export const registerPost = (router: Router) => {
-  router.post("/register", ZodBodyValidator(createUserSchema), register);
+export const register = (router: Router) => {
+  router.post("/register", ZodBodyValidator(createUserSchema), registerApi);
 
   router.post(
     "/login",

@@ -4,7 +4,7 @@ import { redirectAuthFlow } from "../api/redirect-auth-flow.js";
 
 import type { Router } from "express";
 
-export const registerGet = (router: Router) => {
+export const register = (router: Router) => {
   router.get("/google", authenticatePassportGoogle);
 
   router.get("/google/callback", googleAuthFlow, redirectAuthFlow);
