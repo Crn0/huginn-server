@@ -1,7 +1,7 @@
 import { env } from "@/configs/env.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
-import { createMedias } from "@/v1/media/service/media.js";
+import { createMedias, deleteMediasByTweetId } from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
@@ -55,8 +55,8 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
 
 export const getTweetById = async (id: string) => tweetRepository.getTweetById(id);
 
-export const getTweetsByAuthorId = async (authorId: string) => tweetRepository.getTweetsByAuthorId(authorId);
-;
+export const getTweetsByAuthorId = async (authorId: string) =>
+  tweetRepository.getTweetsByAuthorId(authorId);
 
 export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: PaginationCursor) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
@@ -90,3 +90,11 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 };
 
 export const patchTweetById = async (id: string, DTO: PatchTweetDTO) => tweetRepository.patchTweetById(id, DTO);
+
+export const deleteTweetById = async (id: string) => {
+  const { count: mediaCount } = await deleteMediasByTweetId(id);
+
+  const tweet = await tweetRepository.deleteTweetById(id);
+
+  return Object.freeze({ tweet, mediaCount });
+};
