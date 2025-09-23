@@ -3,6 +3,7 @@ import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { env } from "@/configs/env.js";
+import { tryCatch } from "@/v1/lib/try-catch.js";
 import { testUserLoginForm } from "testing/seed.js";
 import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
 import { app } from "v1/__mocks__/server.js";
@@ -21,7 +22,7 @@ beforeAll(async () => {
 
     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-    await deleteFolder(mediaFolder);
+    await tryCatch(deleteFolder(mediaFolder));
   };
 });
 
