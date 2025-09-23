@@ -1,6 +1,6 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
-import { createUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
+import { createUserOptions, deleteUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
 import { toPatchUserProfile } from "../mapper/to-patch-user-profile.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 
@@ -115,4 +115,18 @@ export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
   if (error) throw error;
 
   return updatedUser;
+};
+
+export const deleteUserById = async (id: string) => {
+  const { error, data: deletedUser } = await tryCatch(
+    prisma.user.delete({
+      ...deleteUserOptions,
+      where: { id },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return deletedUser;
 };

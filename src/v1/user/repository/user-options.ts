@@ -23,3 +23,7 @@ export const getUserOptions = {
 export const updateUserOptions = {
   select: { id: true, username: true },
 } satisfies Prisma.UserDefaultArgs;
+
+export const deleteUserOptions = {
+  select: { id: true, username: true },
+} satisfies Prisma.UserDefaultArgs;

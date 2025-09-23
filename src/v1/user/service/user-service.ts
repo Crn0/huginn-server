@@ -10,6 +10,7 @@ import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import * as userRepository from "../repository/user.js";
+import * as tweetService from "@/v1/tweet/service/tweet.js";
 
 import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
@@ -128,3 +129,11 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
 
   return userRepository.patchUserProfile(id, data);
 };
+
+export const deleteUserById = async (id: string) => {
+  const tweetCount = await tweetService.deleteTweetsByAuthorId(id)
+
+  const user = await userRepository.deleteUserById(id) 
+
+  return Object.freeze({ user, tweetCount })
+}
