@@ -30,19 +30,6 @@ app.use(express.static(path.join(dirname, "..", "public")));
 // ROUTES
 app.use(v1Routes);
 
-process.stdin.resume();
-
-["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SIGTERM"].forEach((eventType) => {
-  process.on(eventType, async () => {
-    try {
-      process.exit(0);
-    } catch (error) {
-      console.error(error);
-      process.exit(1);
-    }
-  });
-});
-
 app.use(routeErrorHandler);
 
 export { app };
