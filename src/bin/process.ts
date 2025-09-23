@@ -7,7 +7,7 @@ const events = ["exit", "SIGINT", "SIGUSR1", "SIGUSR2", "uncaughtException", "SI
 for (const event of events) {
   process.on(event, async () => {
     try {
-      await removeTempFiles()
+      await removeTempFiles();
       process.exit(0);
     } catch (error) {
       console.error(error);

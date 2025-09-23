@@ -7,7 +7,7 @@ import type { Router } from "express";
 export const register = (router: Router) => {
   meGet(router);
   mePatch(router);
-  meDelete(router)
+  meDelete(router);
 
   return router;
 };

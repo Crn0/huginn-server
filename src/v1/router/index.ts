@@ -10,10 +10,10 @@ const router = Router();
 
 router.use(rateLimit(rateLimitOptions));
 
-const BASE_URL = "/api/v1"
+const BASE_URL = "/api/v1";
 
 router.use(`${BASE_URL}/auth`, authRouter);
 router.use(`${BASE_URL}/users`, userRouter);
-router.use(`${BASE_URL}/tweets`, tweetRouter)
+router.use(`${BASE_URL}/tweets`, tweetRouter);
 
 export { router };

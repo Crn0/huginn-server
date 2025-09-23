@@ -12,7 +12,7 @@ model User {
   profile UserProfile?
   openIds UserOIDCAccount[]
   tokens  BlacklistedToken[]
-  tweets Tweet[]
+  tweets  Tweet[]
 
   @@map("Users")
 }

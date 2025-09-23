@@ -1,6 +1,11 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
-import { createUserOptions, deleteUserOptions, getUserOptions, updateUserOptions } from "./user-options.js";
+import {
+  createUserOptions,
+  deleteUserOptions,
+  getUserOptions,
+  updateUserOptions,
+} from "./user-options.js";
 import { toPatchUserProfile } from "../mapper/to-patch-user-profile.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 

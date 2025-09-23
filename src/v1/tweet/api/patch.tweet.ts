@@ -6,14 +6,13 @@ import type { Request, Response } from "express";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
 
 export const patchTweet = async (req: Request, res: Response) => {
-  const id = req.params['tweetId'] as string
+  const id = req.params["tweetId"] as string;
 
   const DTO: PatchTweetDTO = {
     content: req.body.content,
-  } as const
+  } as const;
 
   const { error, data: tweet } = await tryCatch(patch(id, DTO));
-
 
   if (error) throw error;
 

@@ -13,7 +13,7 @@ export const replyTweet = async (req: Request, res: Response) => {
     content: req.body.content,
     replyTo: req.params["tweetId"] as string,
     authorId: req.user!.id,
-    medias: req.files as TweetMedia[] ?? [],
+    medias: (req.files as TweetMedia[]) ?? [],
   };
 
   const { error, data: tweet } = await tryCatch(reply(DTO));

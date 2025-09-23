@@ -39,9 +39,7 @@ describe("POST /api/v1/tweets/:tweetId/replies", () => {
 
   const form = {
     content: "reply tweet",
-    medias: [
-      path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png"),
-    ],
+    medias: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
   } as const;
 
   const invalidForm = {

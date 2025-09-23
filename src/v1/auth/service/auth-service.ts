@@ -33,7 +33,7 @@ export const authenticateLocal = async (email: string, password: string) => {
     throw new AuthenticationError(INVALID_CREDENTIALS);
   }
 
-  return user
+  return user;
 };
 
 export const authenticateGoogle = async (DTO: AuthenticateGoogle) => {

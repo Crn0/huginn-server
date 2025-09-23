@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "./process.js"
+import "./process.js";
 import http from "http";
 import Debug from "debug";
 

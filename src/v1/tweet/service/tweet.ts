@@ -89,7 +89,8 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   });
 };
 
-export const patchTweetById = async (id: string, DTO: PatchTweetDTO) => tweetRepository.patchTweetById(id, DTO);
+export const patchTweetById = async (id: string, DTO: PatchTweetDTO) =>
+  tweetRepository.patchTweetById(id, DTO);
 
 export const deleteTweetById = async (id: string) => {
   const { count: mediaCount } = await deleteMediasByTweetId(id);
@@ -100,9 +101,9 @@ export const deleteTweetById = async (id: string) => {
 };
 
 export const deleteTweetsByAuthorId = async (authorId: string) => {
-  const tweets = await getTweetsByAuthorId(authorId)
+  const tweets = await getTweetsByAuthorId(authorId);
 
-  await Promise.all(tweets.map(async (tweet) => deleteMediasByTweetId(tweet.id)))
+  await Promise.all(tweets.map(async (tweet) => deleteMediasByTweetId(tweet.id)));
 
-  return tweetRepository.deleteTweetsByAuthorId(authorId)
-}
+  return tweetRepository.deleteTweetsByAuthorId(authorId);
+};

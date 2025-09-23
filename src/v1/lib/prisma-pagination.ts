@@ -42,5 +42,5 @@ export const toPrismaPagination = ({ before, after, pageSize }: PaginationProps)
     pagination.cursor = { id };
   }
 
-  return pagination
+  return pagination;
 };

@@ -31,9 +31,7 @@ describe("POST /api/v1/tweets", () => {
 
   const form = {
     content: "test tweet",
-    medias: [
-      path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png"),
-    ],
+    medias: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
   } as const;
 
   const invalidForm = {

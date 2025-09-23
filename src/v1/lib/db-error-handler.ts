@@ -13,8 +13,8 @@ const prismaError = (error: Prisma.PrismaClientKnownRequestError) => {
     });
   }
 
-  if (error.code === 'P2023') {
-    return new BadRequestError("Invalid cursor")
+  if (error.code === "P2023") {
+    return new BadRequestError("Invalid cursor");
   }
 
   if (error.code === "P2025") {

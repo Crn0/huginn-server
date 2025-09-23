@@ -38,7 +38,8 @@ export const createMedias = async (folderPath: string, mediaFiles: MediaFiles) =
   return mediaRepository.createMedias(uploadedMedias);
 };
 
-export const getMediasByTweetId = async (tweetId: string) => mediaRepository.getMediasByTweetId(tweetId);
+export const getMediasByTweetId = async (tweetId: string) =>
+  mediaRepository.getMediasByTweetId(tweetId);
 
 export const deleteMediasByTweetId = async (tweetId: string) => {
   const medias = await mediaRepository.getMediasByTweetId(tweetId);

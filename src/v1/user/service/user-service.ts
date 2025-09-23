@@ -131,9 +131,9 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
 };
 
 export const deleteUserById = async (id: string) => {
-  const tweetCount = await tweetService.deleteTweetsByAuthorId(id)
+  const tweetCount = await tweetService.deleteTweetsByAuthorId(id);
 
-  const user = await userRepository.deleteUserById(id) 
+  const user = await userRepository.deleteUserById(id);
 
-  return Object.freeze({ user, tweetCount })
-}
+  return Object.freeze({ user, tweetCount });
+};

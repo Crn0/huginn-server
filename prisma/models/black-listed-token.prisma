@@ -1,8 +1,8 @@
 model BlacklistedToken {
-  primaryKey        Int      @id @default(autoincrement()) @map("primary_key")
-  id         String    @unique @default(uuid(7)) @db.Uuid
-  jwtId        String   @unique() @db.VarChar() @map("jwt_id")
-  expiresAt DateTime @map("expires_at") @db.Timestamptz()
+  primaryKey Int      @id @default(autoincrement()) @map("primary_key")
+  id         String   @unique @default(uuid(7)) @db.Uuid
+  jwtId      String   @unique() @map("jwt_id") @db.VarChar()
+  expiresAt  DateTime @map("expires_at") @db.Timestamptz()
 
   type   TokenType
   user   User      @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)

@@ -181,7 +181,7 @@ describe("PATCH /api/v1/users/me/profile", () => {
             ],
           },
         },
-         {
+        {
           scenario: "birthday is invalid",
           payload: { ...form, birthday: invalidForm.birthday },
           responseBody: {
@@ -191,7 +191,7 @@ describe("PATCH /api/v1/users/me/profile", () => {
               {
                 code: "invalid_type",
                 path: ["birthday"],
-                message: "Invalid input: expected date, received Date"
+                message: "Invalid input: expected date, received Date",
               },
             ],
           },
@@ -206,8 +206,7 @@ describe("PATCH /api/v1/users/me/profile", () => {
               {
                 code: "too_big",
                 path: ["location"],
-                message:
-                 "Location must be at most 30 characters",
+                message: "Location must be at most 30 characters",
               },
             ],
           },
@@ -238,7 +237,7 @@ describe("PATCH /api/v1/users/me/profile", () => {
             .set("Authorization", `Bearer ${accessToken}`)
             .send(payload);
 
-          expect(res.status).toBe(422)
+          expect(res.status).toBe(422);
           expect(res.body).toMatchObject(responseBody);
         }
       );
