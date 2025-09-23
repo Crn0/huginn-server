@@ -98,3 +98,11 @@ export const deleteTweetById = async (id: string) => {
 
   return Object.freeze({ tweet, mediaCount });
 };
+
+export const deleteTweetsByAuthorId = async (authorId: string) => {
+  const tweets = await getTweetsByAuthorId(authorId)
+
+  await Promise.all(tweets.map(async (tweet) => deleteMediasByTweetId(tweet.id)))
+
+  return tweetRepository.deleteTweetsByAuthorId(authorId)
+}
