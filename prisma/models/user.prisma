@@ -9,10 +9,12 @@ model User {
   updatedAt    DateTime?    @map("updated_at") @db.Timestamptz
   deletedAt    DateTime?    @map("deleted_at") @db.Timestamptz
 
-  profile UserProfile?
-  openIds UserOIDCAccount[]
-  tokens  BlacklistedToken[]
-  tweets  Tweet[]
+  profile    UserProfile?
+  openIds    UserOIDCAccount[]
+  tokens     BlacklistedToken[]
+  tweets     Tweet[]
+  followedBy User[]             @relation("UserFollowers")
+  following  User[]             @relation("UserFollowers")
 
   @@map("Users")
 }

@@ -1564,12 +1564,16 @@ export namespace Prisma {
     openIds: number
     tokens: number
     tweets: number
+    followedBy: number
+    following: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     openIds?: boolean | UserCountOutputTypeCountOpenIdsArgs
     tokens?: boolean | UserCountOutputTypeCountTokensArgs
     tweets?: boolean | UserCountOutputTypeCountTweetsArgs
+    followedBy?: boolean | UserCountOutputTypeCountFollowedByArgs
+    following?: boolean | UserCountOutputTypeCountFollowingArgs
   }
 
   // Custom InputTypes
@@ -1602,6 +1606,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTweetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TweetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -7745,6 +7763,8 @@ export namespace Prisma {
     openIds?: boolean | User$openIdsArgs<ExtArgs>
     tokens?: boolean | User$tokensArgs<ExtArgs>
     tweets?: boolean | User$tweetsArgs<ExtArgs>
+    followedBy?: boolean | User$followedByArgs<ExtArgs>
+    following?: boolean | User$followingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7790,6 +7810,8 @@ export namespace Prisma {
     openIds?: boolean | User$openIdsArgs<ExtArgs>
     tokens?: boolean | User$tokensArgs<ExtArgs>
     tweets?: boolean | User$tweetsArgs<ExtArgs>
+    followedBy?: boolean | User$followedByArgs<ExtArgs>
+    following?: boolean | User$followingArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7802,6 +7824,8 @@ export namespace Prisma {
       openIds: Prisma.$UserOIDCAccountPayload<ExtArgs>[]
       tokens: Prisma.$BlacklistedTokenPayload<ExtArgs>[]
       tweets: Prisma.$TweetPayload<ExtArgs>[]
+      followedBy: Prisma.$UserPayload<ExtArgs>[]
+      following: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       primaryKey: number
@@ -8211,6 +8235,8 @@ export namespace Prisma {
     openIds<T extends User$openIdsArgs<ExtArgs> = {}>(args?: Subset<T, User$openIdsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserOIDCAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tokens<T extends User$tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlacklistedTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tweets<T extends User$tweetsArgs<ExtArgs> = {}>(args?: Subset<T, User$tweetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    followedBy<T extends User$followedByArgs<ExtArgs> = {}>(args?: Subset<T, User$followedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    following<T extends User$followingArgs<ExtArgs> = {}>(args?: Subset<T, User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8725,6 +8751,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TweetScalarFieldEnum | TweetScalarFieldEnum[]
+  }
+
+  /**
+   * User.followedBy
+   */
+  export type User$followedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * User.following
+   */
+  export type User$followingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -10555,6 +10629,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountListRelationFilter
     tokens?: BlacklistedTokenListRelationFilter
     tweets?: TweetListRelationFilter
+    followedBy?: UserListRelationFilter
+    following?: UserListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -10571,6 +10647,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountOrderByRelationAggregateInput
     tokens?: BlacklistedTokenOrderByRelationAggregateInput
     tweets?: TweetOrderByRelationAggregateInput
+    followedBy?: UserOrderByRelationAggregateInput
+    following?: UserOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -10590,6 +10668,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountListRelationFilter
     tokens?: BlacklistedTokenListRelationFilter
     tweets?: TweetListRelationFilter
+    followedBy?: UserListRelationFilter
+    following?: UserListRelationFilter
   }, "primaryKey" | "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -11110,6 +11190,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
     tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11126,6 +11208,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
     tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUpdateInput = {
@@ -11141,6 +11225,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
     tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -11157,6 +11243,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
     tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -11804,7 +11892,17 @@ export namespace Prisma {
     none?: BlacklistedTokenWhereInput
   }
 
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
   export type BlacklistedTokenOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12310,6 +12408,18 @@ export namespace Prisma {
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
   }
 
+  export type UserCreateNestedManyWithoutFollowingInput = {
+    create?: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput> | UserCreateWithoutFollowingInput[] | UserUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowingInput | UserCreateOrConnectWithoutFollowingInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedManyWithoutFollowedByInput = {
+    create?: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput> | UserCreateWithoutFollowedByInput[] | UserUncheckedCreateWithoutFollowedByInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedByInput | UserCreateOrConnectWithoutFollowedByInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
   export type UserProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -12335,6 +12445,18 @@ export namespace Prisma {
     connectOrCreate?: TweetCreateOrConnectWithoutAuthorInput | TweetCreateOrConnectWithoutAuthorInput[]
     createMany?: TweetCreateManyAuthorInputEnvelope
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutFollowingInput = {
+    create?: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput> | UserCreateWithoutFollowingInput[] | UserUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowingInput | UserCreateOrConnectWithoutFollowingInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutFollowedByInput = {
+    create?: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput> | UserCreateWithoutFollowedByInput[] | UserUncheckedCreateWithoutFollowedByInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedByInput | UserCreateOrConnectWithoutFollowedByInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
   export type EnumAccountLevelFieldUpdateOperationsInput = {
@@ -12393,6 +12515,32 @@ export namespace Prisma {
     deleteMany?: TweetScalarWhereInput | TweetScalarWhereInput[]
   }
 
+  export type UserUpdateManyWithoutFollowingNestedInput = {
+    create?: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput> | UserCreateWithoutFollowingInput[] | UserUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowingInput | UserCreateOrConnectWithoutFollowingInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutFollowingInput | UserUpsertWithWhereUniqueWithoutFollowingInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutFollowingInput | UserUpdateWithWhereUniqueWithoutFollowingInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutFollowingInput | UserUpdateManyWithWhereWithoutFollowingInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUpdateManyWithoutFollowedByNestedInput = {
+    create?: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput> | UserCreateWithoutFollowedByInput[] | UserUncheckedCreateWithoutFollowedByInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedByInput | UserCreateOrConnectWithoutFollowedByInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutFollowedByInput | UserUpsertWithWhereUniqueWithoutFollowedByInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutFollowedByInput | UserUpdateWithWhereUniqueWithoutFollowedByInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutFollowedByInput | UserUpdateManyWithWhereWithoutFollowedByInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
   export type UserProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -12443,6 +12591,32 @@ export namespace Prisma {
     update?: TweetUpdateWithWhereUniqueWithoutAuthorInput | TweetUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: TweetUpdateManyWithWhereWithoutAuthorInput | TweetUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: TweetScalarWhereInput | TweetScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutFollowingNestedInput = {
+    create?: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput> | UserCreateWithoutFollowingInput[] | UserUncheckedCreateWithoutFollowingInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowingInput | UserCreateOrConnectWithoutFollowingInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutFollowingInput | UserUpsertWithWhereUniqueWithoutFollowingInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutFollowingInput | UserUpdateWithWhereUniqueWithoutFollowingInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutFollowingInput | UserUpdateManyWithWhereWithoutFollowingInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutFollowedByNestedInput = {
+    create?: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput> | UserCreateWithoutFollowedByInput[] | UserUncheckedCreateWithoutFollowedByInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedByInput | UserCreateOrConnectWithoutFollowedByInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutFollowedByInput | UserUpsertWithWhereUniqueWithoutFollowedByInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutFollowedByInput | UserUpdateWithWhereUniqueWithoutFollowedByInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutFollowedByInput | UserUpdateManyWithWhereWithoutFollowedByInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type AuthProviderCreateNestedOneWithoutAccountsInput = {
@@ -12824,6 +12998,8 @@ export namespace Prisma {
     profile?: UserProfileCreateNestedOneWithoutUserInput
     openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
     tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUncheckedCreateWithoutTokensInput = {
@@ -12839,6 +13015,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
     tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserCreateOrConnectWithoutTokensInput = {
@@ -12869,6 +13047,8 @@ export namespace Prisma {
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
     tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTokensInput = {
@@ -12884,6 +13064,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
     tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserProfileCreateWithoutAvatarInput = {
@@ -13080,6 +13262,8 @@ export namespace Prisma {
     profile?: UserProfileCreateNestedOneWithoutUserInput
     openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUncheckedCreateWithoutTweetsInput = {
@@ -13095,6 +13279,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserCreateOrConnectWithoutTweetsInput = {
@@ -13219,6 +13405,8 @@ export namespace Prisma {
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTweetsInput = {
@@ -13234,6 +13422,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
   }
 
   export type MediaUpsertWithWhereUniqueWithoutTweetsInput = {
@@ -13397,6 +13587,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
     tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -13412,6 +13604,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
     tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
     tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -13520,6 +13714,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
     tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -13535,6 +13731,8 @@ export namespace Prisma {
     openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
     tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
     tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserProfileCreateWithoutUserInput = {
@@ -13654,6 +13852,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserCreateWithoutFollowingInput = {
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
+    tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowingInput = {
+    primaryKey?: number
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowingInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput>
+  }
+
+  export type UserCreateWithoutFollowedByInput = {
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
+    tweets?: TweetCreateNestedManyWithoutAuthorInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowedByInput = {
+    primaryKey?: number
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowedByInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput>
+  }
+
   export type UserProfileUpsertWithoutUserInput = {
     update: XOR<UserProfileUpdateWithoutUserInput, UserProfileUncheckedUpdateWithoutUserInput>
     create: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
@@ -13748,6 +14022,53 @@ export namespace Prisma {
     data: XOR<TweetUpdateManyMutationInput, TweetUncheckedUpdateManyWithoutAuthorInput>
   }
 
+  export type UserUpsertWithWhereUniqueWithoutFollowingInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutFollowingInput, UserUncheckedUpdateWithoutFollowingInput>
+    create: XOR<UserCreateWithoutFollowingInput, UserUncheckedCreateWithoutFollowingInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutFollowingInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutFollowingInput, UserUncheckedUpdateWithoutFollowingInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutFollowingInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutFollowingInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    primaryKey?: IntFilter<"User"> | number
+    id?: UuidFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    username?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
+    accountLevel?: EnumAccountLevelFilter<"User"> | $Enums.AccountLevel
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    deletedAt?: DateTimeNullableFilter<"User"> | Date | string | null
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutFollowedByInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutFollowedByInput, UserUncheckedUpdateWithoutFollowedByInput>
+    create: XOR<UserCreateWithoutFollowedByInput, UserUncheckedCreateWithoutFollowedByInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutFollowedByInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutFollowedByInput, UserUncheckedUpdateWithoutFollowedByInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutFollowedByInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutFollowedByInput>
+  }
+
   export type AuthProviderCreateWithoutAccountsInput = {
     id?: string
     key: string
@@ -13784,6 +14105,8 @@ export namespace Prisma {
     profile?: UserProfileCreateNestedOneWithoutUserInput
     tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
     tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserUncheckedCreateWithoutOpenIdsInput = {
@@ -13799,6 +14122,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
     tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
   }
 
   export type UserCreateOrConnectWithoutOpenIdsInput = {
@@ -13859,6 +14184,8 @@ export namespace Prisma {
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
     tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOpenIdsInput = {
@@ -13874,6 +14201,8 @@ export namespace Prisma {
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
     tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
   }
 
   export type UserOIDCAccountCreateManyProviderInput = {
@@ -14153,6 +14482,96 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UserUpdateWithoutFollowingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
+    tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowingInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutFollowingInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserUpdateWithoutFollowedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
+    tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowedByInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutFollowedByInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 
