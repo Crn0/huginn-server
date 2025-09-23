@@ -18,13 +18,13 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  //   return async () => {
-  //     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
+  return async () => {
+    const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
 
-  //     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
+    const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-  //     await tryCatch(deleteFolder(mediaFolder));
-  //   };
+    await tryCatch(deleteFolder(mediaFolder));
+  };
 });
 
 describe("DELETE /api/v1/tweets", () => {
