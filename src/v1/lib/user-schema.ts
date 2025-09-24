@@ -76,6 +76,11 @@ export const userSchema = z.object({
     })
   ),
 
+  follow: z.object({
+    followersCount: z.coerce.number().default(0),
+    followingCount: z.coerce.number().default(0),
+  }),
+
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
   updatedAt: z.coerce
     .date()
