@@ -6,7 +6,7 @@ const mediaSizeSchema = z.object({
   h: z.coerce.number(),
 });
 
-const profileMediaSchema = z.object({
+export const profileMediaSchema = z.object({
   id: z.uuidv7(),
   url: z.url(),
   type: z.enum(["IMAGE", "GIF"]),
