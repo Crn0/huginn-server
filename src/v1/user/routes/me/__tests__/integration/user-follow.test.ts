@@ -61,7 +61,7 @@ describe("POST /api/v1/users/me/following", () => {
 
   describe("Failure cases", () => {
     describe("Not_Found errors", () => {
-      it("returns a validation error when followId is invalid", async () => {
+      it("returns a not_found error when the user does not exist", async () => {
         const res = await userRequest
           .post(url)
           .set("Authorization", `Bearer ${accessToken}`)
