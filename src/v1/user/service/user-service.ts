@@ -11,6 +11,7 @@ import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import * as userRepository from "../repository/user.js";
 import * as tweetService from "@/v1/tweet/service/tweet.js";
+import * as followService from "./follow-service.js";
 
 import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
@@ -85,6 +86,18 @@ export const getUserById = async (id: string) => {
   if (!user) throw new NotFoundError("User not found.");
 
   return user;
+};
+
+export const getAuthUser = async (id: string) => {
+  const user = await userRepository.getUserById(id);
+
+  if (!user) throw new NotFoundError("User not found.");
+
+  const follow = await followService.getUserFollowCountById(user.id);
+
+  const authUser = { ...user, follow } as const;
+
+  return authUser;
 };
 
 export const isUsernameAvailable = async (username: string) =>
