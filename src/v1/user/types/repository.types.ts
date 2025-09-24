@@ -1,4 +1,10 @@
+import type { Prisma } from "@/generated/prisma/index.js";
+
 type UserProfileMediaType = "GIF" | "IMAGE";
+
+export type GetFollowersOption = Omit<Prisma.User$followedByArgs, "where" | "include" | "select">;
+
+export type GetFollowingOption = Omit<Prisma.User$followingArgs, "where" | "include" | "select">;
 
 export interface UserProfileMedia {
   id: string;
