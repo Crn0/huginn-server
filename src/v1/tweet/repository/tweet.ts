@@ -93,6 +93,17 @@ export const getTweets = async (option?: GetTweetsOption) => {
   return tweets;
 };
 
+export const getTweetsCountByAuthorId = async (authorId: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.tweet.count({ where: { author: { id: authorId } } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
 export const patchTweetById = async (id: string, data: PatchTweet) => {
   const { error, data: updatedTweet } = await tryCatch(
     prisma.tweet.update({
