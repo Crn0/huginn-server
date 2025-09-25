@@ -28,6 +28,18 @@ const handleMediasUpload = async <T extends Partial<CreateTweet>>(
   return data;
 };
 
+const normalizeHref = (data: unknown[], href: string, enabled: boolean) => {
+  if (data.length === 0 || !enabled) return null;
+
+  return href;
+};
+
+const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
+  if (!cursor || !hasHref) return null;
+
+  return cursor;
+};
+
 export const createTweet = async (DTO: CreateTweetDTO) => {
   const data: CreateTweet = {
     authorId: DTO.authorId,
@@ -65,7 +77,10 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
     ...rest,
   } as const;
 
-  const res = await tweetRepository.getTweetsByAuthorId(authorId, options);
+  const [res, total] = await Promise.all([
+    tweetRepository.getTweetsByAuthorId(authorId, options),
+    tweetRepository.getTweetsCountByAuthorId(authorId),
+  ]);
 
   const tweets =
     direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
@@ -74,18 +89,28 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 
   const hasMore = res.length > TWEETS_PAGE_SIZE;
 
-  const nextHref =
-    direction === "backward" || hasMore ? `/tweets?after=${tweets.at?.(-1)?.id}` : null;
+  const nextCursor = tweets.at?.(-1)?.id;
+  const prevCursor = tweets.at?.(0)?.id;
 
-  const prevHref =
+  const normalizedNextHref = normalizeHref(
+    res,
+    `/tweets?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    res,
+    `/tweets?before=${prevCursor}`,
     direction === "forward" || (direction === "backward" && hasMore)
-      ? `/tweets?before=${tweets.at?.(0)?.id}`
-      : null;
+  );
 
   return Object.freeze({
     tweets: reversedTweets,
-    nextHref,
-    prevHref,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
   });
 };
 
