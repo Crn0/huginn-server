@@ -7,8 +7,14 @@ export const removeTempFiles = async () => {
   const filePaths = await fs.readdir(tempDir);
 
   await Promise.all(
-    filePaths.map(async (filePath) =>
-      filePath !== ".gitignore" ? fs.unlink(filePath) : Promise.resolve()
-    )
+    filePaths.map(async (filePath) => {
+      if (filePath !== ".gitkeep") {
+        const fullPath = `${tempDir}/${filePath}`;
+
+        return fs.unlink(fullPath);
+      }
+
+      return Promise.resolve();
+    })
   );
 };
