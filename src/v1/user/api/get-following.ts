@@ -6,8 +6,8 @@ import type { Response } from "express";
 import type { RequestWithPagination } from "@/v1/types/express.js";
 import type { PaginationQuery } from "@/v1/lib/pagination-schema.js";
 
-export const getFollowing = async (req: RequestWithPagination, res: Response) => {
-  const userId = req.user?.id as string;
+export const getFollowing = (endpoint: 'me' | 'userId') => async (req: RequestWithPagination<{ userId: string }>, res: Response) => {
+  const userId = (endpoint === 'me' ? req.user?.id : req.params['userId']) as string;
 
   const query: PaginationQuery = res.locals['query']
 
