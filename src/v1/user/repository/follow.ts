@@ -24,6 +24,25 @@ export const followUserById = async (userId: string, followId: string) => {
   return updatedUser;
 };
 
+export const followUsersById = async (userId: string, followIds: string[]) => {
+  const { error, data: updatedUser } = await tryCatch(
+    prisma.user.update({
+      ...insertOptions,
+      where: { id: userId },
+      data: {
+        following: {
+          connect: followIds.map((id) => ({ id })),
+        },
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return updatedUser;
+};
+
 export const unFollowUserById = async (userId: string, unFollowId: string) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
