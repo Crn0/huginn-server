@@ -7,8 +7,9 @@ declare global {
     interface User {
       id: string;
     }
-    interface Locals {
+    interface Locals<TQuery> {
       refreshToken?: JwtPayload;
+      query?: TQuery;
     }
   }
 }

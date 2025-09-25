@@ -61,8 +61,7 @@ export const ZodQueryValidator =
   <T extends z.ZodType>(schema: T) =>
   (req: RequestWithQuery<T>, _res: Response, next: NextFunction) => {
     try {
-      req.query = schema.parse(req.query);
-
+      _res.locals["query"] = schema.parse(req.query);
       next();
     } catch (err) {
       let message = "Validation Failed";
