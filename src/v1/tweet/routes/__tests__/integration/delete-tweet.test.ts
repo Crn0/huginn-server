@@ -33,7 +33,7 @@ describe("DELETE /api/v1/tweets", () => {
   describe("Success cases", () => {
     const form = {
       content: "test tweet",
-      medias: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
+      media: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
     } as const;
 
     it("returns status 204", async () => {
@@ -41,7 +41,7 @@ describe("DELETE /api/v1/tweets", () => {
         .post(baseUrl)
         .set("Authorization", `Bearer ${accessToken}`)
         .field("content", form.content)
-        .attach("medias", form.medias[0]);
+        .attach("media", form.media[0]);
 
       const tweetId = createdTweet.body.id;
 

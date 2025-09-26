@@ -3,31 +3,31 @@ import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { getMediaOptions } from "./media-option.js";
 
-import type { CreateMedias } from "../types/repository.types.js";
+import type { CreateMedia } from "../types/repository.types.js";
 
-export const createMedias = async (medias: CreateMedias) => {
-  const { error, data: createdMedias } = await tryCatch(
-    prisma.media.createManyAndReturn({ data: medias }),
+export const createMedia = async (media: CreateMedia) => {
+  const { error, data: createdMedia } = await tryCatch(
+    prisma.media.createManyAndReturn({ data: media }),
     dbErrorHandler
   );
 
   if (error) throw error;
 
-  return createdMedias;
+  return createdMedia;
 };
 
-export const getMediasByTweetId = async (tweetId: string) => {
-  const { error, data: medias } = await tryCatch(
+export const getMediaByTweetId = async (tweetId: string) => {
+  const { error, data: media } = await tryCatch(
     prisma.media.findMany({ ...getMediaOptions, where: { tweets: { some: { id: tweetId } } } }),
     dbErrorHandler
   );
 
   if (error) throw error;
 
-  return medias;
+  return media;
 };
 
-export const deleteMediasByIds = async (ids: string[]) => {
+export const deleteMediaByIds = async (ids: string[]) => {
   const { error, data: result } = await tryCatch(
     prisma.media.deleteMany({ where: { id: { in: ids } } }),
     dbErrorHandler

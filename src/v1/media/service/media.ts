@@ -17,14 +17,14 @@ const getResourceType = (format: SupportedFile) => {
   return "image";
 };
 
-export const createMedias = async (folderPath: string, mediaFiles: MediaFiles) => {
+export const createMedia = async (folderPath: string, mediaFiles: MediaFiles) => {
   const uploadResponse = await Promise.allSettled(
     mediaFiles.map((file) =>
       storage.uploadMedia(folderPath, file.path, { resource_type: getResourceType(file.mimetype) })
     )
   );
 
-  const uploadedMedias = uploadResponse
+  const uploadedMedia = uploadResponse
     .filter((res) => res.status === "fulfilled")
     .map(({ value: file }) =>
       Object.freeze({
@@ -35,22 +35,22 @@ export const createMedias = async (folderPath: string, mediaFiles: MediaFiles) =
       })
     );
 
-  return mediaRepository.createMedias(uploadedMedias);
+  return mediaRepository.createMedia(uploadedMedia);
 };
 
-export const getMediasByTweetId = async (tweetId: string) =>
-  mediaRepository.getMediasByTweetId(tweetId);
+export const getMediaByTweetId = async (tweetId: string) =>
+  mediaRepository.getMediaByTweetId(tweetId);
 
-export const deleteMediasByTweetId = async (tweetId: string) => {
-  const medias = await mediaRepository.getMediasByTweetId(tweetId);
+export const deleteMediaByTweetId = async (tweetId: string) => {
+  const media = await mediaRepository.getMediaByTweetId(tweetId);
 
-  const mediasToDelete = medias.filter((m) => m.tweets.length === 1);
+  const mediaToDelete = media.filter((m) => m.tweets.length === 1);
 
-  if (!mediasToDelete.length) return { count: 0 };
+  if (!mediaToDelete.length) return { count: 0 };
 
-  await Promise.all(mediasToDelete.map((m) => storage.deleteMedia(m.filePath)));
+  await Promise.all(mediaToDelete.map((m) => storage.deleteMedia(m.filePath)));
 
-  const idsToDelete = mediasToDelete.map((m) => m.id);
+  const idsToDelete = mediaToDelete.map((m) => m.id);
 
-  return mediaRepository.deleteMediasByIds(idsToDelete);
+  return mediaRepository.deleteMediaByIds(idsToDelete);
 };

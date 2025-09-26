@@ -6,7 +6,7 @@ import type { TweetMedia } from "../types/tweet.types.js";
 
 export type CreateTweetDTO = z.infer<typeof createTweetSchema> & {
   authorId: string;
-  medias: TweetMedia[];
+  media: TweetMedia[];
 };
 
 export const createTweetSchema = z.object({

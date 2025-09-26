@@ -31,7 +31,7 @@ describe("POST /api/v1/tweets", () => {
 
   const form = {
     content: "test tweet",
-    medias: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
+    media: [path.join(import.meta.dirname, "..", "..", "..", "..", "assets", "test_avatar.png")],
   } as const;
 
   const invalidForm = {
@@ -44,7 +44,7 @@ describe("POST /api/v1/tweets", () => {
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
         .field("content", form.content)
-        .attach("medias", form.medias[0]);
+        .attach("media", form.media[0]);
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({

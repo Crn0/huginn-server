@@ -18,7 +18,7 @@ const multer = initMulter({
 });
 
 export const tweetMediaProcessor = (req: Request, res: Response, next: NextFunction) =>
-  multer.uploader.array("medias", MAX_MEDIAS)(req, res, async (err) => {
+  multer.uploader.array("media", MAX_MEDIAS)(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       const code = err.code;
       const field = err.field as string;

@@ -1,7 +1,7 @@
 import { env } from "@/configs/env.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
-import { createMedias, deleteMediasByTweetId } from "@/v1/media/service/media.js";
+import { createMedia, deleteMediaByTweetId } from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
@@ -11,18 +11,18 @@ import type { PatchTweetDTO } from "../schema/patch-tweet.js";
 
 const TWEETS_PAGE_SIZE = 20 as const;
 
-const handleMediasUpload = async <T extends Partial<CreateTweet>>(
+const handleMediaUpload = async <T extends Partial<CreateTweet>>(
   data: T,
-  medias: CreateTweetDTO["medias"]
+  media: CreateTweetDTO["media"]
 ) => {
-  if (medias.length) {
+  if (media?.length) {
     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
 
     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-    const uploadedMedias = await createMedias(mediaFolder, medias);
+    const uploadedMedia = await createMedia(mediaFolder, media);
 
-    data.media = uploadedMedias;
+    data.media = uploadedMedia;
   }
 
   return data;
@@ -47,7 +47,7 @@ export const createTweet = async (DTO: CreateTweetDTO) => {
     media: [],
   };
 
-  await handleMediasUpload(data, DTO.medias);
+  await handleMediaUpload(data, DTO.media);
 
   return tweetRepository.createTweet(data);
 };
@@ -60,7 +60,7 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
     media: [],
   };
 
-  await handleMediasUpload(data, DTO.medias);
+  await handleMediaUpload(data, DTO.media);
 
   return tweetRepository.replyTweet(data);
 };
@@ -119,7 +119,7 @@ export const patchTweetById = async (id: string, DTO: PatchTweetDTO) =>
   tweetRepository.patchTweetById(id, DTO);
 
 export const deleteTweetById = async (id: string) => {
-  const { count: mediaCount } = await deleteMediasByTweetId(id);
+  const { count: mediaCount } = await deleteMediaByTweetId(id);
 
   const tweet = await tweetRepository.deleteTweetById(id);
 
@@ -129,7 +129,7 @@ export const deleteTweetById = async (id: string) => {
 export const deleteTweetsByAuthorId = async (authorId: string) => {
   const tweets = await getTweetsByAuthorId(authorId);
 
-  await Promise.all(tweets.map(async (tweet) => deleteMediasByTweetId(tweet.id)));
+  await Promise.all(tweets.map(async (tweet) => deleteMediaByTweetId(tweet.id)));
 
   return tweetRepository.deleteTweetsByAuthorId(authorId);
 };
