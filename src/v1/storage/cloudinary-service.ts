@@ -7,9 +7,10 @@ import {
   type UploadApiErrorResponse,
   type ResourceType,
   type DeliveryType,
+  type ConfigAndUrlOptions,
 } from "v1/lib/cloudinary.js";
 
-export const getMediaUrl = (filePath: string, transformation?: TransformationOptions) =>
+export const getMediaUrl = (filePath: string, transformation?: TransformationOptions  | ConfigAndUrlOptions) =>
   cloudinary.url(filePath, {
     transformation,
   });
