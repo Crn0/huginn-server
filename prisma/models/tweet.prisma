@@ -8,7 +8,7 @@ model Tweet {
 
   authorPk  Int     @map("author_pk")
   author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
-  medias    Media[]
+  media     Media[]
   replyToPk Int?    @map("reply_pk")
   replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
   replies   Tweet[] @relation(name: "PostReplies")

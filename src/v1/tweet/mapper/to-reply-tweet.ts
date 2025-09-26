@@ -3,7 +3,7 @@ import type { ReplyTweet } from "../types/repository.types.js";
 
 type MappedData = Prisma.TweetCreateInput;
 
-export const toReplyTweet = ({ authorId, replyTo, content, medias }: ReplyTweet) => {
+export const toReplyTweet = ({ authorId, replyTo, content, media }: ReplyTweet) => {
   const data: MappedData = {
     content,
     author: {
@@ -16,8 +16,8 @@ export const toReplyTweet = ({ authorId, replyTo, content, medias }: ReplyTweet)
         id: replyTo,
       },
     },
-    medias: {
-      connect: medias.map((media) => ({ id: media.id })),
+    media: {
+      connect: media.map(({id}) => ({ id })),
     },
   };
 

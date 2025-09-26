@@ -3,7 +3,7 @@ import type { CreateTweet } from "../types/repository.types.js";
 
 type MappedData = Omit<Prisma.TweetCreateWithoutReplyToInput, "replies">;
 
-export const toCreateTweet = ({ authorId, content, medias }: CreateTweet) => {
+export const toCreateTweet = ({ authorId, content, media }: CreateTweet) => {
   const data: MappedData = {
     content,
     author: {
@@ -11,8 +11,8 @@ export const toCreateTweet = ({ authorId, content, medias }: CreateTweet) => {
         id: authorId,
       },
     },
-    medias: {
-      connect: medias.map((media) => ({ id: media.id })),
+    media: {
+      connect: media.map(({id}) => ({ id })),
     },
   };
 

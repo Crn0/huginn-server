@@ -19,7 +19,7 @@ export interface TweetMedia {
 export interface CreateTweet {
   authorId: string;
   content: string | null;
-  medias: { id: string }[];
+  media: { id: string }[];
 }
 
 export interface ReplyTweet extends CreateTweet {

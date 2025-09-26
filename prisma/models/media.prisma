@@ -15,7 +15,7 @@ model Media {
   userProfileBanner   UserProfile? @relation(name: "UserProfileBanner", map: "Media_user_profile_banner_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
   tweets              Tweet[]
 
-  @@map("Medias")
+  @@map("Media")
 }
 
 enum MediaType {

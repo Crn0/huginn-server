@@ -22,7 +22,7 @@ const handleMediasUpload = async <T extends Partial<CreateTweet>>(
 
     const uploadedMedias = await createMedias(mediaFolder, medias);
 
-    data.medias = uploadedMedias;
+    data.media = uploadedMedias;
   }
 
   return data;
@@ -44,7 +44,7 @@ export const createTweet = async (DTO: CreateTweetDTO) => {
   const data: CreateTweet = {
     authorId: DTO.authorId,
     content: DTO.content,
-    medias: [],
+    media: [],
   };
 
   await handleMediasUpload(data, DTO.medias);
@@ -57,7 +57,7 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
     authorId: DTO.authorId,
     replyTo: DTO.replyTo,
     content: DTO.content,
-    medias: [],
+    media: [],
   };
 
   await handleMediasUpload(data, DTO.medias);

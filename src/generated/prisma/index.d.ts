@@ -1521,12 +1521,12 @@ export namespace Prisma {
    */
 
   export type TweetCountOutputType = {
-    medias: number
+    media: number
     replies: number
   }
 
   export type TweetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    medias?: boolean | TweetCountOutputTypeCountMediasArgs
+    media?: boolean | TweetCountOutputTypeCountMediaArgs
     replies?: boolean | TweetCountOutputTypeCountRepliesArgs
   }
 
@@ -1544,7 +1544,7 @@ export namespace Prisma {
   /**
    * TweetCountOutputType without action
    */
-  export type TweetCountOutputTypeCountMediasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type TweetCountOutputTypeCountMediaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MediaWhereInput
   }
 
@@ -5355,7 +5355,7 @@ export namespace Prisma {
     authorPk?: boolean
     replyToPk?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
-    medias?: boolean | Tweet$mediasArgs<ExtArgs>
+    media?: boolean | Tweet$mediaArgs<ExtArgs>
     replyTo?: boolean | Tweet$replyToArgs<ExtArgs>
     replies?: boolean | Tweet$repliesArgs<ExtArgs>
     _count?: boolean | TweetCountOutputTypeDefaultArgs<ExtArgs>
@@ -5401,7 +5401,7 @@ export namespace Prisma {
   export type TweetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "content" | "createdAt" | "updatedAt" | "deletedAt" | "authorPk" | "replyToPk", ExtArgs["result"]["tweet"]>
   export type TweetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
-    medias?: boolean | Tweet$mediasArgs<ExtArgs>
+    media?: boolean | Tweet$mediaArgs<ExtArgs>
     replyTo?: boolean | Tweet$replyToArgs<ExtArgs>
     replies?: boolean | Tweet$repliesArgs<ExtArgs>
     _count?: boolean | TweetCountOutputTypeDefaultArgs<ExtArgs>
@@ -5419,7 +5419,7 @@ export namespace Prisma {
     name: "Tweet"
     objects: {
       author: Prisma.$UserPayload<ExtArgs>
-      medias: Prisma.$MediaPayload<ExtArgs>[]
+      media: Prisma.$MediaPayload<ExtArgs>[]
       replyTo: Prisma.$TweetPayload<ExtArgs> | null
       replies: Prisma.$TweetPayload<ExtArgs>[]
     }
@@ -5827,7 +5827,7 @@ export namespace Prisma {
   export interface Prisma__TweetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    medias<T extends Tweet$mediasArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$mediasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    media<T extends Tweet$mediaArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     replyTo<T extends Tweet$replyToArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$replyToArgs<ExtArgs>>): Prisma__TweetClient<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     replies<T extends Tweet$repliesArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -6263,9 +6263,9 @@ export namespace Prisma {
   }
 
   /**
-   * Tweet.medias
+   * Tweet.media
    */
-  export type Tweet$mediasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Tweet$mediaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Media
      */
@@ -10466,7 +10466,7 @@ export namespace Prisma {
     authorPk?: IntFilter<"Tweet"> | number
     replyToPk?: IntNullableFilter<"Tweet"> | number | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
-    medias?: MediaListRelationFilter
+    media?: MediaListRelationFilter
     replyTo?: XOR<TweetNullableScalarRelationFilter, TweetWhereInput> | null
     replies?: TweetListRelationFilter
   }
@@ -10481,7 +10481,7 @@ export namespace Prisma {
     authorPk?: SortOrder
     replyToPk?: SortOrderInput | SortOrder
     author?: UserOrderByWithRelationInput
-    medias?: MediaOrderByRelationAggregateInput
+    media?: MediaOrderByRelationAggregateInput
     replyTo?: TweetOrderByWithRelationInput
     replies?: TweetOrderByRelationAggregateInput
   }
@@ -10499,7 +10499,7 @@ export namespace Prisma {
     authorPk?: IntFilter<"Tweet"> | number
     replyToPk?: IntNullableFilter<"Tweet"> | number | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
-    medias?: MediaListRelationFilter
+    media?: MediaListRelationFilter
     replyTo?: XOR<TweetNullableScalarRelationFilter, TweetWhereInput> | null
     replies?: TweetListRelationFilter
   }, "primaryKey" | "id">
@@ -10928,7 +10928,7 @@ export namespace Prisma {
     userProfileBannerPk?: number | null
     userProfileAvatar?: UserProfileCreateNestedOneWithoutAvatarInput
     userProfileBanner?: UserProfileCreateNestedOneWithoutBannerInput
-    tweets?: TweetCreateNestedManyWithoutMediasInput
+    tweets?: TweetCreateNestedManyWithoutMediaInput
   }
 
   export type MediaUncheckedCreateInput = {
@@ -10943,7 +10943,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     userProfileAvatarPk?: number | null
     userProfileBannerPk?: number | null
-    tweets?: TweetUncheckedCreateNestedManyWithoutMediasInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutMediaInput
   }
 
   export type MediaUpdateInput = {
@@ -10958,7 +10958,7 @@ export namespace Prisma {
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileAvatar?: UserProfileUpdateOneWithoutAvatarNestedInput
     userProfileBanner?: UserProfileUpdateOneWithoutBannerNestedInput
-    tweets?: TweetUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUpdateManyWithoutMediaNestedInput
   }
 
   export type MediaUncheckedUpdateInput = {
@@ -10973,7 +10973,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProfileAvatarPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
-    tweets?: TweetUncheckedUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutMediaNestedInput
   }
 
   export type MediaCreateManyInput = {
@@ -11023,7 +11023,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
-    medias?: MediaCreateNestedManyWithoutTweetsInput
+    media?: MediaCreateNestedManyWithoutTweetsInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
   }
@@ -11037,7 +11037,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
-    medias?: MediaUncheckedCreateNestedManyWithoutTweetsInput
+    media?: MediaUncheckedCreateNestedManyWithoutTweetsInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
   }
 
@@ -11048,7 +11048,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
-    medias?: MediaUpdateManyWithoutTweetsNestedInput
+    media?: MediaUpdateManyWithoutTweetsNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
   }
@@ -11062,7 +11062,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
-    medias?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
+    media?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
   }
 
@@ -12119,15 +12119,15 @@ export namespace Prisma {
     connect?: UserProfileWhereUniqueInput
   }
 
-  export type TweetCreateNestedManyWithoutMediasInput = {
-    create?: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput> | TweetCreateWithoutMediasInput[] | TweetUncheckedCreateWithoutMediasInput[]
-    connectOrCreate?: TweetCreateOrConnectWithoutMediasInput | TweetCreateOrConnectWithoutMediasInput[]
+  export type TweetCreateNestedManyWithoutMediaInput = {
+    create?: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput> | TweetCreateWithoutMediaInput[] | TweetUncheckedCreateWithoutMediaInput[]
+    connectOrCreate?: TweetCreateOrConnectWithoutMediaInput | TweetCreateOrConnectWithoutMediaInput[]
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
   }
 
-  export type TweetUncheckedCreateNestedManyWithoutMediasInput = {
-    create?: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput> | TweetCreateWithoutMediasInput[] | TweetUncheckedCreateWithoutMediasInput[]
-    connectOrCreate?: TweetCreateOrConnectWithoutMediasInput | TweetCreateOrConnectWithoutMediasInput[]
+  export type TweetUncheckedCreateNestedManyWithoutMediaInput = {
+    create?: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput> | TweetCreateWithoutMediaInput[] | TweetUncheckedCreateWithoutMediaInput[]
+    connectOrCreate?: TweetCreateOrConnectWithoutMediaInput | TweetCreateOrConnectWithoutMediaInput[]
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
   }
 
@@ -12163,29 +12163,29 @@ export namespace Prisma {
     update?: XOR<XOR<UserProfileUpdateToOneWithWhereWithoutBannerInput, UserProfileUpdateWithoutBannerInput>, UserProfileUncheckedUpdateWithoutBannerInput>
   }
 
-  export type TweetUpdateManyWithoutMediasNestedInput = {
-    create?: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput> | TweetCreateWithoutMediasInput[] | TweetUncheckedCreateWithoutMediasInput[]
-    connectOrCreate?: TweetCreateOrConnectWithoutMediasInput | TweetCreateOrConnectWithoutMediasInput[]
-    upsert?: TweetUpsertWithWhereUniqueWithoutMediasInput | TweetUpsertWithWhereUniqueWithoutMediasInput[]
+  export type TweetUpdateManyWithoutMediaNestedInput = {
+    create?: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput> | TweetCreateWithoutMediaInput[] | TweetUncheckedCreateWithoutMediaInput[]
+    connectOrCreate?: TweetCreateOrConnectWithoutMediaInput | TweetCreateOrConnectWithoutMediaInput[]
+    upsert?: TweetUpsertWithWhereUniqueWithoutMediaInput | TweetUpsertWithWhereUniqueWithoutMediaInput[]
     set?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     disconnect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     delete?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
-    update?: TweetUpdateWithWhereUniqueWithoutMediasInput | TweetUpdateWithWhereUniqueWithoutMediasInput[]
-    updateMany?: TweetUpdateManyWithWhereWithoutMediasInput | TweetUpdateManyWithWhereWithoutMediasInput[]
+    update?: TweetUpdateWithWhereUniqueWithoutMediaInput | TweetUpdateWithWhereUniqueWithoutMediaInput[]
+    updateMany?: TweetUpdateManyWithWhereWithoutMediaInput | TweetUpdateManyWithWhereWithoutMediaInput[]
     deleteMany?: TweetScalarWhereInput | TweetScalarWhereInput[]
   }
 
-  export type TweetUncheckedUpdateManyWithoutMediasNestedInput = {
-    create?: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput> | TweetCreateWithoutMediasInput[] | TweetUncheckedCreateWithoutMediasInput[]
-    connectOrCreate?: TweetCreateOrConnectWithoutMediasInput | TweetCreateOrConnectWithoutMediasInput[]
-    upsert?: TweetUpsertWithWhereUniqueWithoutMediasInput | TweetUpsertWithWhereUniqueWithoutMediasInput[]
+  export type TweetUncheckedUpdateManyWithoutMediaNestedInput = {
+    create?: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput> | TweetCreateWithoutMediaInput[] | TweetUncheckedCreateWithoutMediaInput[]
+    connectOrCreate?: TweetCreateOrConnectWithoutMediaInput | TweetCreateOrConnectWithoutMediaInput[]
+    upsert?: TweetUpsertWithWhereUniqueWithoutMediaInput | TweetUpsertWithWhereUniqueWithoutMediaInput[]
     set?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     disconnect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     delete?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
     connect?: TweetWhereUniqueInput | TweetWhereUniqueInput[]
-    update?: TweetUpdateWithWhereUniqueWithoutMediasInput | TweetUpdateWithWhereUniqueWithoutMediasInput[]
-    updateMany?: TweetUpdateManyWithWhereWithoutMediasInput | TweetUpdateManyWithWhereWithoutMediasInput[]
+    update?: TweetUpdateWithWhereUniqueWithoutMediaInput | TweetUpdateWithWhereUniqueWithoutMediaInput[]
+    updateMany?: TweetUpdateManyWithWhereWithoutMediaInput | TweetUpdateManyWithWhereWithoutMediaInput[]
     deleteMany?: TweetScalarWhereInput | TweetScalarWhereInput[]
   }
 
@@ -13124,7 +13124,7 @@ export namespace Prisma {
     create: XOR<UserProfileCreateWithoutBannerInput, UserProfileUncheckedCreateWithoutBannerInput>
   }
 
-  export type TweetCreateWithoutMediasInput = {
+  export type TweetCreateWithoutMediaInput = {
     id?: string
     content?: string | null
     createdAt?: Date | string
@@ -13135,7 +13135,7 @@ export namespace Prisma {
     replies?: TweetCreateNestedManyWithoutReplyToInput
   }
 
-  export type TweetUncheckedCreateWithoutMediasInput = {
+  export type TweetUncheckedCreateWithoutMediaInput = {
     primaryKey?: number
     id?: string
     content?: string | null
@@ -13147,9 +13147,9 @@ export namespace Prisma {
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
   }
 
-  export type TweetCreateOrConnectWithoutMediasInput = {
+  export type TweetCreateOrConnectWithoutMediaInput = {
     where: TweetWhereUniqueInput
-    create: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput>
+    create: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput>
   }
 
   export type UserProfileUpsertWithoutAvatarInput = {
@@ -13220,20 +13220,20 @@ export namespace Prisma {
     avatar?: MediaUncheckedUpdateOneWithoutUserProfileAvatarNestedInput
   }
 
-  export type TweetUpsertWithWhereUniqueWithoutMediasInput = {
+  export type TweetUpsertWithWhereUniqueWithoutMediaInput = {
     where: TweetWhereUniqueInput
-    update: XOR<TweetUpdateWithoutMediasInput, TweetUncheckedUpdateWithoutMediasInput>
-    create: XOR<TweetCreateWithoutMediasInput, TweetUncheckedCreateWithoutMediasInput>
+    update: XOR<TweetUpdateWithoutMediaInput, TweetUncheckedUpdateWithoutMediaInput>
+    create: XOR<TweetCreateWithoutMediaInput, TweetUncheckedCreateWithoutMediaInput>
   }
 
-  export type TweetUpdateWithWhereUniqueWithoutMediasInput = {
+  export type TweetUpdateWithWhereUniqueWithoutMediaInput = {
     where: TweetWhereUniqueInput
-    data: XOR<TweetUpdateWithoutMediasInput, TweetUncheckedUpdateWithoutMediasInput>
+    data: XOR<TweetUpdateWithoutMediaInput, TweetUncheckedUpdateWithoutMediaInput>
   }
 
-  export type TweetUpdateManyWithWhereWithoutMediasInput = {
+  export type TweetUpdateManyWithWhereWithoutMediaInput = {
     where: TweetScalarWhereInput
-    data: XOR<TweetUpdateManyMutationInput, TweetUncheckedUpdateManyWithoutMediasInput>
+    data: XOR<TweetUpdateManyMutationInput, TweetUncheckedUpdateManyWithoutMediaInput>
   }
 
   export type TweetScalarWhereInput = {
@@ -13328,7 +13328,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
-    medias?: MediaCreateNestedManyWithoutTweetsInput
+    media?: MediaCreateNestedManyWithoutTweetsInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
   }
 
@@ -13341,7 +13341,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
-    medias?: MediaUncheckedCreateNestedManyWithoutTweetsInput
+    media?: MediaUncheckedCreateNestedManyWithoutTweetsInput
   }
 
   export type TweetCreateOrConnectWithoutRepliesInput = {
@@ -13356,7 +13356,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
-    medias?: MediaCreateNestedManyWithoutTweetsInput
+    media?: MediaCreateNestedManyWithoutTweetsInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
   }
 
@@ -13368,7 +13368,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     authorPk: number
-    medias?: MediaUncheckedCreateNestedManyWithoutTweetsInput
+    media?: MediaUncheckedCreateNestedManyWithoutTweetsInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
   }
 
@@ -13477,7 +13477,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
-    medias?: MediaUpdateManyWithoutTweetsNestedInput
+    media?: MediaUpdateManyWithoutTweetsNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
   }
 
@@ -13490,7 +13490,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
-    medias?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
+    media?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
   }
 
   export type TweetUpsertWithWhereUniqueWithoutReplyToInput = {
@@ -13520,7 +13520,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     userProfileBannerPk?: number | null
     userProfileBanner?: UserProfileCreateNestedOneWithoutBannerInput
-    tweets?: TweetCreateNestedManyWithoutMediasInput
+    tweets?: TweetCreateNestedManyWithoutMediaInput
   }
 
   export type MediaUncheckedCreateWithoutUserProfileAvatarInput = {
@@ -13534,7 +13534,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     userProfileBannerPk?: number | null
-    tweets?: TweetUncheckedCreateNestedManyWithoutMediasInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutMediaInput
   }
 
   export type MediaCreateOrConnectWithoutUserProfileAvatarInput = {
@@ -13553,7 +13553,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null
     userProfileBannerPk?: number | null
     userProfileAvatar?: UserProfileCreateNestedOneWithoutAvatarInput
-    tweets?: TweetCreateNestedManyWithoutMediasInput
+    tweets?: TweetCreateNestedManyWithoutMediaInput
   }
 
   export type MediaUncheckedCreateWithoutUserProfileBannerInput = {
@@ -13567,7 +13567,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     userProfileBannerPk?: number | null
-    tweets?: TweetUncheckedCreateNestedManyWithoutMediasInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutMediaInput
   }
 
   export type MediaCreateOrConnectWithoutUserProfileBannerInput = {
@@ -13635,7 +13635,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileBanner?: UserProfileUpdateOneWithoutBannerNestedInput
-    tweets?: TweetUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUpdateManyWithoutMediaNestedInput
   }
 
   export type MediaUncheckedUpdateWithoutUserProfileAvatarInput = {
@@ -13649,7 +13649,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
-    tweets?: TweetUncheckedUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutMediaNestedInput
   }
 
   export type MediaUpsertWithoutUserProfileBannerInput = {
@@ -13674,7 +13674,7 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
     userProfileAvatar?: UserProfileUpdateOneWithoutAvatarNestedInput
-    tweets?: TweetUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUpdateManyWithoutMediaNestedInput
   }
 
   export type MediaUncheckedUpdateWithoutUserProfileBannerInput = {
@@ -13688,7 +13688,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     userProfileBannerPk?: NullableIntFieldUpdateOperationsInput | number | null
-    tweets?: TweetUncheckedUpdateManyWithoutMediasNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutMediaNestedInput
   }
 
   export type UserUpsertWithoutProfileInput = {
@@ -13825,7 +13825,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
-    medias?: MediaCreateNestedManyWithoutTweetsInput
+    media?: MediaCreateNestedManyWithoutTweetsInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
   }
@@ -13838,7 +13838,7 @@ export namespace Prisma {
     updatedAt?: Date | string | null
     deletedAt?: Date | string | null
     replyToPk?: number | null
-    medias?: MediaUncheckedCreateNestedManyWithoutTweetsInput
+    media?: MediaUncheckedCreateNestedManyWithoutTweetsInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
   }
 
@@ -14248,7 +14248,7 @@ export namespace Prisma {
     userPk?: IntFieldUpdateOperationsInput | number
   }
 
-  export type TweetUpdateWithoutMediasInput = {
+  export type TweetUpdateWithoutMediaInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14259,7 +14259,7 @@ export namespace Prisma {
     replies?: TweetUpdateManyWithoutReplyToNestedInput
   }
 
-  export type TweetUncheckedUpdateWithoutMediasInput = {
+  export type TweetUncheckedUpdateWithoutMediaInput = {
     primaryKey?: IntFieldUpdateOperationsInput | number
     id?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14271,7 +14271,7 @@ export namespace Prisma {
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
   }
 
-  export type TweetUncheckedUpdateManyWithoutMediasInput = {
+  export type TweetUncheckedUpdateManyWithoutMediaInput = {
     primaryKey?: IntFieldUpdateOperationsInput | number
     id?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14341,7 +14341,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
-    medias?: MediaUpdateManyWithoutTweetsNestedInput
+    media?: MediaUpdateManyWithoutTweetsNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
   }
 
@@ -14353,7 +14353,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
-    medias?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
+    media?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
   }
 
@@ -14457,7 +14457,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    medias?: MediaUpdateManyWithoutTweetsNestedInput
+    media?: MediaUpdateManyWithoutTweetsNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
   }
@@ -14470,7 +14470,7 @@ export namespace Prisma {
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
-    medias?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
+    media?: MediaUncheckedUpdateManyWithoutTweetsNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
   }
 
