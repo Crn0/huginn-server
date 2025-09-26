@@ -75,6 +75,9 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 
   const options = {
     ...rest,
+    orderBy: {
+      createdAt: "desc",
+    },
   } as const;
 
   const [res, total] = await Promise.all([
@@ -84,8 +87,6 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 
   const tweets =
     direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
-
-  const reversedTweets = tweets.toReversed();
 
   const hasMore = res.length > TWEETS_PAGE_SIZE;
 
@@ -105,7 +106,7 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   );
 
   return Object.freeze({
-    tweets: reversedTweets,
+    tweets,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
