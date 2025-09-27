@@ -75,10 +75,13 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 
   const options = {
     ...rest,
-    orderBy: {
-      createdAt: "desc",
-    },
-  } as const;
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+  };
 
   const [res, total] = await Promise.all([
     tweetRepository.getTweetsByAuthorId(authorId, options),
