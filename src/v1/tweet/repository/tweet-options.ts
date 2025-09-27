@@ -9,6 +9,7 @@ const baseOptions = {
         profile: { select: { displayName: true, avatar: true, banner: true } },
       },
     },
+    replyTo: true,
     media: true,
   },
 } as const;
