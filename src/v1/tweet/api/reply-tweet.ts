@@ -13,13 +13,13 @@ export const replyTweet = async (req: Request, res: Response) => {
     content: req.body.content,
     replyTo: req.params["tweetId"] as string,
     authorId: req.user!.id,
-    medias: (req.files as TweetMedia[]) ?? [],
+    media: (req.files as TweetMedia[]) ?? [],
   };
 
   const { error, data: tweet } = await tryCatch(reply(DTO));
 
-  if (DTO.medias.length) {
-    await Promise.all(DTO.medias.map(async (file) => fs.unlink(file.path)));
+  if (DTO.media.length) {
+    await Promise.all(DTO.media.map(async (file) => fs.unlink(file.path)));
   }
 
   if (error) throw error;

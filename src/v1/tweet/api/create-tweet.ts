@@ -12,13 +12,13 @@ export const createTweet = async (req: Request, res: Response) => {
   const DTO: CreateTweetDTO = {
     content: req.body.content,
     authorId: req.user!.id,
-    medias: (req.files as TweetMedia[]) ?? [],
+    media: (req.files as TweetMedia[]) ?? [],
   };
 
   const { error, data: tweet } = await tryCatch(create(DTO));
 
-  if (DTO.medias.length) {
-    await Promise.all(DTO.medias.map(async (file) => fs.unlink(file.path)));
+  if (DTO.media.length) {
+    await Promise.all(DTO.media.map(async (file) => fs.unlink(file.path)));
   }
 
   if (error) throw error;
