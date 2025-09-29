@@ -150,7 +150,8 @@ exports.Prisma.MediaScalarFieldEnum = {
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
   userProfileAvatarPk: 'userProfileAvatarPk',
-  userProfileBannerPk: 'userProfileBannerPk'
+  userProfileBannerPk: 'userProfileBannerPk',
+  tweetPk: 'tweetPk'
 };
 
 exports.Prisma.TweetScalarFieldEnum = {
