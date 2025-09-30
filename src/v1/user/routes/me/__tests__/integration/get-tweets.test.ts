@@ -15,8 +15,8 @@ const userRequest = request.agent(app);
 
 beforeAll(async () => {
   const form = {
-    email: "user.post@following.com",
-    displayName: "user.following",
+    email: "usergettweets.post@following.com",
+    displayName: "user.get.tweets.following",
     password: "Crnocrno123",
     birthday: new Date(),
   } as const;

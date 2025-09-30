@@ -16,8 +16,8 @@ beforeAll(async () => {
   const [login, user] = await Promise.all([
     userRequest.post("/api/v1/auth/login").send(testUserLoginForm),
     createUser({
-      email: "user.post@following.com",
-      displayName: "user.following",
+      email: "userunfllow.post@following.com",
+      displayName: "user.post.following",
       password: "Crnocrno123",
       birthday: new Date(),
     }),
