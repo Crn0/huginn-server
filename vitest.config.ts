@@ -7,6 +7,7 @@ export default defineConfig({
     globalSetup: ["./testing/global-teardown.ts"],
     clearMocks: true,
     testTimeout: 10_000,
+    hookTimeout: 20_000,
     environment: "node",
   },
 
