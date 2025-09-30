@@ -13,3 +13,21 @@ export const getMediaOptions = {
     ...baseOptions.include,
   },
 } satisfies Prisma.MediaDefaultArgs;
+
+export const getMediaByUploaderOptions = {
+  include: {
+    ...baseOptions.include,
+    uploader: {
+      select: {
+        username: true,
+        profile: {
+          select: {
+            displayName: true,
+            avatar: true,
+            banner: true,
+          },
+        },
+      },
+    },
+  },
+} satisfies Prisma.MediaDefaultArgs;

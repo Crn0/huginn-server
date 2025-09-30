@@ -1,9 +1,9 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
-import { getMediaOptions } from "./media-option.js";
+import { getMediaOptions, getMediaByUploaderOptions } from "./media-option.js";
 
-import type { CreateMedia } from "../types/repository.types.js";
+import type { CreateMedia, GetMediaOption } from "../types/repository.types.js";
 
 export const createMedia = async (media: CreateMedia, options?: { uploaderId: string }) => {
   let uploaderPk: number | undefined;
@@ -41,6 +41,28 @@ export const getMediaByTweetId = async (tweetId: string) => {
 
   return media;
 };
+
+export const getMediaByUploaderId = async (uploaderId: string, option: GetMediaOption) => {
+  const { error, data: media } = await tryCatch(
+    prisma.media.findMany({ ...getMediaByUploaderOptions, ...option, where: { uploader: { id: uploaderId } } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return media;
+};
+
+export const getMediaCountByUploaderId = async (uploaderId: string) => {
+    const { error, data: count } = await tryCatch(
+    prisma.media.count({ where: { uploader: { id: uploaderId } } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+}
 
 export const deleteMediaByIds = async (ids: string[]) => {
   const { error, data: result } = await tryCatch(
