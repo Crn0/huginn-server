@@ -41,7 +41,7 @@ beforeAll(async () => {
   };
 });
 
-describe.skip("GET /api/v1/users/:userId/tweets", () => {
+describe("GET /api/v1/users/:userId/tweets", () => {
   const baseUrl = "/api/v1/users" as const;
 
   describe("Success cases", () => {
@@ -142,7 +142,7 @@ describe.skip("GET /api/v1/users/:userId/tweets", () => {
     });
   });
 
-  describe.skip("Failure cases", () => {
+  describe("Failure cases", () => {
     describe("Validation  errors", () => {
       it("returns a Validation error when the query param 'after' is invalid", async () => {
         const url = `${baseUrl}/${userId}/tweets` as const;
