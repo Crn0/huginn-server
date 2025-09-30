@@ -1,12 +1,14 @@
 import { getMediaUrl } from "@/v1/storage/cloudinary-service.js";
 
-import type { Media } from "@/generated/prisma/index.js";
+import type { Media as DbMedia } from "@/generated/prisma/index.js";
 import type {
   tweetImage,
   TweetImageVariant,
   TweetVideo,
   TweetVideoVariant,
 } from "../schema/user-tweet.js";
+
+type Media = DbMedia & { tweet: { id: string } | null};
 
 const IMAGE_SIZE = {
   small: 8,
@@ -112,6 +114,7 @@ const getImageVariant = (media: Media) => {
 
 const normalizedTweetVideo = (media: Media) => {
   if (media.type !== "VIDEO") throw new TypeError("Invalid media type; expected VIDEO");
+  if (typeof media.tweet?.id === 'undefined') throw new TypeError("Tweet ID is undefined")
 
   const baseOptions = BASE_OPTIONS.video;
 
@@ -126,6 +129,7 @@ const normalizedTweetVideo = (media: Media) => {
     width: baseOptions.width,
     height: baseOptions.height,
     variants: getVideoVariant(media),
+    tweet: { id: media.tweet.id }
   } satisfies TweetVideo;
 
   return Object.freeze(video);
@@ -133,6 +137,7 @@ const normalizedTweetVideo = (media: Media) => {
 
 const normalizedTweetImage = (media: Media) => {
   if (media.type === "VIDEO") throw new TypeError("Invalid media type; expected IMAGE or GIF");
+  if (typeof media.tweet?.id === 'undefined') throw new TypeError("Tweet ID is undefined")
 
   const baseOptions = BASE_OPTIONS.image(media);
 
@@ -140,6 +145,7 @@ const normalizedTweetImage = (media: Media) => {
     url: getMediaUrl(media.filePath, { fetch_format: baseOptions.fetch_format }),
     type: media.type,
     variants: getImageVariant(media),
+    tweet: { id: media.tweet.id }
   } satisfies tweetImage;
 
   return Object.freeze(image);

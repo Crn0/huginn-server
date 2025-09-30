@@ -10,7 +10,15 @@ const baseOptions = {
       },
     },
     replyTo: true,
-    media: true,
+    media: {
+      include: {
+        tweet: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    },
   },
 } as const;
 

@@ -57,12 +57,14 @@ export const tweetVideoSchema = z.object({
   height: z.coerce.number(),
   width: z.coerce.number(),
   variants: z.array(tweetVideoVariantSchema),
+  tweet: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
 });
 
 export const tweetImageSchema = z.object({
   url: z.url(),
   type: z.enum(["IMAGE", "GIF"]),
   variants: z.array(tweetImageVariantSchema),
+  tweet: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
 });
 
 export const tweetMedia = z.discriminatedUnion("type", [tweetVideoSchema, tweetImageSchema]);
