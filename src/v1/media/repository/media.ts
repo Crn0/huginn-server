@@ -5,9 +5,24 @@ import { getMediaOptions } from "./media-option.js";
 
 import type { CreateMedia } from "../types/repository.types.js";
 
-export const createMedia = async (media: CreateMedia) => {
+export const createMedia = async (media: CreateMedia, options?: { uploaderId: string }) => {
+  let uploaderPk: number | undefined;
+
+  const uploaderId = options?.uploaderId;
+
+  if (uploaderId) {
+    const uploader = await prisma.user.findUnique({
+      where: { id: uploaderId },
+      select: { primaryKey: true },
+    });
+
+    uploaderPk = uploader?.primaryKey;
+  }
+
   const { error, data: createdMedia } = await tryCatch(
-    prisma.media.createManyAndReturn({ data: media }),
+    prisma.media.createManyAndReturn({
+      data: media.map((m) => (uploaderPk ? { ...m, uploaderPk } : { ...m })),
+    }),
     dbErrorHandler
   );
 

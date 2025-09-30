@@ -13,14 +13,15 @@ const TWEETS_PAGE_SIZE = 20 as const;
 
 const handleMediaUpload = async <T extends Partial<CreateTweet>>(
   data: T,
-  media: CreateTweetDTO["media"]
+  media: CreateTweetDTO["media"],
+  uploaderId: string,
 ) => {
   if (media?.length) {
     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
 
     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-    const uploadedMedia = await createMedia(mediaFolder, media);
+    const uploadedMedia = await createMedia(mediaFolder, media, { uploaderId });
 
     data.media = uploadedMedia;
   }
@@ -47,7 +48,7 @@ export const createTweet = async (DTO: CreateTweetDTO) => {
     media: [],
   };
 
-  await handleMediaUpload(data, DTO.media);
+  await handleMediaUpload(data, DTO.media, data.authorId);
 
   return tweetRepository.createTweet(data);
 };
@@ -60,7 +61,7 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
     media: [],
   };
 
-  await handleMediaUpload(data, DTO.media);
+  await handleMediaUpload(data, DTO.media, data.authorId);
 
   return tweetRepository.replyTweet(data);
 };

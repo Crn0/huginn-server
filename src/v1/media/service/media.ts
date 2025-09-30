@@ -17,7 +17,7 @@ const getResourceType = (format: SupportedFile) => {
   return "image";
 };
 
-export const createMedia = async (folderPath: string, mediaFiles: MediaFiles) => {
+export const createMedia = async (folderPath: string, mediaFiles: MediaFiles, options?: { uploaderId: string }) => {
   const uploadResponse = await Promise.allSettled(
     mediaFiles.map((file) =>
       storage.uploadMedia(folderPath, file.path, { resource_type: getResourceType(file.mimetype) })
@@ -35,7 +35,7 @@ export const createMedia = async (folderPath: string, mediaFiles: MediaFiles) =>
       })
     );
 
-  return mediaRepository.createMedia(uploadedMedia);
+  return mediaRepository.createMedia(uploadedMedia, options);
 };
 
 export const getMediaByTweetId = async (tweetId: string) =>

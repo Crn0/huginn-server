@@ -15,6 +15,7 @@ model User {
   tweets     Tweet[]
   followedBy User[]             @relation("UserFollowers")
   following  User[]             @relation("UserFollowers")
+  media Media[]
 
   @@map("Users")
 }
