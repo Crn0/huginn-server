@@ -44,13 +44,11 @@ export const getMediaByTweetId = async (tweetId: string) =>
 export const deleteMediaByTweetId = async (tweetId: string) => {
   const media = await mediaRepository.getMediaByTweetId(tweetId);
 
-  const mediaToDelete = media.filter((m) => m.tweets.length === 1);
+  if (!media.length) return { count: 0 };
 
-  if (!mediaToDelete.length) return { count: 0 };
+  await Promise.all(media.map((m) => storage.deleteMedia(m.filePath)));
 
-  await Promise.all(mediaToDelete.map((m) => storage.deleteMedia(m.filePath)));
-
-  const idsToDelete = mediaToDelete.map((m) => m.id);
+  const idsToDelete = media.map((m) => m.id);
 
   return mediaRepository.deleteMediaByIds(idsToDelete);
 };
