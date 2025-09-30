@@ -2,7 +2,7 @@ import { Prisma } from "@/generated/prisma/edge.js";
 
 const baseOptions = {
   include: {
-    tweets: {
+    tweet: {
       select: { id: true },
     },
   },

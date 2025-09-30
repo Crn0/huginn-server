@@ -46,7 +46,7 @@ model Media {
   userProfileBannerPk Int?         @unique @map("user_profile_banner_pk")
   userProfileBanner   UserProfile? @relation(name: "UserProfileBanner", map: "Media_user_profile_banner_pk_fkey", fields: [userProfileAvatarPk], references: [primaryKey], onDelete: Cascade)
   tweetPk             Int?
-  tweets              Tweet?       @relation(fields: [tweetPk], references: [primaryKey])
+  tweet               Tweet?       @relation(fields: [tweetPk], references: [primaryKey])
   uploaderPk          Int?
   uploader            User?        @relation(fields: [uploaderPk], references: [primaryKey])
 

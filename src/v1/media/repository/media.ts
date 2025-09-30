@@ -33,7 +33,7 @@ export const createMedia = async (media: CreateMedia, options?: { uploaderId: st
 
 export const getMediaByTweetId = async (tweetId: string) => {
   const { error, data: media } = await tryCatch(
-    prisma.media.findMany({ ...getMediaOptions, where: { tweets: { id: tweetId } } }),
+    prisma.media.findMany({ ...getMediaOptions, where: { tweet: { id: tweetId } } }),
     dbErrorHandler
   );
 
