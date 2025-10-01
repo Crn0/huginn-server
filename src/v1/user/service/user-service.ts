@@ -1,6 +1,9 @@
 import argon2 from "argon2";
 
 import { env } from "@/configs/env.js";
+import { prisma } from "@/db/client/prisma.js";
+import { tryCatch } from "@/v1/lib/try-catch.js";
+import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
@@ -10,8 +13,9 @@ import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import * as userRepository from "../repository/user.js";
-import * as tweetService from "@/v1/tweet/service/tweet.js";
 import * as followService from "./follow-service.js";
+import * as mediaService from "@/v1/media/service/media.js";
+import * as storage from "@/v1/storage/cloudinary-service.js";
 
 import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
@@ -144,9 +148,43 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
 };
 
 export const deleteUserById = async (id: string) => {
-  const tweetCount = await tweetService.deleteTweetsByAuthorId(id);
+  const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/avatars/${id}`;
 
-  const user = await userRepository.deleteUserById(id);
+  const transaction = await prisma.$transaction(
+    async (ctx) => {
+      await mediaService.deleteMediaByUploaderId(id);
 
-  return Object.freeze({ user, tweetCount });
+      const { error: mediaError } = await tryCatch(
+        ctx.media.deleteMany({ where: { uploader: { id } } }),
+        dbErrorHandler
+      );
+
+      if (mediaError) throw mediaError;
+
+      const { error: tweetError, data: tweetCount } = await tryCatch(
+        prisma.tweet.deleteMany({
+          where: { author: { id } },
+        }),
+        dbErrorHandler
+      );
+
+      if (tweetError) throw tweetError;
+
+      const { error: userError, data: user } = await tryCatch(
+        prisma.user.delete({
+          where: { id },
+        }),
+        dbErrorHandler
+      );
+
+      if (userError) throw userError;
+
+      await storage.deleteFolder(mediaFolder);
+
+      return Object.freeze({ user, tweetCount });
+    },
+    { maxWait: env.TRANSACTION_MAX_TIMEOUT }
+  );
+
+  return transaction;
 };
