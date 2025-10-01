@@ -32,10 +32,17 @@ const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
   return cursor;
 };
 
-export const createMedia = async (folderPath: string, mediaFiles: MediaFiles, options?: { uploaderId: string }) => {
+export const createMedia = async (
+  folderPath: string,
+  mediaFiles: MediaFiles,
+  options?: { uploaderId: string }
+) => {
   const uploadResponse = await Promise.allSettled(
     mediaFiles.map((file) =>
-      storage.uploadMedia(folderPath, file.path, { resource_type: getResourceType(file.mimetype) })
+      storage.uploadMedia(folderPath, file.path, {
+        resource_type: getResourceType(file.mimetype),
+        tags: options?.uploaderId ? [options.uploaderId] : undefined,
+      })
     )
   );
 
