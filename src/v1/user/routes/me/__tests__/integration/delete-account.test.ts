@@ -2,11 +2,7 @@ import path from "node:path";
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
-import { env } from "@/configs/env.js";
-import { tryCatch } from "@/v1/lib/try-catch.js";
 import { testDeleteUserLoginForm } from "testing/seed.js";
-import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
-import { getUserByEmail } from "@/v1/user/service/user-service.js";
 import { app } from "v1/__mocks__/server.js";
 
 const userRequest = request.agent(app);
@@ -34,19 +30,11 @@ beforeAll(async () => {
     .set("Authorization", `Bearer ${accessToken}`)
     .attach("avatar", testFile);
 
-  await userRequest
+ await userRequest
     .post("/api/v1/tweets")
     .set("Authorization", `Bearer ${accessToken}`)
     .field("content", "test tweet :)")
-    .attach("medias", testFile);
-
-  return async () => {
-    const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
-
-    const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
-
-    await tryCatch(deleteFolder(mediaFolder));
-  };
+    .attach("media", testFile);
 });
 
 describe("DELETE /api/v1/users/me", () => {
@@ -54,15 +42,9 @@ describe("DELETE /api/v1/users/me", () => {
 
   describe("Success cases", () => {
     it("returns a status 204 (NO_CONTENT)", async () => {
-      const user = await getUserByEmail(testDeleteUserLoginForm.email);
-
       const res = await userRequest.delete(url).set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(204);
-
-      const avatarFolder = `${env.CLOUDINARY_ROOT_FOLDER}/avatars/${user?.id}`;
-
-      await tryCatch(deleteFolder(avatarFolder));
     });
   });
 
