@@ -4,6 +4,7 @@ import { userIdSchema } from "../../schema/user.js";
 import { getFollowers } from "../../api/get-followers.js";
 import { getFollowing } from "../../api/get-following.js";
 import { getUserTweets } from "../../api/get-tweets.js";
+import { getUserTweetMedia } from "../../api/get-media.js";
 
 import type { Router } from "express";
 
@@ -27,6 +28,13 @@ export const userIdGet = (router: Router) => {
     ZodParamValidation(userIdSchema),
     ZodQueryValidator(paginationQuerySchema),
     getUserTweets("userId")
+  );
+
+  router.get(
+    "/:userId/media",
+    ZodParamValidation(userIdSchema),
+    ZodQueryValidator(paginationQuerySchema),
+    getUserTweetMedia("userId")
   );
 
   return router;

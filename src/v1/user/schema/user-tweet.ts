@@ -90,3 +90,5 @@ export const userTweetSchema = z.object({
 export const userTweetsSchema = z.array(userTweetSchema);
 
 export const userTweetsPaginationSchema = paginationSchema.extend({ tweets: userTweetsSchema });
+
+export const userTweetMediaPaginationSchema = paginationSchema.extend({ media: z.array(tweetMedia) });
