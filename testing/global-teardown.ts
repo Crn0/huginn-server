@@ -3,6 +3,9 @@ import fs from "fs/promises";
 import { prisma } from "@/db/client/prisma.js";
 
 import { seedTestUser, seedUserMedia } from "./seed.js";
+import { env } from "@/configs/env.js";
+import { tryCatch } from "@/v1/lib/try-catch.js";
+import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
 
 const removeTempFiles = async () => {
   const tempDir = path.join(import.meta.dirname, "..", "src", "temp");
@@ -39,5 +42,11 @@ export default async () => {
         prisma.media.deleteMany(),
       ]),
     ]);
+
+    const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
+
+    const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
+
+    await tryCatch(deleteFolder(mediaFolder));
   };
 };
