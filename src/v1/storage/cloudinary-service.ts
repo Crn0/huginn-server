@@ -68,3 +68,22 @@ export const deleteMedia = async (
     throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
   }
 };
+
+export const deleteMediaByUploaderId = async (
+  uploaderId: string,
+  options: {
+    resource_type?: ResourceType;
+    type?: DeliveryType;
+    invalidate?: boolean;
+  } = { invalidate: true }
+) => {
+  try {
+    const res = await cloudinary.api.delete_resources_by_tag(uploaderId, options);
+
+    return res;
+  } catch (error) {
+    const err = error as UploadApiErrorResponse;
+
+    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
+  }
+};
