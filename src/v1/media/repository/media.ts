@@ -74,3 +74,14 @@ export const deleteMediaByIds = async (ids: string[]) => {
 
   return result;
 };
+
+export const deleteMediaByUploaderId = async (uploaderId: string) => {
+  const { error, data: result } = await tryCatch(
+    prisma.media.deleteMany({ where: { uploader: { id: uploaderId } } }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return result;
+};

@@ -113,7 +113,6 @@ export const getMediaByUploaderIdPagination = async (uploaderId: string, cursor:
   });
 };
 
-
 export const deleteMediaByTweetId = async (tweetId: string) => {
   const media = await mediaRepository.getMediaByTweetId(tweetId);
 
@@ -125,3 +124,9 @@ export const deleteMediaByTweetId = async (tweetId: string) => {
 
   return mediaRepository.deleteMediaByIds(idsToDelete);
 };
+
+export const deleteMediaByUploaderId = async (uploaderId: string) => {
+  await storage.deleteMediaByUploaderId(uploaderId)
+
+  return mediaRepository.deleteMediaByUploaderId(uploaderId)
+}
