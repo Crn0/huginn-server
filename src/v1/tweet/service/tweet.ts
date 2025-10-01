@@ -1,7 +1,7 @@
 import { env } from "@/configs/env.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
-import { createMedia, deleteMediaByTweetId } from "@/v1/media/service/media.js";
+import * as mediaService from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
@@ -21,7 +21,7 @@ const handleMediaUpload = async <T extends Partial<CreateTweet>>(
 
     const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/tweets/${today}`;
 
-    const uploadedMedia = await createMedia(mediaFolder, media, { uploaderId });
+    const uploadedMedia = await mediaService.createMedia(mediaFolder, media, { uploaderId });
 
     data.media = uploadedMedia;
   }
@@ -123,7 +123,7 @@ export const patchTweetById = async (id: string, DTO: PatchTweetDTO) =>
   tweetRepository.patchTweetById(id, DTO);
 
 export const deleteTweetById = async (id: string) => {
-  const { count: mediaCount } = await deleteMediaByTweetId(id);
+  const { count: mediaCount } = await mediaService.deleteMediaByTweetId(id);
 
   const tweet = await tweetRepository.deleteTweetById(id);
 
@@ -131,9 +131,7 @@ export const deleteTweetById = async (id: string) => {
 };
 
 export const deleteTweetsByAuthorId = async (authorId: string) => {
-  const tweets = await getTweetsByAuthorId(authorId);
-
-  await Promise.all(tweets.map(async (tweet) => deleteMediaByTweetId(tweet.id)));
+  await mediaService.deleteMediaByUploaderId(authorId);
 
   return tweetRepository.deleteTweetsByAuthorId(authorId);
 };
