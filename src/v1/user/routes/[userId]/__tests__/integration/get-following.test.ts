@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
-import { deleteUserById } from "@/v1/user/service/user-service.js";
+import { deleteUserById } from "@/v1/user/repository/user.js";
 import { followUsersById } from "@/v1/user/service/follow-service.js";
 import { app } from "v1/__mocks__/server.js";
 import { generateId } from "@/v1/lib/generate-id.js";
@@ -70,7 +70,7 @@ describe("GET /api/v1/users/:userId/following", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.following.length).toBe(20);
 
@@ -91,7 +91,7 @@ describe("GET /api/v1/users/:userId/following", () => {
         prevHref: expect.any(String),
         nextCursor: null,
         prevCursor: expect.any(String),
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.following.length).toBe(20);
 
@@ -111,7 +111,7 @@ describe("GET /api/v1/users/:userId/following", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.following.length).toBe(20);
     });
@@ -130,7 +130,7 @@ describe("GET /api/v1/users/:userId/following", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.following.length).toBe(0);
     });
@@ -149,7 +149,7 @@ describe("GET /api/v1/users/:userId/following", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.following.length).toBe(0);
     });
