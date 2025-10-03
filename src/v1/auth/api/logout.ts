@@ -8,7 +8,7 @@ import { cookieConfig } from "../configs/cookie.js";
 import type { Request, Response } from "express";
 
 export const logout = async (_req: Request, res: Response) => {
-  const refreshToken = res.locals?.refreshToken;
+  const refreshToken = res.locals['refreshToken'];
 
   res.clearCookie("refreshToken", cookieConfig);
 
