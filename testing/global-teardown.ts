@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "fs/promises";
 import { prisma } from "@/db/client/prisma.js";
 
-import { seedTestUser, seedUserMedia } from "./seed.js";
+import { seedTestUser } from "./seed.js";
 import { env } from "@/configs/env.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { deleteFolder } from "@/v1/storage/cloudinary-service.js";
@@ -27,7 +27,6 @@ const removeTempFiles = async () => {
 
 export default async () => {
   await seedTestUser();
-  await seedUserMedia();
 
   return async () => {
     await Promise.all([

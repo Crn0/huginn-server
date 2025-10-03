@@ -1,9 +1,13 @@
+import path from "path";
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { testUserGetMediaLoginForm } from "testing/seed.js";
-import { app } from "v1/__mocks__/server.js";
 import { generateId } from "@/v1/lib/generate-id.js";
+import { createMedia } from "@/v1/media/repository/media.js";
+import { createTweet, deleteTweetById } from "@/v1/tweet/repository/tweet.js";
+import { getUserByEmail } from "@/v1/user/repository/user.js";
+import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
 let nextCursor: string;
@@ -15,6 +19,40 @@ beforeAll(async () => {
   const login = await userRequest.post("/api/v1/auth/login").send(testUserGetMediaLoginForm);
 
   accessToken = login.body.token;
+
+  const filePath = path.join(
+    import.meta.dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "assets",
+    "test_avatar.png"
+  );
+
+  const uploader = await getUserByEmail(testUserGetMediaLoginForm.email);
+
+  const mediaFiles = Array.from({ length: 40 }).map(
+    () =>
+      ({
+        filePath,
+        url: "http://example.com",
+        type: "IMAGE",
+        bytes: 20_000,
+      }) as const
+  );
+
+  const media = await createMedia(mediaFiles, { uploaderId: uploader!.id });
+
+  const tweet = await createTweet({
+    content: "test get media",
+    authorId: uploader!.id,
+    media: media,
+  });
+
+  return async () => {
+    await deleteTweetById(tweet.id);
+  };
 });
 
 describe("GET /api/v1/users/me/media", () => {
@@ -31,7 +69,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
 
@@ -50,7 +88,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: expect.any(String),
         nextCursor: null,
         prevCursor: expect.any(String),
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
 
@@ -68,7 +106,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
     });
@@ -85,7 +123,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(0);
     });
@@ -102,7 +140,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(0);
     });

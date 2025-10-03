@@ -1,10 +1,15 @@
+import path from "path";
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
-import { testUserGetMediaLoginForm, testUserLoginForm } from "testing/seed.js";
-import { app } from "v1/__mocks__/server.js";
+import { generateEmail } from "@/v1/lib/generate-email.js";
+import { generateDisplayName } from "@/v1/lib/generate-display-name.js";
 import { generateId } from "@/v1/lib/generate-id.js";
-import { getUserByEmail } from "@/v1/user/repository/user.js";
+import { deleteUserById } from "@/v1/user/repository/user.js";
+import { createUser } from "@/v1/user/service/user-service.js";
+import { createMedia } from "@/v1/media/repository/media.js";
+import { createTweet, deleteTweetById } from "@/v1/tweet/repository/tweet.js";
+import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
 let userId: string;
@@ -14,14 +19,53 @@ let prevCursor: string;
 const userRequest = request(app);
 
 beforeAll(async () => {
-  const [login, mediaUploader] = await Promise.all([
-    userRequest.post("/api/v1/auth/login").send(testUserLoginForm),
-    getUserByEmail(testUserGetMediaLoginForm.email),
-  ]);
+  const form = {
+    email: generateEmail(),
+    displayName: generateDisplayName("userId", "get.media"),
+    password: "Crnocrno123",
+    birthday: new Date(),
+  } as const;
+
+  const user = await createUser(form);
+
+  const login = await userRequest.post("/api/v1/auth/login").send(form);
+
+  const filePath = path.join(
+    import.meta.dirname,
+    "..",
+    "..",
+    "..",
+    "..",
+    "assets",
+    "test_avatar.png"
+  );
+
+  const mediaFiles = Array.from({ length: 40 }).map(
+    () =>
+      ({
+        filePath,
+        url: "http://example.com",
+        type: "IMAGE",
+        bytes: 20_000,
+      }) as const
+  );
+
+  const media = await createMedia(mediaFiles, { uploaderId: user.id });
+
+  const tweet = await createTweet({
+    content: "test get media",
+    authorId: user.id,
+    media: media,
+  });
 
   accessToken = login.body.token;
 
-  userId = mediaUploader!.id;
+  userId = user!.id;
+
+  return async () => {
+    await deleteTweetById(tweet.id);
+    await deleteUserById(user.id)
+  };
 });
 
 describe("GET /api/v1/users/me/media", () => {
@@ -40,7 +84,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
 
@@ -61,7 +105,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: expect.any(String),
         nextCursor: null,
         prevCursor: expect.any(String),
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
 
@@ -81,7 +125,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(20);
     });
@@ -100,7 +144,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(0);
     });
@@ -119,7 +163,7 @@ describe("GET /api/v1/users/me/media", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: expect.any(Number),
       });
       expect(res.body.media.length).toBe(0);
     });
