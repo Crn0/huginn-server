@@ -8,7 +8,7 @@ export const readAccessToken = (req: Request, _res: Response, next: NextFunction
   const bearerHeader = req.headers.authorization;
 
   if (typeof bearerHeader !== "string") {
-    throw new AuthenticationError("Invalid or expired token");
+    return next()
   }
 
   const bearer = bearerHeader.split(" ");
