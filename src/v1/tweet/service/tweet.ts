@@ -4,10 +4,11 @@ import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
 import * as mediaService from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
-import type { CreateTweet, ReplyTweet } from "../types/repository.types.js";
+import type { CreateTweet, GetTweetsOption, ReplyTweet } from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
+import type { TweetFilter } from "../schema/tweet.js";
 
 const TWEETS_PAGE_SIZE = 20 as const;
 
@@ -27,6 +28,34 @@ const handleMediaUpload = async <T extends Partial<CreateTweet>>(
   }
 
   return data;
+};
+
+const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter: TweetFilter) => {
+  if (typeof option.where !== "object") {
+    option.where = {};
+  }
+
+  if (typeof filter.content === "string") {
+    option.where = {
+      ...option.where,
+      content: {
+        contains: filter.content,
+        mode: "insensitive",
+      },
+    };
+  }
+
+  if (userId && filter.where === "following") {
+    option.where = {
+      ...option.where,
+      author: {
+        id: { not: userId },
+        followedBy: { every: { id: userId } },
+      },
+    };
+  }
+
+  return option;
 };
 
 const normalizeHref = (data: unknown[], href: string, enabled: boolean) => {
@@ -70,6 +99,64 @@ export const getTweetById = async (id: string) => tweetRepository.getTweetById(i
 
 export const getTweetsByAuthorId = async (authorId: string) =>
   tweetRepository.getTweetsByAuthorId(authorId);
+
+export const getTweetsPagination = async (
+  userId: string | undefined,
+  query: { cursor: PaginationCursor; filter: TweetFilter }
+) => {
+  const { cursor, filter } = query;
+
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const options = buildFilter(
+    userId,
+    {
+      ...rest,
+      orderBy: [
+        {
+          createdAt: "desc",
+        } as const,
+        { id: "desc" } as const,
+      ],
+      distinct: ["id" as const],
+    },
+    filter
+  );
+
+  const [res, total] = await Promise.all([
+    tweetRepository.getTweets(options),
+    tweetRepository.getTweetsCount(),
+  ]);
+
+  const tweets =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextCursor = tweets.at?.(-1)?.id;
+  const prevCursor = tweets.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    res,
+    `/tweets?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    res,
+    `/tweets?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    tweets,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
+  });
+};
 
 export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: PaginationCursor) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
