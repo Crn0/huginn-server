@@ -33,7 +33,7 @@ describe("GET /api/v1/users/me", () => {
       expect(res.status).toBe(401);
       expect(res.body).toMatchObject({
         code: "AUTHENTICATION_ERROR",
-        message: "Invalid or expired token",
+        message: "Unauthenticated. Please login",
       });
     });
   });
