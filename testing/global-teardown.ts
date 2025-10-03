@@ -25,22 +25,23 @@ const removeTempFiles = async () => {
   );
 };
 
+const cleanUpDb = async () =>
+  prisma.$transaction([
+    prisma.userOIDCAccount.deleteMany(),
+    prisma.userProfile.deleteMany(),
+    prisma.tweet.deleteMany(),
+    prisma.user.deleteMany(),
+    prisma.blacklistedToken.deleteMany(),
+    prisma.authProvider.deleteMany(),
+    prisma.media.deleteMany(),
+  ]);
+
 export default async () => {
+  await cleanUpDb();
   await seedTestUser();
 
   return async () => {
-    await Promise.all([
-      removeTempFiles(),
-      prisma.$transaction([
-        prisma.userOIDCAccount.deleteMany(),
-        prisma.userProfile.deleteMany(),
-        prisma.tweet.deleteMany(),
-        prisma.user.deleteMany(),
-        prisma.blacklistedToken.deleteMany(),
-        prisma.authProvider.deleteMany(),
-        prisma.media.deleteMany(),
-      ]),
-    ]);
+    await Promise.all([removeTempFiles(), cleanUpDb()]);
 
     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"
 
