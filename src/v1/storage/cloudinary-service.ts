@@ -10,7 +10,10 @@ import {
   type ConfigAndUrlOptions,
 } from "v1/lib/cloudinary.js";
 
-export const getMediaUrl = (filePath: string, transformation?: TransformationOptions  | ConfigAndUrlOptions) =>
+export const getMediaUrl = (
+  filePath: string,
+  transformation?: TransformationOptions | ConfigAndUrlOptions
+) =>
   cloudinary.url(filePath, {
     transformation,
   });
@@ -32,7 +35,10 @@ export const uploadMedia = async (
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
+    throw new StorageError(
+      err.message ?? err["error"]?.message ?? "Something went wrong",
+      err.http_code ?? err["error"]?.http_code ?? 500
+    );
   }
 };
 
@@ -46,7 +52,10 @@ export const deleteFolder = async (path: string, options?: AdminApiOptions) => {
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
+    throw new StorageError(
+      err.message ?? err["error"]?.message ?? "Something went wrong",
+      err.http_code ?? err["error"]?.http_code ?? 500
+    );
   }
 };
 
@@ -65,7 +74,10 @@ export const deleteMedia = async (
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
+    throw new StorageError(
+      err.message ?? err["error"]?.message ?? "Something went wrong",
+      err.http_code ?? err["error"]?.http_code ?? 500
+    );
   }
 };
 
@@ -84,6 +96,9 @@ export const deleteMediaByUploaderId = async (
   } catch (error) {
     const err = error as UploadApiErrorResponse;
 
-    throw new StorageError(err.message ?? "Something went wrong", err.http_code ?? 500);
+    throw new StorageError(
+      err.message ?? err["error"]?.message ?? "Something went wrong",
+      err.http_code ?? err["error"]?.http_code ?? 500
+    );
   }
 };
