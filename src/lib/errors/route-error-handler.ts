@@ -5,6 +5,7 @@ import { ConflictError } from "./conflict-error.js";
 import { ForbiddenError } from "./forbidden-error.js";
 import { InternalServerError } from "./internal-server-error.js";
 import { NotFoundError } from "./notfound-error.js";
+import { StorageError } from "./storage-error.js";
 import { ValidationError } from "./validation-error.js";
 
 import type { Request, Response, NextFunction } from "express";
@@ -17,7 +18,8 @@ type AppError =
   | ForbiddenError
   | InternalServerError
   | NotFoundError
-  | ValidationError;
+  | ValidationError
+  | StorageError
 
 const formatError = <T extends { code: string; message: string }>(error: T) => ({
   code: error.code,
@@ -35,7 +37,8 @@ export const routeErrorHandler = (
     case "BAD_REQUEST_ERROR":
     case "FORBIDDEN_ERROR":
     case "INTERNAL_SERVER_ERROR":
-    case "NOT_FOUND_ERROR": {
+    case "NOT_FOUND_ERROR":
+    case "Storage_Error": {
       res.status(error.status).json(formatError(error));
       break;
     }
