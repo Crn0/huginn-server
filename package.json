@@ -6,8 +6,10 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "copy:src:generated": "cp -r ./src/generated ./dist/src",
+    "copy:src:temp": "cp -r ./src/temp ./dist/src",
+    "copy:dir": "npm run copy:src:temp && npm run copy:src:generated",
     "exe": "node ./dist/src/bin/www.js",
-    "start": "npm run build && npm run copy:src:generated && npm run exe",
+    "start": "npm run build && npm run copy:dir && npm run exe",
     "dev": "tsx watch ./src/bin/www.ts",
     "server": "DEBUG=app:* npm run dev",
     "prisma:init": "npx prisma init",
