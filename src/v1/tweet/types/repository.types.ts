@@ -7,7 +7,10 @@ export type TweetPaginationOption = Pick<
   "cursor" | "orderBy" | "skip" | "take"
 >;
 
-export type GetTweetsOption = Prisma.TweetFindManyArgs;
+export type GetTweetsOption = Pick<
+  Prisma.TweetFindManyArgs,
+  "where" | "cursor" | "orderBy" | "skip" | "take" | "distinct"
+>;
 
 export interface TweetMedia {
   type: TweetMediaType;
