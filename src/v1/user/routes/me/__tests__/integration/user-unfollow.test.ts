@@ -1,7 +1,6 @@
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
-import { generateId } from "@/v1/lib/generate-id.js";
 import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
