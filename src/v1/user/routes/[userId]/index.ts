@@ -4,8 +4,8 @@ import { userIdGet } from "./get.js";
 import type { Router } from "express";
 
 export const register = (router: Router) => {
-  router.use('/:userId', protectedRoute);
-  
+  router.use("/:userId", protectedRoute);
+
   userIdGet(router);
 
   return router;

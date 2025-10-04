@@ -12,7 +12,7 @@ type TransformError<TError> = (options: Identity<TError>) => TError;
 export function tryCatch<TResult, TError extends Error>(
   operation: () => TResult,
   transformError?: TransformError<TError>
-):OperationResult<TResult, TError>;
+): OperationResult<TResult, TError>;
 export function tryCatch<TResult, TError extends Error>(
   operation: Promise<TResult>,
   transformError?: TransformError<TError>

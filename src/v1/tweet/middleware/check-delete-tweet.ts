@@ -10,7 +10,7 @@ export const checkDeleteTweet = async (req: Request, _res: Response, next: NextF
   const user = { id: req.user!.id };
 
   const tweet = await getTweetById(tweetId);
-  
+
   const { error } = tryCatch(() => tweetPolicy.delete(user, tweet));
 
   if (error) throw error;

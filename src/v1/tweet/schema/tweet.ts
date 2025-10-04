@@ -4,13 +4,13 @@ import { profileMediaSchema } from "@/v1/lib/user-schema.js";
 import { SUPPORTED_FILE_TYPES } from "@/v1/tweet/constants/index.js";
 import { paginationSchema, paginationQuerySchema } from "@/v1/lib/pagination-schema.js";
 
-export const tweetWhereFilter = ['following'] as const
+export const tweetWhereFilter = ["following"] as const;
 
-export const MAX_CONTENT_FILTER_LENGTH = 1024 as const
+export const MAX_CONTENT_FILTER_LENGTH = 1024 as const;
 
 export type TweetId = z.infer<typeof tweetIdSchema>;
 
-export type TweetFilter = z.infer<typeof tweetQueryFilterSchema>
+export type TweetFilter = z.infer<typeof tweetQueryFilterSchema>;
 
 export type TweetVideoVariant = z.infer<typeof tweetVideoVariantSchema>;
 
@@ -28,7 +28,7 @@ export type Tweets = Tweet[];
 
 export type TweetPagination = z.infer<typeof tweetsPaginationSchema>;
 
-export type TweetQuery = z.infer<typeof tweetQuerySchema>
+export type TweetQuery = z.infer<typeof tweetQuerySchema>;
 
 export const TWEET_IMAGE_FORMAT_TYPES = SUPPORTED_FILE_TYPES.filter(
   (fileType) => fileType !== "video/mp4"
@@ -39,8 +39,8 @@ export const tweetIdSchema = z.object({
 });
 
 export const tweetQueryFilterSchema = z.object({
-  content: z.string({ error: "Invalid query"}).max(MAX_CONTENT_FILTER_LENGTH).optional(),
-  where: z.enum(tweetWhereFilter).optional()
+  content: z.string({ error: "Invalid query" }).max(MAX_CONTENT_FILTER_LENGTH).optional(),
+  where: z.enum(tweetWhereFilter).optional(),
 });
 
 export const tweetMediaType = z.enum(["IMAGE", "GIF", "VIDEO"]);
@@ -112,4 +112,4 @@ export const tweetsPaginationSchema = paginationSchema.extend({ tweets: tweetsSc
 
 export const tweetMediaPaginationSchema = paginationSchema.extend({ media: z.array(tweetMedia) });
 
-export const tweetQuerySchema = z.intersection(paginationQuerySchema, tweetQueryFilterSchema)
+export const tweetQuerySchema = z.intersection(paginationQuerySchema, tweetQueryFilterSchema);

@@ -1,6 +1,6 @@
-import z from 'zod'
+import z from "zod";
 
-import { profileMediaSchema } from '@/v1/lib/user-schema.js';
+import { profileMediaSchema } from "@/v1/lib/user-schema.js";
 
 export const followSchema = z.object({
   id: z.uuidv7({ error: "Invalid ID" }),

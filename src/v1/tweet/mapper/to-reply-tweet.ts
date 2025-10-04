@@ -17,7 +17,7 @@ export const toReplyTweet = ({ authorId, replyTo, content, media }: ReplyTweet) 
       },
     },
     media: {
-      connect: media.map(({id}) => ({ id })),
+      connect: media.map(({ id }) => ({ id })),
     },
   };
 

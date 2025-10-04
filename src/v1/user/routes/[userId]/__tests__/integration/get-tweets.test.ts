@@ -28,7 +28,7 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  userId = user.id
+  userId = user.id;
 
   await Promise.all(
     Array.from({ length: 40 }).map(async (_v, index) =>

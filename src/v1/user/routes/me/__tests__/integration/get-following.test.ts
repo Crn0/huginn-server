@@ -33,9 +33,9 @@ beforeAll(async () => {
   accessToken = login.body.token;
 
   const authUser = await getUserByEmail(testUserLoginForm.email);
-  const followIds = users.map(({id}) => id)
+  const followIds = users.map(({ id }) => id);
 
-  await followUsersById(authUser!.id, followIds)
+  await followUsersById(authUser!.id, followIds);
 
   return async () => {
     await Promise.all(users.map(async (user) => deleteUserById(user.id)));

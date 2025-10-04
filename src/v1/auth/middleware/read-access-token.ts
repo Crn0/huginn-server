@@ -8,7 +8,7 @@ export const readAccessToken = (req: Request, _res: Response, next: NextFunction
   const bearerHeader = req.headers.authorization;
 
   if (typeof bearerHeader !== "string") {
-    return next()
+    return next();
   }
 
   const bearer = bearerHeader.split(" ");

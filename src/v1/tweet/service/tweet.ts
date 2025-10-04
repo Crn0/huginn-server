@@ -15,7 +15,7 @@ const TWEETS_PAGE_SIZE = 20 as const;
 const handleMediaUpload = async <T extends Partial<CreateTweet>>(
   data: T,
   media: CreateTweetDTO["media"],
-  uploaderId: string,
+  uploaderId: string
 ) => {
   if (media?.length) {
     const today = new Date().toISOString().split("T")[0]; // e.g. "2025-09-17"

@@ -24,10 +24,10 @@ export const toUserTweetsResponse = (
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 
-  const parsedData = userTweetsPaginationSchema.safeParse({...props, tweets});
+  const parsedData = userTweetsPaginationSchema.safeParse({ ...props, tweets });
 
   if (!parsedData.success) {
-    debug("issues", parsedData.error.issues)
+    debug("issues", parsedData.error.issues);
     throw new InternalServerError("Something went wrong. Try again later");
   }
 

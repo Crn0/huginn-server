@@ -10,7 +10,7 @@ export const checkPatchTweet = async (req: Request, _res: Response, next: NextFu
   const user = { id: req.user!.id };
 
   const tweet = await getTweetById(tweetId);
-  
+
   const { error } = tryCatch(() => tweetPolicy.patch(user, tweet));
 
   if (error) throw error;

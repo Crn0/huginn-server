@@ -16,7 +16,7 @@ export const readRefreshToken = (req: Request, res: Response, next: NextFunction
     throw new AuthenticationError("Invalid or expired token");
   }
 
-  res.locals['refreshToken'] = verifiedToken;
+  res.locals["refreshToken"] = verifiedToken;
 
   next();
 };

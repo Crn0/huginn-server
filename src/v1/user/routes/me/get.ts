@@ -11,13 +11,13 @@ import type { Router } from "express";
 export const meGet = (router: Router) => {
   router.get("/me", getAuthUser);
 
-  router.get("/me/followers", ZodQueryValidator(paginationQuerySchema), getFollowers('me'));
+  router.get("/me/followers", ZodQueryValidator(paginationQuerySchema), getFollowers("me"));
 
-  router.get("/me/following", ZodQueryValidator(paginationQuerySchema), getFollowing('me'));
+  router.get("/me/following", ZodQueryValidator(paginationQuerySchema), getFollowing("me"));
 
-  router.get("/me/tweets", ZodQueryValidator(paginationQuerySchema), getUserTweets('me'))
+  router.get("/me/tweets", ZodQueryValidator(paginationQuerySchema), getUserTweets("me"));
 
-  router.get("/me/media", ZodQueryValidator(paginationQuerySchema), getUserTweetMedia('me'))
+  router.get("/me/media", ZodQueryValidator(paginationQuerySchema), getUserTweetMedia("me"));
 
   return router;
 };

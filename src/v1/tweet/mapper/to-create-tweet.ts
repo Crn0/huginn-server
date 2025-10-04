@@ -12,7 +12,7 @@ export const toCreateTweet = ({ authorId, content, media }: CreateTweet) => {
       },
     },
     media: {
-      connect: media.map(({id}) => ({ id })),
+      connect: media.map(({ id }) => ({ id })),
     },
   };
 

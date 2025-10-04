@@ -43,7 +43,7 @@ describe("DELETE /api/v1/users/me/following/:followId", () => {
       expect(res.status).toBe(204);
     });
 
-   it("returns 204 even if the user is not currently followed", async () => {
+    it("returns 204 even if the user is not currently followed", async () => {
       const url = `${baseUrl}/${followId}`;
 
       const res = await userRequest.delete(url).set("Authorization", `Bearer ${accessToken}`);
@@ -53,7 +53,6 @@ describe("DELETE /api/v1/users/me/following/:followId", () => {
   });
 
   describe("Failure cases", () => {
-
     describe("Validation errors", () => {
       it("returns a validation error when followId is invalid", async () => {
         const url = `${baseUrl}/invalid-follow-id`;

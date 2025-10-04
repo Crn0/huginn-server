@@ -7,7 +7,7 @@ import { register as userIdRoute } from "./[userId]/index.js";
 
 const router = Router();
 
-router.use(readAccessToken)
+router.use(readAccessToken);
 
 meRoute(router);
 

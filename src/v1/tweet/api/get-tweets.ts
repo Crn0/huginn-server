@@ -7,14 +7,14 @@ import type { RequestWithPagination } from "@/v1/types/express.js";
 import type { TweetQuery } from "../schema/tweet.js";
 
 export const getTweets = async (req: RequestWithPagination, res: Response) => {
-  const userId = req.user?.id 
+  const userId = req.user?.id;
 
-  const query: TweetQuery = res.locals['query']
+  const query: TweetQuery = res.locals["query"];
 
   const filter = {
     content: query.content,
-    where: query.where
-  } as const
+    where: query.where,
+  } as const;
 
   const cursor = {
     before: query.before,

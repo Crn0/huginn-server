@@ -30,7 +30,7 @@ beforeAll(async () => {
     .set("Authorization", `Bearer ${accessToken}`)
     .attach("avatar", testFile);
 
- await userRequest
+  await userRequest
     .post("/api/v1/tweets")
     .set("Authorization", `Bearer ${accessToken}`)
     .field("content", "test tweet :)")

@@ -63,9 +63,13 @@ export const createMedia = async (
 export const getMediaByTweetId = async (tweetId: string) =>
   mediaRepository.getMediaByTweetId(tweetId);
 
-export const getMediaCountByUploaderId = async (uploaderId: string) => mediaRepository.getMediaCountByUploaderId(uploaderId);
+export const getMediaCountByUploaderId = async (uploaderId: string) =>
+  mediaRepository.getMediaCountByUploaderId(uploaderId);
 
-export const getMediaByUploaderIdPagination = async (uploaderId: string, cursor: PaginationCursor) => {
+export const getMediaByUploaderIdPagination = async (
+  uploaderId: string,
+  cursor: PaginationCursor
+) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: MEDIA_PAGE_SIZE });
 
   const options = {
@@ -126,7 +130,7 @@ export const deleteMediaByTweetId = async (tweetId: string) => {
 };
 
 export const deleteMediaByUploaderId = async (uploaderId: string) => {
-  await storage.deleteMediaByUploaderId(uploaderId)
+  await storage.deleteMediaByUploaderId(uploaderId);
 
-  return mediaRepository.deleteMediaByUploaderId(uploaderId)
-}
+  return mediaRepository.deleteMediaByUploaderId(uploaderId);
+};

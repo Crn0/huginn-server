@@ -7,8 +7,8 @@ import { mePost } from "./post.js";
 import type { Router } from "express";
 
 export const register = (router: Router) => {
-  router.use('/me', protectedRoute);
-  
+  router.use("/me", protectedRoute);
+
   meGet(router);
   mePost(router);
   mePatch(router);

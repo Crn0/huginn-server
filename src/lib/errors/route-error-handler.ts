@@ -19,7 +19,7 @@ type AppError =
   | InternalServerError
   | NotFoundError
   | ValidationError
-  | StorageError
+  | StorageError;
 
 const formatError = <T extends { code: string; message: string }>(error: T) => ({
   code: error.code,

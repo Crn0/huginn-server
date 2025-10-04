@@ -64,7 +64,7 @@ beforeAll(async () => {
 
   return async () => {
     await deleteTweetById(tweet.id);
-    await deleteUserById(user.id)
+    await deleteUserById(user.id);
   };
 });
 

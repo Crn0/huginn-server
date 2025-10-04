@@ -141,7 +141,7 @@ describe("GET /api/v1/tweets", () => {
       it("filters the result based on the query param 'content' ", async () => {
         const createdTweet = await createTweet({ authorId, content: "hello world foo", media: [] });
 
-        const content = "foo" as const
+        const content = "foo" as const;
 
         const res = await userRequest
           .get(`${url}?content=${content}`)
@@ -172,7 +172,11 @@ describe("GET /api/v1/tweets", () => {
         const where = "following" as const;
 
         const [createdTweet] = await Promise.all([
-          createTweet({ authorId: createdUser.id, content: `created by: ${createdUser.username}`, media: [] }),
+          createTweet({
+            authorId: createdUser.id,
+            content: `created by: ${createdUser.username}`,
+            media: [],
+          }),
           followUserById(authorId, createdUser.id),
         ]);
 
