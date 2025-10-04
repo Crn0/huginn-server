@@ -10,6 +10,10 @@ type Operation<T> = Promise<T> | (() => Promise<T>) | (() => T);
 type TransformError<TError> = (options: Identity<TError>) => TError;
 
 export function tryCatch<TResult, TError extends Error>(
+  operation: () => TResult,
+  transformError?: TransformError<TError>
+):OperationResult<TResult, TError>;
+export function tryCatch<TResult, TError extends Error>(
   operation: Promise<TResult>,
   transformError?: TransformError<TError>
 ): Promise<OperationResult<TResult, TError>>;
