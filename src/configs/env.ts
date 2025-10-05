@@ -4,10 +4,9 @@ import * as z from "zod";
 const createEnv = () => {
   const EnvSchema = z.object({
     NODE_ENV: z.enum(["dev", "prod", "test"]).optional().default("dev"),
-    CORS_ORIGINS: z.preprocess(
-      (v) => (typeof v === "string" ? JSON.parse(v) : v),
-      z.array(z.string())
-    ),
+    CORS_ORIGINS: z
+      .preprocess((v) => (typeof v === "string" ? JSON.parse(v) : v), z.array(z.string()))
+      .default(["http://localhost:5173"]),
     DATABASE_URL: z.string(),
     JWT_SECRET: z.string().catch("secret"),
     TRANSACTION_MAX_TIMEOUT: z.coerce.number().catch(20_000),
@@ -43,8 +42,8 @@ const createEnv = () => {
     throw new Error(
       `Invalid env provided.
 The following variables are missing or invalid:
-${Object.entries(z.treeifyError(parsedEnv.error))
-  .map(([k, v]) => `- ${k}: ${v}`)
+${Object.entries(z.treeifyError(parsedEnv.error).properties!)
+  .map(([k, v]) => `- ${k}: ${v.errors.join(",")}`)
   .join("\n")}
 `
     );
