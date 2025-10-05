@@ -15,9 +15,11 @@ jobs:
     environment: production
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.19.0
       - name: Install dependencies
         run: npm install
       - name: Apply all pending migrations to the database
