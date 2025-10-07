@@ -93,11 +93,8 @@ export const getTweets = async (option?: GetTweetsOption) => {
   return tweets;
 };
 
-export const getTweetsCount = async () => {
-  const { error, data: count } = await tryCatch(
-    prisma.tweet.count({ where: { deletedAt: null } }),
-    dbErrorHandler
-  );
+export const getTweetsCount = async (where: GetTweetsOption["where"] = { deletedAt: null }) => {
+  const { error, data: count } = await tryCatch(prisma.tweet.count({ where }), dbErrorHandler);
 
   if (error) throw error;
 
