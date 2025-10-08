@@ -85,7 +85,7 @@ export const ZodParamValidation =
       req.params = z.parse(schema, req.params);
       next();
     } catch (err) {
-      let message = "Query Format Error";
+      let message = "Param Format Error";
       let details: z.core.$ZodIssue[] = [];
 
       if (err instanceof z.ZodError) {
