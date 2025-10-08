@@ -4,7 +4,7 @@ import { env } from "@/configs/env.js";
 import { prisma } from "@/db/client/prisma.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
-import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
+import { EMAIL_CONFLICT, USERNAME_CONFLICT } from "@/v1/constants/error-codes.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
@@ -107,8 +107,19 @@ export const getAuthUser = async (id: string) => {
 export const isUsernameAvailable = async (username: string) =>
   userRepository.isUsernameAvailable(username);
 
-export const patchUsernameById = async (id: string, username: string) =>
-  userRepository.patchUsernameById(id, username);
+export const patchUsernameById = async (id: string, username: string) => {
+  const user = await userRepository.getUserByUsername(username);
+
+  if (user && user?.id !== id) {
+    throw new ConflictError("Unique constraint violation", {
+      path: ["username"],
+      code: USERNAME_CONFLICT,
+      message: "Username has already been taken.",
+    });
+  }
+
+  return userRepository.patchUsernameById(id, username);
+};
 
 export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO) => {
   const { avatar, banner, ...rest } = DTO;
