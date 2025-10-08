@@ -2,21 +2,16 @@ import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { generateId } from "@/v1/lib/generate-id.js";
-import { generateEmail } from "@/v1/lib/generate-email.js";
-import { generateDisplayName } from "@/v1/lib/generate-display-name.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { createTweet } from "@/v1/tweet/service/tweet.js";
-import { followUserById } from "@/v1/user/service/follow-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
 import {
-  deleteTweetById,
   deleteTweetsByAuthorId,
   replyTweet,
 } from "@/v1/tweet/repository/tweet.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
-let authorId: string;
 let parentTweetId: string;
 let nextCursor: string;
 let prevCursor: string;
@@ -49,7 +44,6 @@ beforeAll(async () => {
   );
 
   accessToken = login.body.token;
-  authorId = user.id;
   parentTweetId = parentTweet.id;
 
   return async () => {
