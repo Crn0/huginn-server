@@ -12,6 +12,7 @@ model Tweet {
   replyToPk Int?    @map("reply_pk")
   replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
   replies   Tweet[] @relation(name: "PostReplies")
+  likes     Like[]
 
   @@map("Tweets")
 }

@@ -1,0 +1,11 @@
+model Like {
+  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+
+  userPk  Int   @map("user_pk")
+  user    User  @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  tweetPk Int   @map("tweet_pk")
+  tweet   Tweet @relation(fields: [tweetPk], references: [primaryKey], onDelete: Cascade)
+
+  @@id([userPk, tweetPk])
+  @@map("Likes")
+}

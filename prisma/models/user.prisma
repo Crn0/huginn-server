@@ -16,6 +16,7 @@ model User {
   followedBy User[]             @relation("UserFollowers")
   following  User[]             @relation("UserFollowers")
   media      Media[]
+  likes      Like[]
 
   @@map("Users")
 }

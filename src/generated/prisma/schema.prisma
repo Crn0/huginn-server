@@ -30,6 +30,18 @@ enum TokenType {
   ActionToken  @map("action_token")
 }
 
+model Like {
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  userPk  Int   @map("user_pk")
+  user    User  @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  tweetPk Int   @map("tweet_pk")
+  tweet   Tweet @relation(fields: [tweetPk], references: [primaryKey], onDelete: Cascade)
+
+  @@id([userPk, tweetPk])
+  @@map("Likes")
+}
+
 model Media {
   primaryKey Int       @id @default(autoincrement()) @map("primary_key")
   id         String    @unique @default(uuid(7)) @db.Uuid
@@ -90,6 +102,7 @@ model Tweet {
   replyToPk Int?    @map("reply_pk")
   replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
   replies   Tweet[] @relation(name: "PostReplies")
+  likes     Like[]
 
   @@map("Tweets")
 }
@@ -128,6 +141,7 @@ model User {
   followedBy User[]             @relation("UserFollowers")
   following  User[]             @relation("UserFollowers")
   media      Media[]
+  likes      Like[]
 
   @@map("Users")
 }

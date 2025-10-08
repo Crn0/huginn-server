@@ -139,6 +139,12 @@ exports.Prisma.BlacklistedTokenScalarFieldEnum = {
   userPk: 'userPk'
 };
 
+exports.Prisma.LikeScalarFieldEnum = {
+  createdAt: 'createdAt',
+  userPk: 'userPk',
+  tweetPk: 'tweetPk'
+};
+
 exports.Prisma.MediaScalarFieldEnum = {
   primaryKey: 'primaryKey',
   id: 'id',
@@ -235,6 +241,7 @@ exports.AccountLevel = exports.$Enums.AccountLevel = {
 exports.Prisma.ModelName = {
   AuthProvider: 'AuthProvider',
   BlacklistedToken: 'BlacklistedToken',
+  Like: 'Like',
   Media: 'Media',
   Tweet: 'Tweet',
   UserProfile: 'UserProfile',
