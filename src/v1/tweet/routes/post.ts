@@ -6,6 +6,7 @@ import { tweetIdSchema } from "../schema/tweet.js";
 import { tweetMediaProcessor } from "../middleware/tweet-media-processor.js";
 import { createTweet } from "../api/create-tweet.js";
 import { replyTweet } from "../api/reply-tweet.js";
+import { likeTweet } from "../api/like-tweet.js";
 
 import type { Router } from "express";
 
@@ -19,6 +20,8 @@ export const register = (router: Router) => {
     ZodParamValidation(tweetIdSchema),
     replyTweet
   );
+
+  router.post("/:tweetId/likes", ZodParamValidation(tweetIdSchema), likeTweet);
 
   return router;
 };
