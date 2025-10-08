@@ -75,7 +75,6 @@ export const userTweetSchema = z.object({
   author: authorSchema,
   media: z.array(tweetMedia),
   replyTo: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
-  replies: z.array(z.object({ id: z.uuidv7({ error: "Invalid ID" }) })),
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
   updatedAt: z.coerce
     .date()
@@ -85,6 +84,7 @@ export const userTweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
+  _count: z.object({ replies: z.coerce.number() })
 });
 
 export const userTweetsSchema = z.array(userTweetSchema);
