@@ -1,11 +1,19 @@
-import { ZodQueryValidator } from "@/v1/lib/validator.js";
-import { tweetQuerySchema } from "../schema/tweet.js";
+import { ZodParamValidation, ZodQueryValidator } from "@/v1/lib/validator.js";
+import { tweetIdSchema, tweetQuerySchema } from "../schema/tweet.js";
 import { getTweets } from "../api/get-tweets.js";
+import { getReplies } from "../api/get-replies.js";
 
 import type { Router } from "express";
 
 export const register = (router: Router) => {
   router.get("/", ZodQueryValidator(tweetQuerySchema), getTweets);
+
+  router.get(
+    "/:tweetId/replies",
+    ZodParamValidation(tweetIdSchema),
+    ZodQueryValidator(tweetQuerySchema),
+    getReplies
+  );
 
   return router;
 };
