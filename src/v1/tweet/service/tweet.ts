@@ -112,6 +112,7 @@ export const getTweetsPagination = async (
     userId,
     {
       ...rest,
+      where: { deletedAt: null },
       orderBy: [
         {
           createdAt: "desc",
@@ -137,13 +138,13 @@ export const getTweetsPagination = async (
   const prevCursor = tweets.at?.(0)?.id;
 
   const normalizedNextHref = normalizeHref(
-    res,
+    tweets,
     `/tweets?after=${nextCursor}`,
     direction === "backward" || hasMore
   );
 
   const normalizedPrevHref = normalizeHref(
-    res,
+    tweets,
     `/tweets?before=${prevCursor}`,
     direction === "forward" || (direction === "backward" && hasMore)
   );
@@ -163,13 +164,14 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
 
   const options = {
     ...rest,
+    where: { deletedAt: null },
     orderBy: [
       {
         createdAt: "desc",
       } as const,
       { id: "desc" } as const,
     ],
-  };
+  } satisfies GetTweetsOption;
 
   const [res, total] = await Promise.all([
     tweetRepository.getTweetsByAuthorId(authorId, options),
@@ -185,13 +187,13 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   const prevCursor = tweets.at?.(0)?.id;
 
   const normalizedNextHref = normalizeHref(
-    res,
+    tweets,
     `/tweets?after=${nextCursor}`,
     direction === "backward" || hasMore
   );
 
   const normalizedPrevHref = normalizeHref(
-    res,
+    tweets,
     `/tweets?before=${prevCursor}`,
     direction === "forward" || (direction === "backward" && hasMore)
   );
