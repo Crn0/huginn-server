@@ -1,24 +1,27 @@
 import { Prisma } from "@/generated/prisma/index.js";
-import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { BadRequestError } from "@/lib/errors/bad-request-error.js";
 
-const prismaError = (error: Prisma.PrismaClientKnownRequestError) => {
-  if (error.code === "P2023") {
-    return new BadRequestError("Invalid cursor");
-  }
+import type { ErrorInstance } from "../types/errors.js";
 
-  if (error.code === "P2025") {
-    const model = error?.meta?.['modelName']
+type ErrorCode = "P2002" | "P2023" | "P2025";
 
-    return model === "User" ? new NotFoundError("User not found.") : error
-  }
-
-  return error;
-};
-
-export const dbErrorHandler = <T extends Error>(error: T) => {
+export function dbErrorHandler<T extends Error>(
+  error: T,
+  code: ErrorCode,
+  newError: ErrorInstance
+): ErrorInstance;
+export function dbErrorHandler<T extends Error>(error: T): T;
+export function dbErrorHandler<T extends Error>(
+  error: T,
+  code?: ErrorCode,
+  newError?: ErrorInstance
+) {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    return prismaError(error);
+    if (error.code === code) return newError;
+
+    if (error.code === "P2023") {
+      return new BadRequestError("Invalid cursor");
+    }
   }
 
   return error;
