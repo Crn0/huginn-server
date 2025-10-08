@@ -4,8 +4,6 @@ import { env } from "@/configs/env.js";
 import { prisma } from "@/db/client/prisma.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
-import { EMAIL_CONFLICT, USERNAME_CONFLICT } from "@/v1/constants/error-codes.js";
-import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
@@ -34,14 +32,6 @@ const uploadProfileMedia = async (folder: string, mediaPath?: string) => {
 };
 
 export const createUser = async (DTO: CreateUserDTO) => {
-  if (!(await userRepository.isEmailAvailable(DTO.email))) {
-    throw new ConflictError("Unique constraint violation", {
-      path: ["email"],
-      code: EMAIL_CONFLICT,
-      message: "Email has already been taken.",
-    });
-  }
-
   let username: string;
   let retry = 0;
 
@@ -107,19 +97,7 @@ export const getAuthUser = async (id: string) => {
 export const isUsernameAvailable = async (username: string) =>
   userRepository.isUsernameAvailable(username);
 
-export const patchUsernameById = async (id: string, username: string) => {
-  const user = await userRepository.getUserByUsername(username);
-
-  if (user && user?.id !== id) {
-    throw new ConflictError("Unique constraint violation", {
-      path: ["username"],
-      code: USERNAME_CONFLICT,
-      message: "Username has already been taken.",
-    });
-  }
-
-  return userRepository.patchUsernameById(id, username);
-};
+export const patchUsernameById = async (id: string, username: string) => userRepository.patchUsernameById(id, username);
 
 export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO) => {
   const { avatar, banner, ...rest } = DTO;
@@ -185,7 +163,7 @@ export const deleteUserById = async (id: string) => {
         prisma.user.delete({
           where: { id },
         }),
-        dbErrorHandler
+        (e) => dbErrorHandler(e, "P2025", new NotFoundError("User not found."))
       );
 
       if (userError) throw userError;

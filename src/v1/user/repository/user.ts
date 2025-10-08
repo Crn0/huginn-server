@@ -1,5 +1,8 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
+import { ConflictError } from "@/lib/errors/conflict-error.js";
+import { EMAIL_CONFLICT, USERNAME_CONFLICT } from "@/v1/constants/error-codes.js";
 import {
   createUserOptions,
   deleteUserOptions,
@@ -29,7 +32,16 @@ export const createUser = async (data: CreateUser) => {
         },
       },
     }),
-    dbErrorHandler
+    (e) =>
+      dbErrorHandler(
+        e,
+        "P2002",
+        new ConflictError("Unique constraint violation", {
+          path: ["email"],
+          code: EMAIL_CONFLICT,
+          message: "Email has already been taken.",
+        })
+      )
   );
 
   if (error) throw error;
@@ -103,7 +115,16 @@ export const patchUsernameById = async (id: string, username: string) => {
       where: { id },
       data: { username },
     }),
-    dbErrorHandler
+    (e) =>
+      dbErrorHandler(
+        e,
+        "P2002",
+        new ConflictError("Unique constraint violation", {
+          path: ["username"],
+          code: USERNAME_CONFLICT,
+          message: "Username has already been taken.",
+        })
+      )
   );
 
   if (error) throw error;
@@ -139,7 +160,7 @@ export const deleteUserById = async (id: string) => {
       ...deleteUserOptions,
       where: { id },
     }),
-    dbErrorHandler
+    (e) => dbErrorHandler(e, "P2025", new NotFoundError("User not found."))
   );
 
   if (error) throw error;

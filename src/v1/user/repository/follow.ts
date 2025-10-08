@@ -1,5 +1,6 @@
 import { prisma } from "@/db/client/prisma.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { getOptions, insertOptions } from "./follow-options.js";
 
@@ -16,7 +17,7 @@ export const followUserById = async (userId: string, followId: string) => {
         },
       },
     }),
-    dbErrorHandler
+    (e) => dbErrorHandler(e, "P2025", new NotFoundError("User not found."))
   );
 
   if (error) throw error;
