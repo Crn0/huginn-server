@@ -36,7 +36,7 @@ export const replyTweetOptions = {
 export const getTweetOptions = {
   include: {
     ...baseOptions.include,
-    _count: { select: { replies: { where: { deletedAt: null } } } }
+    _count: { select: { replies: { where: { deletedAt: null } } } },
   },
 } satisfies Prisma.TweetDefaultArgs;
 

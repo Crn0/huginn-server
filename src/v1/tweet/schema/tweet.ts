@@ -103,7 +103,7 @@ export const tweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
-  _count: z.object({ replies: z.coerce.number() })
+  _count: z.object({ replies: z.coerce.number() }),
 });
 
 export const tweetsSchema = z.array(tweetSchema);
