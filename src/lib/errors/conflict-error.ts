@@ -1,10 +1,16 @@
 import { CustomError, type CustomErrorOptions } from "./custom-error.js";
 
-type ErrorField = {
-  code: string;
-  message: string;
-  path: string[];
-};
+type ErrorField =
+  | {
+      code: string;
+      message: string;
+      path: string[];
+    }
+  | {
+      code: string;
+      message: string;
+      entity: string;
+    };
 
 export type ConflictErrorOptions = Omit<CustomErrorOptions, "status" | "code">;
 
