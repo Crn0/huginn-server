@@ -54,7 +54,7 @@ export const getTweetById = async (id: string) => {
   const { error, data: tweet } = await tryCatch(
     prisma.tweet.findUnique({
       ...getTweetOptions,
-      where: { id },
+      where: { id, deletedAt: null },
     }),
     dbErrorHandler
   );
