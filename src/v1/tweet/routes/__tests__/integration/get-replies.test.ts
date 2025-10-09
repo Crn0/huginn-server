@@ -5,10 +5,7 @@ import { generateId } from "@/v1/lib/generate-id.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { createTweet } from "@/v1/tweet/service/tweet.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
-import {
-  deleteTweetsByAuthorId,
-  replyTweet,
-} from "@/v1/tweet/repository/tweet.js";
+import { deleteTweetsByAuthorId, replyTweet } from "@/v1/tweet/repository/tweet.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;

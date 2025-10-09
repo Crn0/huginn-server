@@ -65,9 +65,7 @@ describe("POST /api/v1/tweets", () => {
       it("returns a Validation error when the tweetId is invalid", async () => {
         const url = `${baseUrl}/invalid-tweet-id/likes` as const;
 
-        const res = await userRequest
-          .post(url)
-          .set("Authorization", `Bearer ${accessToken}`);
+        const res = await userRequest.post(url).set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
         expect(res.body).toMatchObject({
@@ -122,9 +120,7 @@ describe("DELETE /api/v1/tweets", () => {
       it("returns a Validation error when the tweetId is invalid", async () => {
         const url = `${baseUrl}/invalid-tweet-id/likes` as const;
 
-        const res = await userRequest
-          .delete(url)
-          .set("Authorization", `Bearer ${accessToken}`);
+        const res = await userRequest.delete(url).set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
         expect(res.body).toMatchObject({

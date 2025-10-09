@@ -1,5 +1,5 @@
 model Like {
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
   userPk  Int   @map("user_pk")
   user    User  @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
