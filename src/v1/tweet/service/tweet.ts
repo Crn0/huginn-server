@@ -150,7 +150,7 @@ export const getTweetsPagination = async (
   );
 
   return Object.freeze({
-    tweets,
+    data: tweets,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
@@ -208,7 +208,7 @@ export const getRepliesPagination = async (
   );
 
   return Object.freeze({
-    replies,
+    data: replies,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
@@ -257,7 +257,7 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   );
 
   return Object.freeze({
-    tweets,
+    data:tweets,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
@@ -265,6 +265,73 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
     total,
   });
 };
+
+export const getLikedTweetsPaginationByUserId = async (
+  userId: string,
+  query: { cursor: PaginationCursor }
+) => {
+  const { cursor } = query;
+
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+    where: {
+      deletedAt: null,
+      likes: { 
+        every: {
+          user: { id: userId }
+        }
+      }
+    },
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+    distinct: ["id" as const],
+  } satisfies GetTweetsOption;
+
+  const [res, total] = await Promise.all([
+    tweetRepository.getTweets(options),
+    tweetRepository.getTweetsCount({ deletedAt: null,       likes: { 
+        every: {
+          user: { id: userId }
+        }
+      } }),
+  ]);
+
+  const tweets =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextCursor = tweets.at?.(-1)?.id;
+  const prevCursor = tweets.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    tweets,
+    `/likes?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    tweets,
+    `/likes?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: tweets,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
+  });
+};
+
 
 export const patchTweetById = async (id: string, DTO: PatchTweetDTO) =>
   tweetRepository.patchTweetById(id, DTO);

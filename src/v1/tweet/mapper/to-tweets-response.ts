@@ -9,7 +9,7 @@ import { transformProfileMedia } from "@/v1/user/mapper/transform-profile-media.
 const debug = createDebug("user:mapper:toTweetsResponse");
 
 export const toTweetsResponse = (props: Awaited<ReturnType<typeof getTweetsPagination>>) => {
-  const tweets = props.tweets.map((tweet) => ({
+  const tweets = props.data.map((tweet) => ({
     ...tweet,
     author: {
       ...tweet.author,
@@ -22,7 +22,7 @@ export const toTweetsResponse = (props: Awaited<ReturnType<typeof getTweetsPagin
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 
-  const parsedData = tweetsPaginationSchema.safeParse({ ...props, tweets });
+  const parsedData = tweetsPaginationSchema.safeParse({ ...props, data: tweets });
 
   if (!parsedData.success) {
     debug("issues", parsedData.error.issues);

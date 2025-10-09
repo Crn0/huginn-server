@@ -11,7 +11,7 @@ const debug = createDebug("user:mapper:toUserTweetsResponse");
 export const toUserTweetsResponse = (
   props: Awaited<ReturnType<typeof getTweetsByAuthorIdPagination>>
 ) => {
-  const tweets = props.tweets.map((tweet) => ({
+  const tweets = props.data.map((tweet) => ({
     ...tweet,
     author: {
       ...tweet.author,
@@ -24,7 +24,7 @@ export const toUserTweetsResponse = (
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 
-  const parsedData = userTweetsPaginationSchema.safeParse({ ...props, tweets });
+  const parsedData = userTweetsPaginationSchema.safeParse({ ...props, data: tweets });
 
   if (!parsedData.success) {
     debug("issues", parsedData.error.issues);

@@ -21,7 +21,7 @@ const userRequest = request.agent(app);
 beforeAll(async () => {
   const form = {
     email: "gettweets.post@gettweets.com",
-    displayName: "get.tweets",
+    displayName: "get.data",
     password: "Crnocrno123",
     birthday: new Date(),
   } as const;
@@ -54,15 +54,15 @@ describe("GET /api/v1/tweets", () => {
         const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(20);
+        expect(res.body.data.length).toBe(20);
 
         nextCursor = res.body.nextCursor;
       });
@@ -73,15 +73,15 @@ describe("GET /api/v1/tweets", () => {
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(20);
+        expect(res.body.data.length).toBe(20);
 
         prevCursor = res.body.prevCursor;
       });
@@ -91,15 +91,15 @@ describe("GET /api/v1/tweets", () => {
           .get(`${url}?before=${prevCursor}`)
           .set("Authorization", `Bearer ${accessToken}`);
 
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(20);
+        expect(res.body.data.length).toBe(20);
       });
 
       it("returns empty tweets and null pagination fields for an invalid 'after' cursor", async () => {
@@ -108,15 +108,15 @@ describe("GET /api/v1/tweets", () => {
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(0);
+        expect(res.body.data.length).toBe(0);
       });
 
       it("returns empty tweets and null pagination fields for an invalid 'before' cursor", async () => {
@@ -125,15 +125,15 @@ describe("GET /api/v1/tweets", () => {
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(0);
+        expect(res.body.data.length).toBe(0);
       });
     });
 
@@ -148,15 +148,15 @@ describe("GET /api/v1/tweets", () => {
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(1);
+        expect(res.body.data.length).toBe(1);
 
         await deleteTweetById(createdTweet.id);
       });
@@ -185,15 +185,15 @@ describe("GET /api/v1/tweets", () => {
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("tweets");
+        expect(res.body).toHaveProperty("data");
         expect(res.body).toHaveProperty("nextHref");
         expect(res.body).toHaveProperty("prevHref");
         expect(res.body).toHaveProperty("nextCursor");
         expect(res.body).toHaveProperty("prevCursor");
         expect(res.body).toHaveProperty("total");
-        expect(Array.isArray(res.body.tweets)).toBe(true);
+        expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.tweets.length).toBe(1);
+        expect(res.body.data.length).toBe(1);
 
         await deleteTweetById(createdTweet.id);
         await deleteUserById(createdUser.id);
