@@ -37,6 +37,7 @@ export const patchUserProfileSchema = z.object({
   displayName: z
     .string()
     .trim()
+    .min(1, { error: "Display name is required" })
     .max(36, {
       message: "Use no more than 36 characters for the 'display name'",
     })
