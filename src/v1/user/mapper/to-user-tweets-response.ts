@@ -1,6 +1,6 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
-import { userTweetsPaginationSchema } from "../schema/user-tweet.js";
+import { tweetsPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 import { transformProfileMedia } from "./transform-profile-media.js";
 
@@ -24,7 +24,7 @@ export const toUserTweetsResponse = (
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 
-  const parsedData = userTweetsPaginationSchema.safeParse({ ...props, data: tweets });
+  const parsedData = tweetsPaginationSchema.safeParse({ ...props, data: tweets });
 
   if (!parsedData.success) {
     debug("issues", parsedData.error.issues);

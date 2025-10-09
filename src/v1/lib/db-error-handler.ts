@@ -25,4 +25,4 @@ export function dbErrorHandler<T extends Error>(
   }
 
   return error;
-};
+}

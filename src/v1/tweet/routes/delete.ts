@@ -1,6 +1,6 @@
 // import { rateLimit } from "express-rate-limit";
 import { ZodParamValidation } from "@/v1/lib/validator.js";
-import { tweetIdSchema } from "../schema/tweet.js";
+import { tweetIdSchema } from "@/v1/lib/tweet-schema.js";
 import { checkDeleteTweet } from "../middleware/check-delete-tweet.js";
 import { deleteTweet } from "../api/delete-tweet.js";
 import { unlikeTweet } from "../api/unlike-tweet.js";

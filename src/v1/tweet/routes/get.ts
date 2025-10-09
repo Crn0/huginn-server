@@ -1,5 +1,5 @@
 import { ZodParamValidation, ZodQueryValidator } from "@/v1/lib/validator.js";
-import { tweetIdSchema, tweetQuerySchema } from "../schema/tweet.js";
+import { tweetQuerySchema, tweetIdSchema } from "@/v1/lib/tweet-schema.js";
 import { getTweets } from "../api/get-tweets.js";
 import { getTweet } from "../api/get-tweet.js";
 import { getReplies } from "../api/get-replies.js";

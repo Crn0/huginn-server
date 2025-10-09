@@ -1,6 +1,6 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
-import { tweetSchema } from "../schema/tweet.js";
+import { tweetSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 import { transformProfileMedia } from "@/v1/user/mapper/transform-profile-media.js";
 

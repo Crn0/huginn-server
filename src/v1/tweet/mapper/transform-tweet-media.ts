@@ -6,7 +6,7 @@ import type {
   TweetImageVariant,
   TweetVideo,
   TweetVideoVariant,
-} from "../schema/tweet.js";
+} from "@/v1/lib/tweet-schema.js";
 
 type Media = DbMedia & { tweet: { id: string } | null };
 

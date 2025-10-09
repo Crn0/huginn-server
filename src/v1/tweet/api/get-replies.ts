@@ -4,7 +4,7 @@ import { toTweetsResponse } from "../mapper/to-tweets-response.js";
 
 import type { Response } from "express";
 import type { RequestWithPagination } from "@/v1/types/express.js";
-import type { TweetQuery } from "../schema/tweet.js";
+import type { TweetQuery } from "@/v1/lib/tweet-schema.js";
 
 export const getReplies = async (
   req: RequestWithPagination<{ tweetId: string }>,

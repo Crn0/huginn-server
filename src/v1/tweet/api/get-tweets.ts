@@ -4,7 +4,7 @@ import { toTweetsResponse } from "../mapper/to-tweets-response.js";
 
 import type { Response } from "express";
 import type { RequestWithPagination } from "@/v1/types/express.js";
-import type { TweetQuery } from "../schema/tweet.js";
+import type { TweetQuery } from "@/v1/lib/tweet-schema.js";
 
 export const getTweets = async (req: RequestWithPagination, res: Response) => {
   const userId = req.user?.id;

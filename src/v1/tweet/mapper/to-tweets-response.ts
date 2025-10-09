@@ -1,6 +1,6 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
-import { tweetsPaginationSchema } from "../schema/tweet.js";
+import { tweetsPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 
 import type { getTweetsPagination } from "@/v1/tweet/service/tweet.js";

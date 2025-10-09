@@ -3,11 +3,11 @@ import { beforeAll, describe, expect, it } from "vitest";
 
 import { generateId } from "@/v1/lib/generate-id.js";
 import { createUser } from "@/v1/user/service/user-service.js";
+import { tweetSchema } from "@/v1/lib/tweet-schema.js";
 import { createTweet } from "@/v1/tweet/service/tweet.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
 import { deleteTweetById } from "@/v1/tweet/repository/tweet.js";
 import { app } from "v1/__mocks__/server.js";
-import { tweetSchema } from "@/v1/tweet/schema/tweet.js";
 
 let accessToken: string;
 let tweetId: string;

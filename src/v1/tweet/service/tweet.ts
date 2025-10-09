@@ -1,4 +1,5 @@
 import { env } from "@/configs/env.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
 import * as mediaService from "@/v1/media/service/media.js";
@@ -8,8 +9,7 @@ import type { CreateTweet, GetTweetsOption, ReplyTweet } from "../types/reposito
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
-import type { TweetFilter } from "../schema/tweet.js";
-import { NotFoundError } from "@/lib/errors/notfound-error.js";
+import type { TweetFilter } from "@/v1/lib/tweet-schema.js";
 
 const TWEETS_PAGE_SIZE = 20 as const;
 
