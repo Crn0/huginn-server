@@ -9,6 +9,7 @@ import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
 import type { TweetFilter } from "../schema/tweet.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 
 const TWEETS_PAGE_SIZE = 20 as const;
 
@@ -95,7 +96,15 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
   return tweetRepository.replyTweet(data);
 };
 
-export const getTweetById = async (id: string) => tweetRepository.getTweetById(id);
+export const getTweetById = async (id: string) => {
+  const tweet = await tweetRepository.getTweetById(id);
+
+  if (!tweet) {
+    throw new NotFoundError("Tweet not found.");
+  }
+
+  return tweet;
+};
 
 export const getTweetsByAuthorId = async (authorId: string) =>
   tweetRepository.getTweetsByAuthorId(authorId);
@@ -257,7 +266,7 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   );
 
   return Object.freeze({
-    data:tweets,
+    data: tweets,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
@@ -278,11 +287,11 @@ export const getLikedTweetsPaginationByUserId = async (
     ...rest,
     where: {
       deletedAt: null,
-      likes: { 
+      likes: {
         every: {
-          user: { id: userId }
-        }
-      }
+          user: { id: userId },
+        },
+      },
     },
     orderBy: [
       {
@@ -295,11 +304,14 @@ export const getLikedTweetsPaginationByUserId = async (
 
   const [res, total] = await Promise.all([
     tweetRepository.getTweets(options),
-    tweetRepository.getTweetsCount({ deletedAt: null,       likes: { 
+    tweetRepository.getTweetsCount({
+      deletedAt: null,
+      likes: {
         every: {
-          user: { id: userId }
-        }
-      } }),
+          user: { id: userId },
+        },
+      },
+    }),
   ]);
 
   const tweets =
@@ -331,7 +343,6 @@ export const getLikedTweetsPaginationByUserId = async (
     total,
   });
 };
-
 
 export const patchTweetById = async (id: string, DTO: PatchTweetDTO) =>
   tweetRepository.patchTweetById(id, DTO);
