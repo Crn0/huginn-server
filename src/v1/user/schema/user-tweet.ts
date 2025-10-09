@@ -80,10 +80,6 @@ export const userTweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
-  deletedAt: z.coerce
-    .date()
-    .transform((d) => d.toISOString())
-    .nullable(),
   _count: z.object({ replies: z.coerce.number() }),
 });
 
