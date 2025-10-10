@@ -24,3 +24,5 @@ export interface CreateUserOIDCAccount {
 }
 
 export type GetUserBy = Prisma.UserGetPayload<{ include: typeof getUserOptions.include }>;
+
+export type GetUsersOption = Prisma.UserFindManyArgs;

@@ -20,6 +20,26 @@ export const getUserOptions = {
   },
 } satisfies Prisma.UserDefaultArgs;
 
+export const getUsersOptions = {
+  select: {
+    id: true,
+    username: true,
+    createdAt: true,
+    profile: {
+      select: {
+        displayName: true,
+        avatar: true,
+        banner: true,
+      },
+    },
+    openIds: {
+      select: {
+        avatarUrl: true,
+      },
+    },
+  },
+} satisfies Prisma.UserDefaultArgs;
+
 export const updateUserOptions = {
   select: { id: true, username: true },
 } satisfies Prisma.UserDefaultArgs;

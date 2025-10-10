@@ -10,18 +10,21 @@ import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
+import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import * as userRepository from "../repository/user.js";
 import * as followService from "./follow-service.js";
 import * as mediaService from "@/v1/media/service/media.js";
 import * as storage from "@/v1/storage/cloudinary-service.js";
 
-import type { CreateUserDTO } from "@/v1/lib/user-schema.js";
+import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
 import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
+import type { GetUsersOption } from "../types/user.types.js";
 
 const debug = createDebug("user-service");
-const MAX_USERNAME_RETRY = 20;
+const MAX_USERNAME_RETRY = 20 as const;
+const USERS_PAGE_SIZE = 20 as const;
 
 const uploadProfileMedia = async (folder: string, mediaPath?: string) => {
   if (!mediaPath) return null;
@@ -29,6 +32,18 @@ const uploadProfileMedia = async (folder: string, mediaPath?: string) => {
   const res = await uploadMedia(folder, mediaPath);
 
   return Object.freeze({ filePath: res.public_id, url: res.secure_url, bytes: res.bytes });
+};
+
+const normalizeHref = (data: unknown[], href: string, enabled: boolean) => {
+  if (data.length === 0 || !enabled) return null;
+
+  return href;
+};
+
+const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
+  if (!cursor || !hasHref) return null;
+
+  return cursor;
 };
 
 export const createUser = async (DTO: CreateUserDTO) => {
@@ -92,6 +107,61 @@ export const getAuthUser = async (id: string) => {
   const authUser = { ...user, follow } as const;
 
   return authUser;
+};
+
+export const getUsersPagination = async (query: {
+  cursor: PaginationCursor;
+  filter: UserFilter;
+}) => {
+  const {
+    cursor,
+    filter: { s },
+  } = query;
+
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: USERS_PAGE_SIZE });
+
+  const [res, total] = await Promise.all([
+    userRepository.getUsersByUsernameOrDisplayName(s, rest),
+    userRepository.getUsersCount({
+      deletedAt: null,
+      username: {
+        contains: s,
+        mode: "insensitive",
+      },
+      profile: {
+        displayName: { contains: s, mode: "insensitive" },
+      },
+    }),
+  ]);
+
+  const users =
+    direction === "backward" ? res.slice(-USERS_PAGE_SIZE) : res.slice(0, USERS_PAGE_SIZE);
+
+  const hasMore = res.length > USERS_PAGE_SIZE;
+
+  const nextCursor = users.at?.(-1)?.id;
+  const prevCursor = users.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    users,
+    `/users?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    users,
+    `/users?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: users,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
+  });
 };
 
 export const isUsernameAvailable = async (username: string) =>

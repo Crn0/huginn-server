@@ -1,5 +1,10 @@
 import z from "zod";
 
+import { paginationQuerySchema, paginationSchema } from "./pagination-schema.js";
+
+const MIN_FILTER_LENGTH = 1 as const;
+const MAX_FILTER_LENGTH = 36 as const;
+
 const mediaSizeSchema = z.object({
   url: z.url(),
   w: z.coerce.number(),
@@ -27,6 +32,8 @@ export type UserLoginDTO = z.infer<typeof userLoginSchema>;
 export type User = z.infer<typeof userSchema>;
 export type UserAccountLevel = z.infer<typeof accountLevelEnum>;
 export type MediaSize = z.infer<typeof mediaSizeSchema>;
+export type UserFilter = z.infer<typeof userQueryFilterSchema>;
+export type UserQuery = z.infer<typeof userQuerySchema>;
 
 export const createUserSchema = z.object({
   email: z.email().trim(),
@@ -49,6 +56,14 @@ export const userLoginSchema = z.object({
 });
 
 export const accountLevelEnum = z.enum(["DEMO", "USER", "ADMIN"]);
+
+export const userQueryFilterSchema = z.object({
+  s: z
+    .string({ error: "Invalid query" })
+    .trim()
+    .min(MIN_FILTER_LENGTH, "Query cannot be empty")
+    .max(MAX_FILTER_LENGTH),
+});
 
 export const userSchema = z.object({
   id: z.uuidv7(),
@@ -91,3 +106,20 @@ export const userSchema = z.object({
     .transform((d) => d.toISOString())
     .nullable(),
 });
+
+export const getUsersSchema = z.array(
+  z.object({
+    id: userSchema.shape.id,
+    username: userSchema.shape.username,
+    createdAt: userSchema.shape.createdAt,
+    avatarUrl: z.url().nullable(),
+    profile: z.object({
+      displayName: userSchema.shape.profile.shape.displayName,
+      avatar: userSchema.shape.profile.shape.avatar,
+    }),
+  })
+);
+
+export const getUsersPaginationSchema = paginationSchema.extend({ data: getUsersSchema });
+
+export const userQuerySchema = z.intersection(paginationQuerySchema, userQueryFilterSchema);
