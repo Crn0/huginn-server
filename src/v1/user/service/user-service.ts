@@ -20,7 +20,6 @@ import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
 import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
-import type { GetUsersOption } from "../types/user.types.js";
 
 const debug = createDebug("user-service");
 const MAX_USERNAME_RETRY = 20 as const;

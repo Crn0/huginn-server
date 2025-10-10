@@ -1,6 +1,6 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { transformProfileMedia } from "./transform-profile-media.js";
-import { getUsersPaginationSchema, getUsersSchema } from "@/v1/lib/user-schema.js";
+import { getUsersPaginationSchema } from "@/v1/lib/user-schema.js";
 
 import type { getUsersPagination } from "../service/user-service.js";
 
