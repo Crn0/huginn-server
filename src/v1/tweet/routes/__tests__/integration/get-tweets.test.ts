@@ -138,13 +138,13 @@ describe("GET /api/v1/tweets", () => {
     });
 
     describe("Filter", () => {
-      it("filters the result based on the query param 'content' ", async () => {
+      it("filters the result based on the query param 's' ", async () => {
         const createdTweet = await createTweet({ authorId, content: "hello world foo", media: [] });
 
         const content = "foo" as const;
 
         const res = await userRequest
-          .get(`${url}?content=${content}`)
+          .get(`${url}?s=${content}`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
@@ -161,10 +161,10 @@ describe("GET /api/v1/tweets", () => {
         await deleteTweetById(createdTweet.id);
       });
 
-      it("filters the result based on the query param 'where' ", async () => {
+      it("filters the result based on the query param 'w' ", async () => {
         const createdUser = await createUser({
           email: generateEmail(),
-          displayName: generateDisplayName("query param 'content'"),
+          displayName: generateDisplayName("query param 'w'"),
           password: "Crnocrno123",
           birthday: new Date(),
         });
@@ -181,7 +181,7 @@ describe("GET /api/v1/tweets", () => {
         ]);
 
         const res = await userRequest
-          .get(`${url}?where=${where}`)
+          .get(`${url}?w=${where}`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);

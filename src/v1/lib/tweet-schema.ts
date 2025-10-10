@@ -39,8 +39,8 @@ export const tweetIdSchema = z.object({
 });
 
 export const tweetQueryFilterSchema = z.object({
-  content: z.string({ error: "Invalid query" }).max(MAX_CONTENT_FILTER_LENGTH).optional(),
-  where: z.enum(tweetWhereFilter).optional(),
+  s: z.string({ error: "Invalid query" }).max(MAX_CONTENT_FILTER_LENGTH).optional(),
+  w: z.enum(tweetWhereFilter).optional(),
 });
 
 export const tweetMediaType = z.enum(["IMAGE", "GIF", "VIDEO"]);

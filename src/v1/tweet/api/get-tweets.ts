@@ -12,8 +12,8 @@ export const getTweets = async (req: RequestWithPagination, res: Response) => {
   const query: TweetQuery = res.locals["query"];
 
   const filter = {
-    content: query.content,
-    where: query.where,
+    s: query.s,
+    w: query.w,
   } as const;
 
   const cursor = {

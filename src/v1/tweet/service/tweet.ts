@@ -36,17 +36,17 @@ const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter
     option.where = {};
   }
 
-  if (typeof filter.content === "string") {
+  if (typeof filter.s === "string") {
     option.where = {
       ...option.where,
       content: {
-        contains: filter.content,
+        contains: filter.s,
         mode: "insensitive",
       },
     };
   }
 
-  if (userId && filter.where === "following") {
+  if (userId && filter.w === "following") {
     option.where = {
       ...option.where,
       author: {
