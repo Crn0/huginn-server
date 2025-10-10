@@ -123,6 +123,7 @@ model UserProfile {
   user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
   userPk Int  @unique
 
+  @@index([displayName(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("UserProfiles")
 }
 
