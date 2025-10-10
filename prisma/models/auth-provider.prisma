@@ -9,5 +9,5 @@ model AuthProvider {
 
   accounts UserOIDCAccount[]
 
-  @@map("Providers")
+  @@map("AuthProviders")
 }

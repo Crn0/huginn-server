@@ -9,7 +9,7 @@ model AuthProvider {
 
   accounts UserOIDCAccount[]
 
-  @@map("Providers")
+  @@map("AuthProviders")
 }
 
 model BlacklistedToken {
@@ -122,6 +122,8 @@ model UserProfile {
 
   user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
   userPk Int  @unique
+
+  @@map("UserProfiles")
 }
 
 model User {
