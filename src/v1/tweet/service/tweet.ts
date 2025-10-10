@@ -164,7 +164,7 @@ export const getTweetsPagination = async (
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
     prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
-    total,
+    total: tweets.length > 0 ? total : 0,
   });
 };
 
@@ -222,7 +222,7 @@ export const getRepliesPagination = async (
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
     prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
-    total,
+    total: replies.length > 0 ? total : 0,
   });
 };
 
@@ -271,7 +271,7 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
     prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
-    total,
+    total: tweets.length > 0 ? total : 0,
   });
 };
 

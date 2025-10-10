@@ -117,7 +117,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: 0,
       });
       expect(res.body.data.length).toBe(0);
     });
@@ -136,7 +136,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
-        total: 40,
+        total: 0,
       });
       expect(res.body.data.length).toBe(0);
     });
