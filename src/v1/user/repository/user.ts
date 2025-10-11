@@ -175,6 +175,21 @@ export const patchUsernameById = async (id: string, username: string) => {
   return updatedUser;
 };
 
+export const patchPasswordById = async (id: string, password: string) => {
+  const { error, data: updatedUser } = await tryCatch(
+    prisma.user.update({
+      ...updateUserOptions,
+      where: { id },
+      data: { password },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return updatedUser;
+};
+
 export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({

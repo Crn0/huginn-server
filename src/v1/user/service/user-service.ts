@@ -5,8 +5,9 @@ import { prisma } from "@/db/client/prisma.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
-import { generateUsername } from "@/v1/lib/generate-username.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
+import { AuthenticationError } from "@/lib/errors/auth-error.js";
+import { generateUsername } from "@/v1/lib/generate-username.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
@@ -20,6 +21,7 @@ import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
 import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
+import type { PatchPassword } from "../schema/patch-password.js";
 
 const debug = createDebug("user-service");
 const MAX_USERNAME_RETRY = 20 as const;
@@ -168,6 +170,30 @@ export const isUsernameAvailable = async (username: string) =>
 
 export const patchUsernameById = async (id: string, username: string) =>
   userRepository.patchUsernameById(id, username);
+
+export const patchPasswordById = async (id: string, DTO: PatchPassword) => {
+  const user = await userRepository.getUserById(id);
+
+  if (!user) {
+    throw new NotFoundError("User not found.");
+  }
+
+  if (!user.password) {
+    throw new ForbiddenError(
+      "Password change not allowed for this account. Use password reset instead."
+    );
+  }
+
+  const isMatch = await argon2.verify(user.password, DTO.oldPassword);
+
+  if (!isMatch) {
+    throw new AuthenticationError("Incorrect old password.");
+  }
+
+  const newPassword = await argon2.hash(DTO.password);
+
+  return userRepository.patchPasswordById(id, newPassword);
+};
 
 export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO) => {
   const { avatar, banner, ...rest } = DTO;
