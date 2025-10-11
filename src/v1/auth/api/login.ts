@@ -7,7 +7,6 @@ import {
   getBlackListedTokenByJwtId,
 } from "@/v1/black-listed-token/service/black-listed-token.js";
 import { AuthenticationError } from "@/lib/errors/auth-error.js";
-import { getUserById } from "@/v1/user/service/user-service.js";
 import { cookieConfig } from "../configs/cookie.js";
 
 import type { Request, Response } from "express";
@@ -45,6 +44,8 @@ export const login = async (req: Request, res: Response) => {
     const expiresAt = new Date(exp * 1000).toISOString();
 
     await blackListToken({ jwtId, sub, expiresAt, type: "RefreshToken" });
+
+    req.user = { id: sub };
   }
 
   const user = req.user as AuthUser;
