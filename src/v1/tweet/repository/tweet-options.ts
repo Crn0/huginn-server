@@ -19,6 +19,7 @@ const baseOptions = {
         },
       },
     },
+    _count: { select: { replies: { where: { deletedAt: null } } } },
   },
 } as const;
 
@@ -36,7 +37,17 @@ export const replyTweetOptions = {
 export const getTweetOptions = {
   include: {
     ...baseOptions.include,
-    _count: { select: { replies: { where: { deletedAt: null } } } },
+  },
+} satisfies Prisma.TweetDefaultArgs;
+
+export const getReplyOptions = {
+  include: {
+    ...baseOptions.include,
+    replyTo: {
+      include: {
+        ...baseOptions.include,
+      },
+    },
   },
 } satisfies Prisma.TweetDefaultArgs;
 

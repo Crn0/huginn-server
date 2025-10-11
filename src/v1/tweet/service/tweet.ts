@@ -275,6 +275,61 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   });
 };
 
+export const getRepliesByAuthorIdPagination = async (
+  authorId: string,
+  cursor: PaginationCursor
+) => {
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+  } as GetTweetsOption;
+
+  const [res, total] = await Promise.all([
+    tweetRepository.getRepliesByAuthorId(authorId, options),
+    tweetRepository.getTweetsCount({
+      deletedAt: null,
+      author: { id: authorId },
+      replyToPk: { not: null },
+    }),
+  ]);
+
+  const replies =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextCursor = replies.at?.(-1)?.id;
+  const prevCursor = replies.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    replies,
+    `/replies?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    replies,
+    `/replies?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: replies,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total: replies.length > 0 ? total : 0,
+  });
+};
+
 export const getLikedTweetsPaginationByUserId = async (
   userId: string,
   query: { cursor: PaginationCursor }

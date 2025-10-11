@@ -6,6 +6,7 @@ import {
   replyTweetOptions,
   deleteTweetOptions,
   getTweetOptions,
+  getReplyOptions,
 } from "./tweet-options.js";
 import { toCreateTweet } from "../mapper/to-create-tweet.js";
 import { toReplyTweet } from "../mapper/to-reply-tweet.js";
@@ -69,7 +70,7 @@ export const getTweetsByAuthorId = async (authorId: string, option?: TweetPagina
     prisma.tweet.findMany({
       ...getTweetOptions,
       ...option,
-      where: { author: { id: authorId } },
+      where: { author: { id: authorId }, replyToPk: null },
     }),
     dbErrorHandler
   );
@@ -77,6 +78,21 @@ export const getTweetsByAuthorId = async (authorId: string, option?: TweetPagina
   if (error) throw error;
 
   return tweets;
+};
+
+export const getRepliesByAuthorId = async (authorId: string, option?: TweetPaginationOption) => {
+  const { error, data: replies } = await tryCatch(
+    prisma.tweet.findMany({
+      ...getReplyOptions,
+      ...option,
+      where: { author: { id: authorId }, replyToPk: { not: null } },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return replies;
 };
 
 export const getTweets = async (option?: GetTweetsOption) => {
@@ -103,7 +119,7 @@ export const getTweetsCount = async (where: GetTweetsOption["where"] = { deleted
 
 export const getTweetsCountByAuthorId = async (authorId: string) => {
   const { error, data: count } = await tryCatch(
-    prisma.tweet.count({ where: { author: { id: authorId } } }),
+    prisma.tweet.count({ where: { author: { id: authorId }, deletedAt: null, replyToPk: null } }),
     dbErrorHandler
   );
 
