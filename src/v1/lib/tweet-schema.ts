@@ -102,9 +102,15 @@ export const tweetSchema = z.object({
   _count: z.object({ replies: z.coerce.number() }),
 });
 
+export const tweetReply = tweetSchema.extend({ replyTo: tweetSchema })
+
 export const tweetsSchema = z.array(tweetSchema);
 
+export const tweetRepliesSchema = z.array(tweetReply);
+
 export const tweetsPaginationSchema = paginationSchema.extend({ data: tweetsSchema });
+
+export const tweetRepliesPaginationSchema = paginationSchema.extend({ data: tweetRepliesSchema });
 
 export const tweetMediaPaginationSchema = paginationSchema.extend({ media: z.array(tweetMedia) });
 
