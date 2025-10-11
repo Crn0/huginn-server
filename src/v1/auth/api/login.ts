@@ -1,5 +1,4 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
-import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { OK } from "@/v1/constants/http-status.js";
 import { generateAccessToken, generateRefreshToken, verifyToken } from "@/v1/lib/jwt.js";
 import {
