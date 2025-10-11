@@ -19,9 +19,9 @@ const ACCESS_TOKEN_EXPIRATION = 15 as const; // 15 mins
 export const login = async (req: Request, res: Response) => {
   const oldRefreshToken: string = req.cookies["refreshToken"];
 
-  res.clearCookie("refreshToken", cookieConfig);
-
   if (oldRefreshToken) {
+    res.clearCookie("refreshToken", cookieConfig);
+
     const verifiedToken = verifyToken(oldRefreshToken);
 
     if (typeof verifiedToken === "string") {
@@ -41,14 +41,6 @@ export const login = async (req: Request, res: Response) => {
     if (tokenExist) {
       throw new AuthenticationError("Refresh token reuse detected. Please log in again.");
     }
-
-    const user = await getUserById(sub);
-
-    if (!user) {
-      throw new NotFoundError("User not found.");
-    }
-
-    req.user = { id: user.id };
 
     const expiresAt = new Date(exp * 1000).toISOString();
 
