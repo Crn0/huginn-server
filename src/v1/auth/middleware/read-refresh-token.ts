@@ -7,13 +7,13 @@ export const readRefreshToken = (req: Request, res: Response, next: NextFunction
   const { refreshToken } = req.cookies;
 
   if (typeof refreshToken !== "string") {
-    throw new AuthenticationError("Invalid or expired token");
+    throw new AuthenticationError("Unauthenticated");
   }
 
   const verifiedToken = verifyToken(refreshToken);
 
   if (typeof verifiedToken === "string") {
-    throw new AuthenticationError("Invalid or expired token");
+    throw new AuthenticationError("Unauthenticated");
   }
 
   res.locals["refreshToken"] = verifiedToken;
