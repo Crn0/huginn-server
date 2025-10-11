@@ -102,7 +102,7 @@ export const tweetSchema = z.object({
   _count: z.object({ replies: z.coerce.number() }),
 });
 
-export const tweetReply = tweetSchema.extend({ replyTo: tweetSchema })
+export const tweetReply = tweetSchema.extend({ replyTo: tweetSchema });
 
 export const tweetsSchema = z.array(tweetSchema);
 
