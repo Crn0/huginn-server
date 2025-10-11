@@ -12,9 +12,9 @@ const router = Router();
 
 router.use(readAccessToken);
 
-tweetGet(router);
-
 router.use(protectedRoute);
+
+tweetGet(router);
 
 tweetPost(router);
 
