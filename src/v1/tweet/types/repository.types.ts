@@ -4,7 +4,7 @@ export type TweetMediaType = "VIDEO" | "GIF" | "IMAGE";
 
 export type TweetPaginationOption = Pick<
   Prisma.TweetFindManyArgs,
-  "cursor" | "orderBy" | "skip" | "take"
+  "cursor" | "orderBy" | "skip" | "take" | "where"
 >;
 
 export type GetTweetsOption = Pick<
