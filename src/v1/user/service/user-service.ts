@@ -13,7 +13,6 @@ import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import * as userRepository from "../repository/user.js";
-import * as followService from "./follow-service.js";
 import * as mediaService from "@/v1/media/service/media.js";
 import * as storage from "@/v1/storage/cloudinary-service.js";
 
