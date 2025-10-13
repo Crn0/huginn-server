@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import request from "supertest";
 
 import { testUserLoginForm } from "testing/seed.js";
-import { userSchema } from "@/v1/lib/user-schema.js";
+import { authUserSchema } from "@/v1/lib/user-schema.js";
 import { app } from "v1/__mocks__/server.js";
 
 const userRequest = request.agent(app);
@@ -20,7 +20,7 @@ describe("GET /api/v1/users/me", () => {
 
       expect(res.status).toBe(200);
 
-      const parsedUser = userSchema.safeParse(res.body);
+      const parsedUser = authUserSchema.safeParse(res.body);
 
       expect(parsedUser.success).toBe(true);
     });

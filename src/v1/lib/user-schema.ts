@@ -30,6 +30,7 @@ export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginSchema>;
 export type User = z.infer<typeof userSchema>;
+export type AuthUser = z.infer<typeof authUserSchema>;
 export type UserAccountLevel = z.infer<typeof accountLevelEnum>;
 export type MediaSize = z.infer<typeof mediaSizeSchema>;
 export type UserFilter = z.infer<typeof userQueryFilterSchema>;
@@ -67,29 +68,16 @@ export const userQueryFilterSchema = z.object({
 
 export const userSchema = z.object({
   id: z.uuidv7(),
-  // email: z.email().trim(),
   username: z.string(),
-  // password: z.string(),
-  accountLevel: accountLevelEnum,
-
   profile: z.object({
     displayName: z.string().nullable(),
     bio: z.string().nullable(),
-    birthday: z.coerce.date().nullable(),
     location: z.string().nullable(),
     website: z.url().nullable(),
 
     avatar: profileMediaSchema.nullable(),
     banner: profileMediaSchema.nullable(),
   }),
-
-  openIds: z.array(
-    z.object({
-      id: z.uuidv7(),
-      name: z.enum(["GOOGLE"]),
-      avatarUrl: z.url().nullable(),
-    })
-  ),
 
   follow: z.object({
     followersCount: z.coerce.number().default(0),
@@ -101,24 +89,27 @@ export const userSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
-  deletedAt: z.coerce
-    .date()
-    .transform((d) => d.toISOString())
-    .nullable(),
 });
 
-export const getUsersSchema = z.array(
-  z.object({
-    id: userSchema.shape.id,
-    username: userSchema.shape.username,
-    createdAt: userSchema.shape.createdAt,
-    avatarUrl: z.url().nullable(),
-    profile: z.object({
-      displayName: userSchema.shape.profile.shape.displayName,
-      avatar: userSchema.shape.profile.shape.avatar,
-    }),
-  })
-);
+export const authUserSchema = userSchema.extend({
+  email: z.email().trim(),
+  accountLevel: accountLevelEnum,
+  profile: z.object({
+    ...userSchema.shape.profile.shape,
+
+    birthday: z.coerce.date().nullable(),
+  }),
+
+  openIds: z.array(
+    z.object({
+      id: z.uuidv7(),
+      name: z.enum(["GOOGLE"]),
+      avatarUrl: z.url().nullable(),
+    })
+  ),
+});
+
+export const getUsersSchema = z.array(userSchema);
 
 export const getUsersPaginationSchema = paginationSchema.extend({ data: getUsersSchema });
 
