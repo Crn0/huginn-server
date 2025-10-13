@@ -109,7 +109,18 @@ export const authUserSchema = userSchema.extend({
   ),
 });
 
-export const getUsersSchema = z.array(userSchema);
+export const getUsersSchema = z.array(
+  z.object({
+    id: userSchema.shape.id,
+    username: userSchema.shape.username,
+    createdAt: userSchema.shape.createdAt,
+    avatarUrl: z.url().nullable(),
+    profile: z.object({
+      displayName: userSchema.shape.profile.shape.displayName,
+      avatar: userSchema.shape.profile.shape.avatar,
+    }),
+  })
+);
 
 export const getUsersPaginationSchema = paginationSchema.extend({ data: getUsersSchema });
 
