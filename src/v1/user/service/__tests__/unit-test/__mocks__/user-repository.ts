@@ -18,6 +18,10 @@ const generateUser = (email?: string) => ({
   deletedAt: null,
   profile: null,
   openIds: [],
+  _count: {
+    followedBy: 0,
+    following: 0,
+  },
 });
 
 export const createUser = vi.fn(async (data: CreateUser) => ({
