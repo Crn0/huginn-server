@@ -79,9 +79,9 @@ export const userSchema = z.object({
     banner: profileMediaSchema.nullable(),
   }),
 
-  follow: z.object({
-    followersCount: z.coerce.number().default(0),
-    followingCount: z.coerce.number().default(0),
+  _count: z.object({
+    followedBy: z.coerce.number().default(0),
+    following: z.coerce.number().default(0),
   }),
 
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
