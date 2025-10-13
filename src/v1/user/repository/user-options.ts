@@ -17,6 +17,12 @@ export const getUserOptions = {
         provider: true,
       },
     },
+    _count: {
+      select: {
+        followedBy: true,
+        following: true,
+      },
+    },
   },
 } satisfies Prisma.UserDefaultArgs;
 

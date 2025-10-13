@@ -103,11 +103,7 @@ export const getAuthUser = async (id: string) => {
 
   if (!user) throw new NotFoundError("User not found.");
 
-  const follow = await followService.getUserFollowCountById(user.id);
-
-  const authUser = { ...user, follow } as const;
-
-  return authUser;
+  return user;
 };
 
 export const getUsersPagination = async (query: {
