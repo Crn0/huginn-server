@@ -5,10 +5,13 @@ import { getFollowers } from "../../api/get-followers.js";
 import { getFollowing } from "../../api/get-following.js";
 import { getUserTweets } from "../../api/get-tweets.js";
 import { getUserTweetMedia } from "../../api/get-media.js";
+import { getUser } from "../../api/get-user.js";
 
 import type { Router } from "express";
 
 export const userIdGet = (router: Router) => {
+  router.get("/:userId", ZodParamValidation(userIdSchema), getUser);
+
   router.get(
     "/:userId/followers",
     ZodParamValidation(userIdSchema),

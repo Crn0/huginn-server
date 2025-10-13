@@ -2,9 +2,14 @@ import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { transformProfileMedia } from "./transform-profile-media.js";
 import { userSchema } from "@/v1/lib/user-schema.js";
 
-import type { GetUserBy } from "../types/user.types.js";
+import type { getUserById } from "../repository/user.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 
-export const toUserResponse = (user: GetUserBy) => {
+export const toUserResponse = (user: Awaited<ReturnType<typeof getUserById>>) => {
+  if (!user) {
+    throw new NotFoundError("User not found,");
+  }
+
   const profile = {
     ...user.profile,
     avatar: transformProfileMedia(user.profile?.avatar ?? null),
