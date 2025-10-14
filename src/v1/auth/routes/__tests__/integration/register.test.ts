@@ -20,7 +20,7 @@ describe("POST /api/v1/auth/register", () => {
   const invalidForm = {
     email: "crno@@test.com",
     displayName: Array.from({ length: 50 }, () => "crno").join(""),
-    password: "crnocrno123",
+    password: "",
     birthday: "1999-25-04",
   } as const;
 
@@ -83,10 +83,9 @@ describe("POST /api/v1/auth/register", () => {
             message: "Validation failed: 1 errors detected in body",
             issues: [
               {
-                code: "custom",
+                code: "too_small",
                 path: ["password"],
-                message:
-                  "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number and no spaces",
+                message: "Password must be at least 8 characters long",
               },
             ],
           },

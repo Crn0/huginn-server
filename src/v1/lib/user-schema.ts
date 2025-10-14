@@ -24,8 +24,6 @@ export const profileMediaSchema = z.object({
 
 // https://regexr.com/8h173
 export const usernameRegex = /^[a-zA-Z0-9{_,.}]+$/;
-// https://regexr.com/8dm04
-export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginSchema>;
@@ -42,18 +40,16 @@ export const createUserSchema = z.object({
     message: "Use no more than 36 characters for the 'display name'",
   }),
   birthday: z.coerce.date(),
-  password: z.string().refine((val) => passwordRegex.test(val), {
-    message:
-      "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number and no spaces",
-  }),
+  password: z
+    .string()
+    .trim()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .max(64, { message: "Password must be at most 64 characters long" }),
 });
 
 export const userLoginSchema = z.object({
   email: z.email().trim(),
-  password: z.string().refine((val) => passwordRegex.test(val), {
-    message:
-      "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number and no spaces",
-  }),
+  password: z.string().trim(),
 });
 
 export const accountLevelEnum = z.enum(["DEMO", "USER", "ADMIN"]);

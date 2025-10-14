@@ -94,10 +94,9 @@ describe("PATCH /api/v1/users/me/password", () => {
           message: "Validation failed: 1 errors detected in body",
           issues: [
             {
-              code: "custom",
+              code: "too_small",
               path: ["password"],
-              message:
-                "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number and no spaces",
+              message: "Password must be at least 8 characters long",
             },
           ],
         });

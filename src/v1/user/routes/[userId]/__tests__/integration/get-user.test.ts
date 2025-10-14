@@ -45,7 +45,7 @@ describe("GET /api/v1/users/:userId", () => {
       expect(res.status).toBe(200);
 
       const parsedUser = userSchema.safeParse(res.body);
-      
+
       expect(parsedUser.success).toBe(true);
     });
   });
@@ -58,7 +58,7 @@ describe("GET /api/v1/users/:userId", () => {
         const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(404);
-        expect(res.body).toMatchObject({ code: 'NOT_FOUND', message: 'User not found.' })
+        expect(res.body).toMatchObject({ code: "NOT_FOUND", message: "User not found." });
       });
     });
 
