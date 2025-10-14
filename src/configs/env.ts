@@ -5,7 +5,8 @@ const createEnv = () => {
   const EnvSchema = z.object({
     NODE_ENV: z.enum(["dev", "prod", "test"]).optional().default("dev"),
     CORS_ORIGINS: z
-      .preprocess((v) => (typeof v === "string" ? JSON.parse(v) : v), z.array(z.string()))
+      .string()
+      .transform((origins) => origins.split(","))
       .default(["http://localhost:5173"]),
     DATABASE_URL: z.string(),
     JWT_SECRET: z.string().catch("secret"),
