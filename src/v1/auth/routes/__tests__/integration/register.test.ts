@@ -21,7 +21,7 @@ describe("POST /api/v1/auth/register", () => {
     email: "crno@@test.com",
     displayName: Array.from({ length: 50 }, () => "crno").join(""),
     password: "",
-    birthday: "1999-25-04",
+    birthday: "2030-04-25",
   } as const;
 
   describe("Success cases", () => {
@@ -98,11 +98,9 @@ describe("POST /api/v1/auth/register", () => {
             message: "Validation failed: 1 errors detected in body",
             issues: [
               {
-                expected: "date",
-                code: "invalid_type",
-                received: "Invalid Date",
+                code: "custom",
                 path: ["birthday"],
-                message: "Invalid input: expected date, received Date",
+                message: "Birthday must be in the past",
               },
             ],
           },

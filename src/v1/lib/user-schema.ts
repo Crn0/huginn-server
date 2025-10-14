@@ -39,7 +39,12 @@ export const createUserSchema = z.object({
   displayName: z.string().trim().max(36, {
     message: "Use no more than 36 characters for the 'display name'",
   }),
-  birthday: z.coerce.date(),
+  birthday: z.coerce.date().refine(
+    (birthday) => {
+      return new Date() > birthday;
+    },
+    { error: "Birthday must be in the past" }
+  ),
   password: z
     .string()
     .trim()
