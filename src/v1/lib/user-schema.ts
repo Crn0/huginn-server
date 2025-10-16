@@ -54,7 +54,7 @@ export const createUserSchema = z.object({
 
 export const userLoginSchema = z.object({
   email: z.email().trim(),
-  password: z.string().trim(),
+  password: z.coerce.string().trim().min(1, { error: "Password is required" }),
 });
 
 export const accountLevelEnum = z.enum(["DEMO", "USER", "ADMIN"]);
