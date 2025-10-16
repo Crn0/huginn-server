@@ -22,6 +22,8 @@ import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
 import type { PatchPassword } from "../schema/patch-password.js";
 
+export type UserById = Awaited<ReturnType<typeof getUserById>>;
+
 const debug = createDebug("user-service");
 const MAX_USERNAME_RETRY = 20 as const;
 const USERS_PAGE_SIZE = 20 as const;
