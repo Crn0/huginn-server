@@ -37,7 +37,7 @@ export type UserQuery = z.infer<typeof userQuerySchema>;
 export const createUserSchema = z.object({
   email: z.email().trim(),
   displayName: z.string().trim().max(36, {
-    message: "Use no more than 36 characters for the 'display name'",
+    error: "Use no more than 36 characters for the 'display name'",
   }),
   birthday: z.coerce.date().refine(
     (birthday) => {
@@ -48,8 +48,8 @@ export const createUserSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .max(64, { message: "Password must be at most 64 characters long" }),
+    .min(8, { error: "Password must be at least 8 characters long" })
+    .max(64, { error: "Password must be at most 64 characters long" }),
 });
 
 export const userLoginSchema = z.object({
