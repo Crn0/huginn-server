@@ -14,6 +14,7 @@ import { generateId } from "@/v1/lib/generate-id.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import * as userRepository from "../repository/user.js";
 import * as mediaService from "@/v1/media/service/media.js";
+import * as oidcService from "../oidc-account/service/oidc-account.js";
 import * as storage from "@/v1/storage/cloudinary-service.js";
 
 import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
@@ -234,6 +235,7 @@ export const deleteUserById = async (id: string) => {
 
   const transaction = await prisma.$transaction(
     async (ctx) => {
+      await oidcService.deleteOIDCAccountsByUserId(id);
       await mediaService.deleteMediaByUploaderId(id);
 
       const { error: mediaError } = await tryCatch(
