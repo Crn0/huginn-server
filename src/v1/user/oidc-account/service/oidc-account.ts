@@ -2,6 +2,7 @@ import { prisma } from "@/db/client/prisma.js";
 import * as oidcRepository from "../repository/oidc-account.js";
 import type { CreateUserOIDCAccount } from "../../types/user.types.js";
 import { createDebug } from "@/v1/lib/debug.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 
 const debug = createDebug("oidc-service");
 
@@ -26,6 +27,44 @@ export const upsertUserOIDCAccount = async (DTO: CreateUserOIDCAccount) =>
 
 export const getUserOIDCAccountByPkAndSub = async (providerPk: number, sub: string) =>
   oidcRepository.getUserOIDCAccountByPkAndSub(providerPk, sub);
+
+export const deleteOIDCAccount = async (userId: string, provider: string) => {
+  return prisma.$transaction(async (ctx) => {
+    const [user, _provider] = await Promise.all([
+      ctx.user.findUnique({
+        where: { id: userId },
+        select: { primaryKey: true },
+      }),
+      ctx.authProvider.findUnique({
+        where: { key: provider },
+        select: { primaryKey: true },
+      }),
+    ]);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    if (!_provider) {
+      throw new NotFoundError("Provider not supported.");
+    }
+
+    const odic = await ctx.userOIDCAccount.delete({
+      where: {
+        providerPk_userPk: {
+          providerPk: _provider.primaryKey,
+          userPk: user.primaryKey,
+        },
+      },
+    });
+
+    if (provider.toLowerCase() === "google") {
+      await unlinkGoogle(odic.accessToken);
+    }
+
+    return odic;
+  });
+};
 
 export const deleteOIDCAccountsByUserId = async (userId: string) => {
   return prisma.$transaction(async (ctx) => {
