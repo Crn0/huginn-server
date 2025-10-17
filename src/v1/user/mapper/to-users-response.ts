@@ -7,7 +7,7 @@ import type { getUsersPagination } from "../service/user-service.js";
 export const toUsersResponse = (props: Awaited<ReturnType<typeof getUsersPagination>>) => {
   const users = props.data.map((user) => ({
     ...user,
-    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string") ?? null,
+    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     profile: {
       ...user.profile,
       avatar: transformProfileMedia(user.profile?.avatar ?? null),
