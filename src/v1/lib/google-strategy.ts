@@ -40,7 +40,7 @@ const getBirthDay = async (accessToken: string) => {
 
   const responseData = (await response.json()) as BirthdayResponse;
 
-  const birthday = responseData.birthdays[0]?.date;
+  const birthday = responseData.birthdays?.[0]?.date;
 
   return birthdaySchema.safeParse(birthday)?.data ?? null;
 };
