@@ -14,8 +14,8 @@ const unlinkGoogle = async (token: string) => {
   });
 
   if (!res.ok) {
-    debug("Request to revoke googles access token: unsuccessful");
     debug(await res.json());
+    throw new Error("Request to revoke googles access token: unsuccessful");
   } else {
     debug("Request to revoke googles access token: successful");
   }
