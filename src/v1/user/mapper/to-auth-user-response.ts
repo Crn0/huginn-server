@@ -13,6 +13,7 @@ export const toAuthUserResponse = (user: Awaited<ReturnType<typeof getAuthUser>>
 
   const parsedUser = authUserSchema.safeParse({
     ...user,
+    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     profile,
   });
 

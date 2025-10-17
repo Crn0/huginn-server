@@ -18,6 +18,7 @@ export const toUserResponse = (user: Awaited<ReturnType<typeof getUserById>>) =>
 
   const parsedUser = userSchema.safeParse({
     ...user,
+    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     profile,
   });
 

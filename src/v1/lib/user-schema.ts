@@ -70,6 +70,7 @@ export const userQueryFilterSchema = z.object({
 export const userSchema = z.object({
   id: z.uuidv7(),
   username: z.string(),
+  avatarUrl: z.url().nullable(),
   profile: z.object({
     displayName: z.string().nullable(),
     bio: z.string().nullable(),
@@ -103,9 +104,7 @@ export const authUserSchema = userSchema.extend({
 
   openIds: z.array(
     z.object({
-      id: z.uuidv7(),
       name: z.enum(["GOOGLE"]),
-      avatarUrl: z.url().nullable(),
     })
   ),
 });
