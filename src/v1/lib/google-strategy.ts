@@ -74,7 +74,7 @@ export const createGoogleStrategy = () =>
 
         const birthday = await getBirthDay(accessToken);
 
-        const user = await authenticateGoogle({
+        const { user } = await authenticateGoogle({
           provider,
           sub,
           email,
