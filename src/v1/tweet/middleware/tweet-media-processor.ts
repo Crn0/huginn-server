@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { ValidationError } from "@/lib/errors/validation-error.js";
 import { BadRequestError } from "@/lib/errors/bad-request-error.js";
-import { MAX_FILE_SIZE, MAX_MEDIAS } from "../constants/index.js";
+import { MAX_FILE_SIZE, MAX_MEDIA } from "../constants/index.js";
 import { initMulter } from "@/v1/lib/multer.js";
 
 import type { Request, Response, NextFunction } from "express";
