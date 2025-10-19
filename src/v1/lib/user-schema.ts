@@ -12,7 +12,6 @@ const mediaSizeSchema = z.object({
 });
 
 export const profileMediaSchema = z.object({
-  id: z.uuidv7(),
   url: z.url(),
   type: z.enum(["IMAGE", "GIF"]),
   sizes: z.object({
