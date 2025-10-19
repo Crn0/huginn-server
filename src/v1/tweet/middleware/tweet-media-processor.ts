@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs/promises";
 
 import { ValidationError } from "@/lib/errors/validation-error.js";
 import { BadRequestError } from "@/lib/errors/bad-request-error.js";
@@ -9,16 +10,19 @@ import type { Request, Response, NextFunction } from "express";
 
 const tempPath = path.join(import.meta.dirname, "..", "..", "..", "temp");
 
+const IMAGE_ERROR_MESSAGE = "Max image size is 10MB." as const;
+const VIDEO_ERROR_MESSAGE = "Max video size is 100MB." as const;
+
+const IMAGE_SIZE = MAX_FILE_SIZE;
+const VIDEO_SIZE = MAX_FILE_SIZE * 10;
+
 const multer = initMulter({
   path: tempPath,
-  limits: {
-    fileSize: MAX_FILE_SIZE,
-  },
-  fileType: "png|jpg|jpeg|gif|webp",
+  fileType: "png|jpg|jpeg|gif|webp|mp4",
 });
 
 export const tweetMediaProcessor = (req: Request, res: Response, next: NextFunction) =>
-  multer.uploader.array("media", MAX_MEDIAS)(req, res, async (err) => {
+  multer.uploader.array("media", MAX_MEDIA)(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       const code = err.code;
       const field = err.field as string;
@@ -62,3 +66,36 @@ export const tweetMediaProcessor = (req: Request, res: Response, next: NextFunct
 
     return next();
   });
+
+export const handleTweetMedia = async (req: Request, _res: Response, next: NextFunction) => {
+  const files = req.files;
+
+  if (Array.isArray(files)) {
+    await Promise.all(
+      files.map(async (file, index, _files) => {
+        if (file.size > IMAGE_SIZE || file.size > VIDEO_SIZE) {
+          const ext = path.extname(file.originalname).toLowerCase();
+
+          const maximum = ext === ".mp4" ? VIDEO_SIZE : IMAGE_SIZE;
+          const message = ext === ".mp4" ? VIDEO_ERROR_MESSAGE : IMAGE_ERROR_MESSAGE;
+
+          await Promise.allSettled(_files.map((f) => fs.unlink(f.path)));
+
+          return next(
+            new ValidationError("Validation failed: 1 errors detected in body", [
+              {
+                code: "too_big",
+                origin: "file",
+                maximum: maximum,
+                message: message,
+                path: ["media", index],
+              },
+            ])
+          );
+        }
+      })
+    );
+  }
+
+  return next();
+};
