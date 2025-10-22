@@ -1,18 +1,15 @@
-import path from "path";
 import request from "supertest";
 import { beforeAll, describe, expect, it } from "vitest";
 
-import { generateEmail } from "@/v1/lib/generate-email.js";
-import { generateDisplayName } from "@/v1/lib/generate-display-name.js";
-import { generateId } from "@/v1/lib/generate-id.js";
-import { deleteUserById } from "@/v1/user/repository/user.js";
+import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
-import { createMedia } from "@/v1/media/repository/media.js";
-import { createTweet, deleteTweetById } from "@/v1/tweet/repository/tweet.js";
+import { deleteUserById } from "@/v1/user/repository/user.js";
+import { followUsersByUsername } from "@/v1/user/service/follow-service.js";
 import { app } from "v1/__mocks__/server.js";
+import { generateId } from "@/v1/lib/generate-id.js";
 
 let accessToken: string;
-let userId: string;
+let username: string;
 let nextCursor: string;
 let prevCursor: string;
 
@@ -20,79 +17,68 @@ const userRequest = request(app);
 
 beforeAll(async () => {
   const form = {
-    email: generateEmail(),
-    displayName: generateDisplayName("userId", "get.media"),
+    email: "username.post@following.com",
+    displayName: "username.following",
     password: "Crnocrno123",
     birthday: new Date(),
   } as const;
 
-  const user = await createUser(form);
+  const createdUser = await createUser(form);
 
-  const login = await userRequest.post("/api/v1/auth/login").send(form);
-
-  const filePath = path.join(
-    import.meta.dirname,
-    "..",
-    "..",
-    "..",
-    "..",
-    "assets",
-    "test_avatar.png"
-  );
-
-  const mediaFiles = Array.from({ length: 40 }).map(
-    () =>
-      ({
-        filePath,
-        url: "http://example.com",
-        type: "IMAGE",
-        bytes: 20_000,
-      }) as const
-  );
-
-  const media = await createMedia(mediaFiles, { uploaderId: user.id });
-
-  const tweet = await createTweet({
-    content: "test get media",
-    authorId: user.id,
-    media: media,
-  });
+  const [login, users] = await Promise.all([
+    userRequest.post("/api/v1/auth/login").send(testUserLoginForm),
+    Promise.all(
+      Array.from({ length: 40 }).map(async (_, index) =>
+        createUser({
+          email: `username${index}.get@following.com`,
+          displayName: `username.following${index}`,
+          password: "Crnocrno123",
+          birthday: new Date(),
+        })
+      )
+    ),
+  ]);
 
   accessToken = login.body.token;
 
-  userId = user!.id;
+  username = createdUser.username;
+
+  const followUsernames = users.map(({ username }) => username);
+
+  await followUsersByUsername(createdUser.id, followUsernames);
 
   return async () => {
-    await deleteTweetById(tweet.id);
-    await deleteUserById(user.id);
+    const usersToDelete = [...users, createdUser] as const;
+
+    await Promise.all(usersToDelete.map(async (user) => deleteUserById(user.id)));
   };
 });
 
-describe("GET /api/v1/users/me/media", () => {
+describe("GET /api/v1/users/:username/following", () => {
   const baseUrl = "/api/v1/users" as const;
 
   describe("Success cases", () => {
-    it("returns a list of media, total and the next and previous href", async () => {
-      const url = `${baseUrl}/${userId}/media` as const;
+    it("returns a list of following, total and the next and previous href", async () => {
+      const url = `${baseUrl}/${username}/following` as const;
 
       const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        following: expect.any(Array),
         nextHref: expect.any(String),
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.following.length).toBe(20);
 
       nextCursor = res.body.nextCursor;
     });
 
     it("paginates results using 'after' cursor query param", async () => {
-      const url = `${baseUrl}/${userId}/media` as const;
+      const url = `${baseUrl}/${username}/following` as const;
 
       const res = await userRequest
         .get(`${url}?after=${nextCursor}`)
@@ -100,38 +86,38 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        following: expect.any(Array),
         nextHref: null,
         prevHref: expect.any(String),
         nextCursor: null,
         prevCursor: expect.any(String),
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.following.length).toBe(20);
 
       prevCursor = res.body.prevCursor;
     });
 
     it("paginates results using 'before' cursor query param", async () => {
-      const url = `${baseUrl}/${userId}/media` as const;
+      const url = `${baseUrl}/${username}/following` as const;
 
       const res = await userRequest
         .get(`${url}?before=${prevCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        following: expect.any(Array),
         nextHref: expect.any(String),
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.following.length).toBe(20);
     });
 
-    it("returns empty media and null pagination fields for an invalid 'after' cursor", async () => {
-      const url = `${baseUrl}/${userId}/media` as const;
+    it("returns empty following and null pagination fields for an invalid 'after' cursor", async () => {
+      const url = `${baseUrl}/${username}/following` as const;
 
       const res = await userRequest
         .get(`${url}?after=${generateId()}`)
@@ -139,18 +125,18 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        following: expect.any(Array),
         nextHref: null,
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(0);
+      expect(res.body.following.length).toBe(0);
     });
 
-    it("returns empty media and null pagination fields for an invalid 'before' cursor", async () => {
-      const url = `${baseUrl}/${userId}/media` as const;
+    it("returns empty following and null pagination fields for an invalid 'before' cursor", async () => {
+      const url = `${baseUrl}/${username}/following` as const;
 
       const res = await userRequest
         .get(`${url}?before=${generateId()}`)
@@ -158,44 +144,21 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        following: expect.any(Array),
         nextHref: null,
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(0);
+      expect(res.body.following.length).toBe(0);
     });
   });
 
   describe("Failure cases", () => {
     describe("Validation  errors", () => {
-      it("returns a Validation error when the userId is invalid", async () => {
-        const url = `${baseUrl}/invalid-user-id/following`;
-
-        const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
-
-        expect(res.status).toBe(422);
-        expect(res.body).toMatchObject({
-          code: "VALIDATION_ERROR",
-          message: "Validation failed: 1 errors detected in body",
-          issues: [
-            {
-              origin: "string",
-              code: "invalid_format",
-              format: "uuid",
-              pattern:
-                "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$/",
-              path: ["userId"],
-              message: "Invalid user ID",
-            },
-          ],
-        });
-      });
-
       it("returns a Validation error when the query param 'after' is invalid", async () => {
-        const url = `${baseUrl}/${userId}/media` as const;
+        const url = `${baseUrl}/${username}/following` as const;
 
         const res = await userRequest
           .get(`${url}?after=invalid-id`)
@@ -220,7 +183,7 @@ describe("GET /api/v1/users/me/media", () => {
       });
 
       it("returns a Validation error when the query param 'before' is invalid", async () => {
-        const url = `${baseUrl}/${userId}/media` as const;
+        const url = `${baseUrl}/${username}/following` as const;
 
         const res = await userRequest
           .get(`${url}?before=invalid-id`)

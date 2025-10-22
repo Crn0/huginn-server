@@ -65,14 +65,44 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const getTweetsByAuthorId = async (authorId: string, option?: TweetPaginationOption) => {
+export const getTweetsByAuthorUsername = async (
+  username: string,
+  option?: TweetPaginationOption
+) => {
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
       ...getTweetOptions,
       ...option,
-      where: { author: { id: authorId }, replyToPk: null },
+      where: {
+        author: { username: username },
+        replyToPk: null,
+      },
     }),
-    dbErrorHandler
+    (e) => {
+      console.log(e);
+      return e;
+    }
+  );
+
+  if (error) throw error;
+
+  return tweets;
+};
+
+export const getTweetsByAuthorId = async (id: string, option?: TweetPaginationOption) => {
+  const { error, data: tweets } = await tryCatch(
+    prisma.tweet.findMany({
+      ...getTweetOptions,
+      ...option,
+      where: {
+        author: { id: id },
+        replyToPk: null,
+      },
+    }),
+    (e) => {
+      console.log(e);
+      return e;
+    }
   );
 
   if (error) throw error;
@@ -117,9 +147,32 @@ export const getTweetsCount = async (where: GetTweetsOption["where"] = { deleted
   return count;
 };
 
-export const getTweetsCountByAuthorId = async (authorId: string) => {
+export const getTweetsCountByAuthorUsername = async (username: string) => {
   const { error, data: count } = await tryCatch(
-    prisma.tweet.count({ where: { author: { id: authorId }, deletedAt: null, replyToPk: null } }),
+    prisma.tweet.count({
+      where: {
+        author: { username: username },
+        deletedAt: null,
+        replyToPk: null,
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
+export const getTweetsCountByAuthorId = async (id: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.tweet.count({
+      where: {
+        author: { id: id },
+        deletedAt: null,
+        replyToPk: null,
+      },
+    }),
     dbErrorHandler
   );
 

@@ -3,12 +3,12 @@ import { createDebug } from "@/v1/lib/debug.js";
 import { tweetMediaPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 
-import type { getMediaByUploaderIdPagination } from "@/v1/media/service/media.js";
+import type { getMediaByUploaderUsernamePagination } from "@/v1/media/service/media.js";
 
 const debug = createDebug("user:mapper:toUserMediaResponse");
 
 export const toUserTweetMediaResponse = (
-  props: Awaited<ReturnType<typeof getMediaByUploaderIdPagination>>
+  props: Awaited<ReturnType<typeof getMediaByUploaderUsernamePagination>>
 ) => {
   const media = props.media.map(transformTweetMedia);
 

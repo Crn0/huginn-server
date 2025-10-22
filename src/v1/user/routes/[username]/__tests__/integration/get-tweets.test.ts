@@ -9,7 +9,7 @@ import { app } from "v1/__mocks__/server.js";
 import { createTweet } from "@/v1/tweet/service/tweet.js";
 
 let accessToken: string;
-let userId: string;
+let username: string;
 let nextCursor: string;
 let prevCursor: string;
 
@@ -17,8 +17,8 @@ const userRequest = request.agent(app);
 
 beforeAll(async () => {
   const form = {
-    email: "userId.post@tweets.com",
-    displayName: "userId.data",
+    email: "username.post@tweets.com",
+    displayName: "username.data",
     password: "Crnocrno123",
     birthday: new Date(),
   } as const;
@@ -28,7 +28,7 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  userId = user.id;
+  username = user.username;
 
   await Promise.all(
     Array.from({ length: 40 }).map(async (_v, index) =>
@@ -41,12 +41,12 @@ beforeAll(async () => {
   };
 });
 
-describe("GET /api/v1/users/:userId/tweets", () => {
+describe("GET /api/v1/users/:username/tweets", () => {
   const baseUrl = "/api/v1/users" as const;
 
   describe("Success cases", () => {
     it("returns a list of tweets, total and the next and previous href", async () => {
-      const url = `${baseUrl}/${userId}/tweets` as const;
+      const url = `${baseUrl}/${username}/tweets` as const;
 
       const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
@@ -65,7 +65,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
     });
 
     it("paginates results using 'after' cursor query param", async () => {
-      const url = `${baseUrl}/${userId}/tweets` as const;
+      const url = `${baseUrl}/${username}/tweets` as const;
 
       const res = await userRequest
         .get(`${url}?after=${nextCursor}`)
@@ -86,7 +86,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
     });
 
     it("paginates results using 'before' cursor query param", async () => {
-      const url = `${baseUrl}/${userId}/tweets` as const;
+      const url = `${baseUrl}/${username}/tweets` as const;
 
       const res = await userRequest
         .get(`${url}?before=${prevCursor}`)
@@ -104,7 +104,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
     });
 
     it("returns empty tweets and null pagination fields for an invalid 'after' cursor", async () => {
-      const url = `${baseUrl}/${userId}/tweets` as const;
+      const url = `${baseUrl}/${username}/tweets` as const;
 
       const res = await userRequest
         .get(`${url}?after=${generateId()}`)
@@ -123,7 +123,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
     });
 
     it("returns empty tweets and null pagination fields for an invalid 'before' cursor", async () => {
-      const url = `${baseUrl}/${userId}/tweets` as const;
+      const url = `${baseUrl}/${username}/tweets` as const;
 
       const res = await userRequest
         .get(`${url}?before=${generateId()}`)
@@ -145,7 +145,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
   describe("Failure cases", () => {
     describe("Validation  errors", () => {
       it("returns a Validation error when the query param 'after' is invalid", async () => {
-        const url = `${baseUrl}/${userId}/tweets` as const;
+        const url = `${baseUrl}/${username}/tweets` as const;
 
         const res = await userRequest
           .get(`${url}?after=invalid-id`)
@@ -170,7 +170,7 @@ describe("GET /api/v1/users/:userId/tweets", () => {
       });
 
       it("returns a Validation error when the query param 'before' is invalid", async () => {
-        const url = `${baseUrl}/${userId}/tweets` as const;
+        const url = `${baseUrl}/${username}/tweets` as const;
 
         const res = await userRequest
           .get(`${url}?before=invalid-id`)

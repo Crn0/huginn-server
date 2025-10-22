@@ -6,14 +6,14 @@ import { getOptions, insertOptions } from "./follow-options.js";
 
 import type { GetFollowersOption, GetFollowingOption } from "../types/repository.types.js";
 
-export const followUserById = async (userId: string, followId: string) => {
+export const followUserByUsername = async (id: string, followUsername: string) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
-      where: { id: userId },
+      where: { id: id },
       data: {
         following: {
-          connect: { id: followId },
+          connect: { username: followUsername },
         },
       },
     }),
@@ -25,14 +25,14 @@ export const followUserById = async (userId: string, followId: string) => {
   return updatedUser;
 };
 
-export const followUsersById = async (userId: string, followIds: string[]) => {
+export const followUsersById = async (id: string, followUsernames: string[]) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
-      where: { id: userId },
+      where: { id: id },
       data: {
         following: {
-          connect: followIds.map((id) => ({ id })),
+          connect: followUsernames.map((username) => ({ username })),
         },
       },
     }),
@@ -44,14 +44,14 @@ export const followUsersById = async (userId: string, followIds: string[]) => {
   return updatedUser;
 };
 
-export const unFollowUserById = async (userId: string, unFollowId: string) => {
+export const unFollowUserById = async (id: string, unfollowUsername: string) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
-      where: { id: userId },
+      where: { id: id },
       data: {
         following: {
-          disconnect: { id: unFollowId },
+          disconnect: { username: unfollowUsername },
         },
       },
     }),
@@ -78,12 +78,48 @@ export const getUserFollowersById = async (id: string, options?: GetFollowersOpt
   return followers;
 };
 
+export const getUserFollowersByUsername = async (
+  username: string,
+  options?: GetFollowersOption
+) => {
+  const { error, data: followers } = await tryCatch(
+    prisma.user.findMany({
+      ...getOptions,
+      ...options,
+      where: { following: { some: { username } }, username: { not: username } },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return followers;
+};
+
 export const getUserFollowingById = async (id: string, options?: GetFollowingOption) => {
   const { error, data: following } = await tryCatch(
     prisma.user.findMany({
       ...getOptions,
       ...options,
       where: { followedBy: { some: { id } }, id: { not: id } },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return following;
+};
+
+export const getUserFollowingByUsername = async (
+  username: string,
+  options?: GetFollowingOption
+) => {
+  const { error, data: following } = await tryCatch(
+    prisma.user.findMany({
+      ...getOptions,
+      ...options,
+      where: { followedBy: { some: { username } }, username: { not: username } },
     }),
     dbErrorHandler
   );
@@ -109,12 +145,44 @@ export const getFollowersCountById = async (id: string) => {
   return count;
 };
 
+export const getFollowersCountByUsername = async (username: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.user.count({
+      where: {
+        username: { not: username },
+        following: { some: { username } },
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
 export const getFollowingCountById = async (id: string) => {
   const { error, data: count } = await tryCatch(
     prisma.user.count({
       where: {
         id: { not: id },
         followedBy: { some: { id } },
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
+export const getFollowingCountByUsername = async (username: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.user.count({
+      where: {
+        username: { not: username },
+        followedBy: { some: { username } },
       },
     }),
     dbErrorHandler

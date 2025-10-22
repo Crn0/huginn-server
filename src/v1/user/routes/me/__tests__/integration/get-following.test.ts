@@ -5,7 +5,7 @@ import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { getUserByEmail } from "@/v1/user/service/user-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
-import { followUsersById } from "@/v1/user/service/follow-service.js";
+import { followUsersByUsername } from "@/v1/user/service/follow-service.js";
 import { app } from "v1/__mocks__/server.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 
@@ -33,9 +33,9 @@ beforeAll(async () => {
   accessToken = login.body.token;
 
   const authUser = await getUserByEmail(testUserLoginForm.email);
-  const followIds = users.map(({ id }) => id);
+  const followUsernames = users.map(({ username }) => username);
 
-  await followUsersById(authUser!.id, followIds);
+  await followUsersByUsername(authUser!.id, followUsernames);
 
   return async () => {
     await Promise.all(users.map(async (user) => deleteUserById(user.id)));

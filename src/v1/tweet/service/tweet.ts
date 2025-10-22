@@ -106,8 +106,8 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const getTweetsByAuthorId = async (authorId: string) =>
-  tweetRepository.getTweetsByAuthorId(authorId);
+export const getTweetsByAuthorUsername = async (username: string) =>
+  tweetRepository.getTweetsByAuthorUsername(username);
 
 export const getTweetsPagination = async (
   userId: string | undefined,
@@ -226,7 +226,7 @@ export const getRepliesPagination = async (
   });
 };
 
-export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: PaginationCursor) => {
+export const getTweetsByAuthorIdPagination = async (id: string, cursor: PaginationCursor) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
 
   const options = {
@@ -241,8 +241,60 @@ export const getTweetsByAuthorIdPagination = async (authorId: string, cursor: Pa
   } satisfies GetTweetsOption;
 
   const [res, total] = await Promise.all([
-    tweetRepository.getTweetsByAuthorId(authorId, options),
-    tweetRepository.getTweetsCountByAuthorId(authorId),
+    tweetRepository.getTweetsByAuthorId(id, options),
+    tweetRepository.getTweetsCountByAuthorId(id),
+  ]);
+
+  const tweets =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextCursor = tweets.at?.(-1)?.id;
+  const prevCursor = tweets.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    tweets,
+    `/tweets?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    tweets,
+    `/tweets?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: tweets,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total: tweets.length > 0 ? total : 0,
+  });
+};
+
+export const getTweetsByAuthorUsernamePagination = async (
+  username: string,
+  cursor: PaginationCursor
+) => {
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+    where: { deletedAt: null },
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+  } satisfies GetTweetsOption;
+
+  const [res, total] = await Promise.all([
+    tweetRepository.getTweetsByAuthorUsername(username, options),
+    tweetRepository.getTweetsCountByAuthorUsername(username),
   ]);
 
   const tweets =

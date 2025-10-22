@@ -8,7 +8,7 @@ import { deleteUserById } from "@/v1/user/repository/user.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
-let followId: string;
+let followUsername: string;
 
 const userRequest = request.agent(app);
 
@@ -25,7 +25,7 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  followId = user.id;
+  followUsername = user.username;
 
   return async () => {
     await deleteUserById(user.id);
@@ -40,22 +40,18 @@ describe("POST /api/v1/users/me/following", () => {
       const res = await userRequest
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
-        .send({ followId });
+        .send({ username: followUsername });
 
-      expect(res.status).toBe(200);
-      expect(res.body).toMatchObject({ id: expect.any(String), followedId: expect.any(String) });
-      expect(res.body.followedId).toBe(followId);
+      expect(res.status).toBe(204);
     });
 
     it("returns 200 even if the user is already being followed", async () => {
       const res = await userRequest
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
-        .send({ followId });
+        .send({ username: followUsername });
 
-      expect(res.status).toBe(200);
-      expect(res.body).toMatchObject({ id: expect.any(String), followedId: expect.any(String) });
-      expect(res.body.followedId).toBe(followId);
+      expect(res.status).toBe(204);
     });
   });
 
@@ -65,36 +61,10 @@ describe("POST /api/v1/users/me/following", () => {
         const res = await userRequest
           .post(url)
           .set("Authorization", `Bearer ${accessToken}`)
-          .send({ followId: generateId() });
+          .send({ username: generateId() });
 
         expect(res.status).toBe(404);
         expect(res.body).toMatchObject({ code: "NOT_FOUND", message: "User not found." });
-      });
-    });
-
-    describe("Validation errors", () => {
-      it("returns a validation error when followId is invalid", async () => {
-        const res = await userRequest
-          .post(url)
-          .set("Authorization", `Bearer ${accessToken}`)
-          .send({ followId: "invalid-id" });
-
-        expect(res.status).toBe(422);
-        expect(res.body).toMatchObject({
-          code: "VALIDATION_ERROR",
-          message: "Validation failed: 1 errors detected in body",
-          issues: [
-            {
-              origin: "string",
-              code: "invalid_format",
-              format: "uuid",
-              pattern:
-                "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$/",
-              path: ["followId"],
-              message: "Invalid follow ID",
-            },
-          ],
-        });
       });
     });
   });

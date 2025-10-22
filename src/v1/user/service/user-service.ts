@@ -24,6 +24,7 @@ import type { PatchUserProfile } from "../types/repository.types.js";
 import type { PatchPassword } from "../schema/patch-password.js";
 
 export type UserById = Awaited<ReturnType<typeof getUserById>>;
+export type UserByUsername = Awaited<ReturnType<typeof getUserByUsername>>;
 
 const debug = createDebug("user-service");
 const MAX_USERNAME_RETRY = 20 as const;
@@ -94,6 +95,14 @@ export const getUserByEmail = async (
 
 export const getUserById = async (id: string) => {
   const user = await userRepository.getUserById(id);
+
+  if (!user) throw new NotFoundError("User not found.");
+
+  return user;
+};
+
+export const getUserByUsername = async (username: string) => {
+  const user = await userRepository.getUserByUsername(username);
 
   if (!user) throw new NotFoundError("User not found.");
 

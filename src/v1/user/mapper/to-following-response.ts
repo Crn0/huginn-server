@@ -1,9 +1,9 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { followingPaginationSchema } from "../schema/following.js";
 
-import type { getFollowingByIdPagination } from "../service/follow-service.js";
+import type { getFollowingByUsernamePagination } from "../service/follow-service.js";
 
-export type ToFollowingProp = Awaited<ReturnType<typeof getFollowingByIdPagination>>;
+export type ToFollowingProp = Awaited<ReturnType<typeof getFollowingByUsernamePagination>>;
 
 export const toFollowingResponse = (props: ToFollowingProp) => {
   const parsedData = followingPaginationSchema.safeParse({

@@ -4,12 +4,12 @@ import { tweetsPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 import { transformProfileMedia } from "./transform-profile-media.js";
 
-import type { getTweetsByAuthorIdPagination } from "@/v1/tweet/service/tweet.js";
+import type { getTweetsByAuthorUsernamePagination } from "@/v1/tweet/service/tweet.js";
 
 const debug = createDebug("user:mapper:toUserTweetsResponse");
 
 export const toUserTweetsResponse = (
-  props: Awaited<ReturnType<typeof getTweetsByAuthorIdPagination>>
+  props: Awaited<ReturnType<typeof getTweetsByAuthorUsernamePagination>>
 ) => {
   const tweets = props.data.map((tweet) => ({
     ...tweet,

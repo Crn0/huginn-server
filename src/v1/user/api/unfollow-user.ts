@@ -6,9 +6,9 @@ import type { Request, Response } from "express";
 
 export const unFollowUser = async (req: Request, res: Response) => {
   const id = req.user?.id as string;
-  const unFollowId = req.params["followId"] as string;
+  const username = req.params["username"] as string;
 
-  const { error } = await tryCatch(unFollowUserById(id, unFollowId));
+  const { error } = await tryCatch(unFollowUserById(id, username));
 
   if (error) throw error;
 

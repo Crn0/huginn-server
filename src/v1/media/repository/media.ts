@@ -42,12 +42,12 @@ export const getMediaByTweetId = async (tweetId: string) => {
   return media;
 };
 
-export const getMediaByUploaderId = async (uploaderId: string, option: GetMediaOption) => {
+export const getMediaByUploaderId = async (id: string, option: GetMediaOption) => {
   const { error, data: media } = await tryCatch(
     prisma.media.findMany({
       ...getMediaByUploaderOptions,
       ...option,
-      where: { uploader: { id: uploaderId } },
+      where: { uploader: { id } },
     }),
     dbErrorHandler
   );
@@ -57,9 +57,39 @@ export const getMediaByUploaderId = async (uploaderId: string, option: GetMediaO
   return media;
 };
 
-export const getMediaCountByUploaderId = async (uploaderId: string) => {
+export const getMediaByUploaderUsername = async (username: string, option: GetMediaOption) => {
+  const { error, data: media } = await tryCatch(
+    prisma.media.findMany({
+      ...getMediaByUploaderOptions,
+      ...option,
+      where: { uploader: { username } },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return media;
+};
+
+export const getMediaCountByUploaderId = async (id: string) => {
   const { error, data: count } = await tryCatch(
-    prisma.media.count({ where: { uploader: { id: uploaderId } } }),
+    prisma.media.count({
+      where: { uploader: { id } },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
+export const getMediaCountByUploaderUsername = async (username: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.media.count({
+      where: { uploader: { username } },
+    }),
     dbErrorHandler
   );
 

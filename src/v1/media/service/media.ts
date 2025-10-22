@@ -63,11 +63,59 @@ export const createMedia = async (
 export const getMediaByTweetId = async (tweetId: string) =>
   mediaRepository.getMediaByTweetId(tweetId);
 
-export const getMediaCountByUploaderId = async (uploaderId: string) =>
-  mediaRepository.getMediaCountByUploaderId(uploaderId);
+export const getMediaCountByUploaderUsername = async (username: string) =>
+  mediaRepository.getMediaCountByUploaderUsername(username);
 
-export const getMediaByUploaderIdPagination = async (
-  uploaderId: string,
+export const getMediaByUploaderIdPagination = async (id: string, cursor: PaginationCursor) => {
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: MEDIA_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+  };
+
+  const [res, total] = await Promise.all([
+    mediaRepository.getMediaByUploaderId(id, options),
+    mediaRepository.getMediaCountByUploaderId(id),
+  ]);
+
+  const media =
+    direction === "backward" ? res.slice(-MEDIA_PAGE_SIZE) : res.slice(0, MEDIA_PAGE_SIZE);
+
+  const hasMore = res.length > MEDIA_PAGE_SIZE;
+
+  const nextCursor = media.at?.(-1)?.id;
+  const prevCursor = media.at?.(0)?.id;
+
+  const normalizedNextHref = normalizeHref(
+    res,
+    `/media?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    res,
+    `/media?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    media,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
+  });
+};
+
+export const getMediaByUploaderUsernamePagination = async (
+  username: string,
   cursor: PaginationCursor
 ) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: MEDIA_PAGE_SIZE });
@@ -83,8 +131,8 @@ export const getMediaByUploaderIdPagination = async (
   };
 
   const [res, total] = await Promise.all([
-    mediaRepository.getMediaByUploaderId(uploaderId, options),
-    mediaRepository.getMediaCountByUploaderId(uploaderId),
+    mediaRepository.getMediaByUploaderUsername(username, options),
+    mediaRepository.getMediaCountByUploaderUsername(username),
   ]);
 
   const media =

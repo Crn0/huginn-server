@@ -2,10 +2,10 @@ import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { transformProfileMedia } from "./transform-profile-media.js";
 import { userSchema } from "@/v1/lib/user-schema.js";
 
-import type { getUserById } from "../repository/user.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
+import type { UserByUsername } from "../service/user-service.js";
 
-export const toUserResponse = (user: Awaited<ReturnType<typeof getUserById>>) => {
+export const toUserResponse = (user: UserByUsername) => {
   if (!user) {
     throw new NotFoundError("User not found,");
   }
