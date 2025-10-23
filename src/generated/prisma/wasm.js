@@ -167,7 +167,6 @@ exports.Prisma.TweetScalarFieldEnum = {
   content: 'content',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt',
   authorPk: 'authorPk',
   replyToPk: 'replyToPk'
 };

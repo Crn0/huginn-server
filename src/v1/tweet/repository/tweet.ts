@@ -55,7 +55,7 @@ export const getTweetById = async (id: string) => {
   const { error, data: tweet } = await tryCatch(
     prisma.tweet.findUnique({
       ...getTweetOptions,
-      where: { id, deletedAt: null },
+      where: { id },
     }),
     dbErrorHandler
   );
@@ -139,7 +139,7 @@ export const getTweets = async (option?: GetTweetsOption) => {
   return tweets;
 };
 
-export const getTweetsCount = async (where: GetTweetsOption["where"] = { deletedAt: null }) => {
+export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
   const { error, data: count } = await tryCatch(prisma.tweet.count({ where }), dbErrorHandler);
 
   if (error) throw error;
@@ -152,7 +152,6 @@ export const getTweetsCountByAuthorUsername = async (username: string) => {
     prisma.tweet.count({
       where: {
         author: { username: username },
-        deletedAt: null,
         replyToPk: null,
       },
     }),
@@ -169,7 +168,6 @@ export const getTweetsCountByAuthorId = async (id: string) => {
     prisma.tweet.count({
       where: {
         author: { id: id },
-        deletedAt: null,
         replyToPk: null,
       },
     }),

@@ -4,7 +4,6 @@ model Tweet {
   content    String?   @db.Text
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
 
   authorPk  Int     @map("author_pk")
   author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)

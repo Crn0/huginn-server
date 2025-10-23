@@ -121,7 +121,6 @@ export const getTweetsPagination = async (
     userId,
     {
       ...rest,
-      where: { deletedAt: null },
       orderBy: [
         {
           createdAt: "desc",
@@ -179,7 +178,6 @@ export const getRepliesPagination = async (
   const options = {
     ...rest,
     where: {
-      deletedAt: null,
       replyTo: { id: tweetId },
     },
     orderBy: [
@@ -193,7 +191,7 @@ export const getRepliesPagination = async (
 
   const [res, total] = await Promise.all([
     tweetRepository.getTweets(options),
-    tweetRepository.getTweetsCount({ deletedAt: null, replyTo: { id: tweetId } }),
+    tweetRepository.getTweetsCount({ replyTo: { id: tweetId } }),
   ]);
 
   const replies =
@@ -231,7 +229,6 @@ export const getTweetsByAuthorIdPagination = async (id: string, cursor: Paginati
 
   const options = {
     ...rest,
-    where: { deletedAt: null },
     orderBy: [
       {
         createdAt: "desc",
@@ -283,7 +280,6 @@ export const getTweetsByAuthorUsernamePagination = async (
 
   const options = {
     ...rest,
-    where: { deletedAt: null },
     orderBy: [
       {
         createdAt: "desc",
@@ -346,7 +342,6 @@ export const getRepliesByAuthorIdPagination = async (
   const [res, total] = await Promise.all([
     tweetRepository.getRepliesByAuthorId(authorId, options),
     tweetRepository.getTweetsCount({
-      deletedAt: null,
       author: { id: authorId },
       replyToPk: { not: null },
     }),
@@ -393,7 +388,6 @@ export const getLikedTweetsPaginationByUserId = async (
   const options = {
     ...rest,
     where: {
-      deletedAt: null,
       likes: {
         every: {
           user: { id: userId },
@@ -412,7 +406,6 @@ export const getLikedTweetsPaginationByUserId = async (
   const [res, total] = await Promise.all([
     tweetRepository.getTweets(options),
     tweetRepository.getTweetsCount({
-      deletedAt: null,
       likes: {
         every: {
           user: { id: userId },

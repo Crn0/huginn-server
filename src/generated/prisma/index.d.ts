@@ -6377,7 +6377,6 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    deletedAt: Date | null
     authorPk: number | null
     replyToPk: number | null
   }
@@ -6388,7 +6387,6 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    deletedAt: Date | null
     authorPk: number | null
     replyToPk: number | null
   }
@@ -6399,7 +6397,6 @@ export namespace Prisma {
     content: number
     createdAt: number
     updatedAt: number
-    deletedAt: number
     authorPk: number
     replyToPk: number
     _all: number
@@ -6424,7 +6421,6 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     updatedAt?: true
-    deletedAt?: true
     authorPk?: true
     replyToPk?: true
   }
@@ -6435,7 +6431,6 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     updatedAt?: true
-    deletedAt?: true
     authorPk?: true
     replyToPk?: true
   }
@@ -6446,7 +6441,6 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     updatedAt?: true
-    deletedAt?: true
     authorPk?: true
     replyToPk?: true
     _all?: true
@@ -6544,7 +6538,6 @@ export namespace Prisma {
     content: string | null
     createdAt: Date
     updatedAt: Date | null
-    deletedAt: Date | null
     authorPk: number
     replyToPk: number | null
     _count: TweetCountAggregateOutputType | null
@@ -6574,7 +6567,6 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    deletedAt?: boolean
     authorPk?: boolean
     replyToPk?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -6591,7 +6583,6 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    deletedAt?: boolean
     authorPk?: boolean
     replyToPk?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -6604,7 +6595,6 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    deletedAt?: boolean
     authorPk?: boolean
     replyToPk?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -6617,12 +6607,11 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    deletedAt?: boolean
     authorPk?: boolean
     replyToPk?: boolean
   }
 
-  export type TweetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "content" | "createdAt" | "updatedAt" | "deletedAt" | "authorPk" | "replyToPk", ExtArgs["result"]["tweet"]>
+  export type TweetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"primaryKey" | "id" | "content" | "createdAt" | "updatedAt" | "authorPk" | "replyToPk", ExtArgs["result"]["tweet"]>
   export type TweetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     media?: boolean | Tweet$mediaArgs<ExtArgs>
@@ -6655,7 +6644,6 @@ export namespace Prisma {
       content: string | null
       createdAt: Date
       updatedAt: Date | null
-      deletedAt: Date | null
       authorPk: number
       replyToPk: number | null
     }, ExtArgs["result"]["tweet"]>
@@ -7091,7 +7079,6 @@ export namespace Prisma {
     readonly content: FieldRef<"Tweet", 'String'>
     readonly createdAt: FieldRef<"Tweet", 'DateTime'>
     readonly updatedAt: FieldRef<"Tweet", 'DateTime'>
-    readonly deletedAt: FieldRef<"Tweet", 'DateTime'>
     readonly authorPk: FieldRef<"Tweet", 'Int'>
     readonly replyToPk: FieldRef<"Tweet", 'Int'>
   }
@@ -11360,7 +11347,6 @@ export namespace Prisma {
     content: 'content',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    deletedAt: 'deletedAt',
     authorPk: 'authorPk',
     replyToPk: 'replyToPk'
   };
@@ -11844,7 +11830,6 @@ export namespace Prisma {
     content?: StringNullableFilter<"Tweet"> | string | null
     createdAt?: DateTimeFilter<"Tweet"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
-    deletedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
     authorPk?: IntFilter<"Tweet"> | number
     replyToPk?: IntNullableFilter<"Tweet"> | number | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -11860,7 +11845,6 @@ export namespace Prisma {
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
-    deletedAt?: SortOrderInput | SortOrder
     authorPk?: SortOrder
     replyToPk?: SortOrderInput | SortOrder
     author?: UserOrderByWithRelationInput
@@ -11879,7 +11863,6 @@ export namespace Prisma {
     content?: StringNullableFilter<"Tweet"> | string | null
     createdAt?: DateTimeFilter<"Tweet"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
-    deletedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
     authorPk?: IntFilter<"Tweet"> | number
     replyToPk?: IntNullableFilter<"Tweet"> | number | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -11895,7 +11878,6 @@ export namespace Prisma {
     content?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrderInput | SortOrder
-    deletedAt?: SortOrderInput | SortOrder
     authorPk?: SortOrder
     replyToPk?: SortOrderInput | SortOrder
     _count?: TweetCountOrderByAggregateInput
@@ -11914,7 +11896,6 @@ export namespace Prisma {
     content?: StringNullableWithAggregatesFilter<"Tweet"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Tweet"> | Date | string
     updatedAt?: DateTimeNullableWithAggregatesFilter<"Tweet"> | Date | string | null
-    deletedAt?: DateTimeNullableWithAggregatesFilter<"Tweet"> | Date | string | null
     authorPk?: IntWithAggregatesFilter<"Tweet"> | number
     replyToPk?: IntNullableWithAggregatesFilter<"Tweet"> | number | null
   }
@@ -12460,7 +12441,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
@@ -12474,7 +12454,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
@@ -12487,7 +12466,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
@@ -12501,7 +12479,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
@@ -12515,7 +12492,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
   }
@@ -12525,7 +12501,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TweetUncheckedUpdateManyInput = {
@@ -12534,7 +12509,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -13288,7 +13262,6 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    deletedAt?: SortOrder
     authorPk?: SortOrder
     replyToPk?: SortOrder
   }
@@ -13305,7 +13278,6 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    deletedAt?: SortOrder
     authorPk?: SortOrder
     replyToPk?: SortOrder
   }
@@ -13316,7 +13288,6 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    deletedAt?: SortOrder
     authorPk?: SortOrder
     replyToPk?: SortOrder
   }
@@ -14789,7 +14760,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
@@ -14802,7 +14772,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
@@ -14878,7 +14847,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
@@ -14891,7 +14859,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
@@ -14959,7 +14926,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
@@ -14972,7 +14938,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
@@ -15110,7 +15075,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
@@ -15123,7 +15087,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
@@ -15265,7 +15228,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
@@ -15278,7 +15240,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
@@ -15295,7 +15256,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     author: UserCreateNestedOneWithoutTweetsInput
     media?: MediaCreateNestedManyWithoutTweetInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
@@ -15308,7 +15268,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
@@ -15444,7 +15403,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
@@ -15457,7 +15415,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
@@ -15489,7 +15446,6 @@ export namespace Prisma {
     content?: StringNullableFilter<"Tweet"> | string | null
     createdAt?: DateTimeFilter<"Tweet"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
-    deletedAt?: DateTimeNullableFilter<"Tweet"> | Date | string | null
     authorPk?: IntFilter<"Tweet"> | number
     replyToPk?: IntNullableFilter<"Tweet"> | number | null
   }
@@ -15850,7 +15806,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
@@ -15863,7 +15818,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
@@ -16405,7 +16359,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     authorPk: number
   }
 
@@ -16464,7 +16417,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutTweetsNestedInput
     media?: MediaUpdateManyWithoutTweetNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
@@ -16477,7 +16429,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
@@ -16490,7 +16441,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     authorPk?: IntFieldUpdateOperationsInput | number
   }
 
@@ -16534,7 +16484,6 @@ export namespace Prisma {
     content?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string | null
-    deletedAt?: Date | string | null
     replyToPk?: number | null
   }
 
@@ -16618,7 +16567,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
@@ -16631,7 +16579,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
@@ -16644,7 +16591,6 @@ export namespace Prisma {
     content?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
