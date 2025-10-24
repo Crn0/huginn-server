@@ -21,6 +21,7 @@ export const getUserOptions = {
       select: {
         followedBy: true,
         following: true,
+        tweets: true,
       },
     },
   },

@@ -21,6 +21,7 @@ const generateUser = (email?: string) => ({
   _count: {
     followedBy: 0,
     following: 0,
+    tweets: 0,
   },
 });
 

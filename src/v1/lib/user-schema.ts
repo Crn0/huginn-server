@@ -83,6 +83,7 @@ export const userSchema = z.object({
   _count: z.object({
     followedBy: z.coerce.number().default(0),
     following: z.coerce.number().default(0),
+    tweets: z.coerce.number().default(0),
   }),
 
   createdAt: z.coerce.date().transform((d) => d.toISOString()),

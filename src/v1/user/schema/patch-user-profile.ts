@@ -43,7 +43,9 @@ export const patchUserProfileSchema = z.object({
     })
     .optional(),
   bio: z.string().trim().max(160, { error: "Bio must be at most 160 characters" }).optional(),
-  birthday: z.coerce.date().optional(),
+  birthday: z.coerce
+    .date()
+    .refine((birthday) => new Date() > birthday, { error: "Birthday must be in the past" }),
   location: z
     .string()
     .trim()

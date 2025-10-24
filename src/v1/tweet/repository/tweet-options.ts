@@ -19,7 +19,7 @@ const baseOptions = {
         },
       },
     },
-    _count: { select: { replies: { where: { } } } },
+    _count: { select: { replies: { where: {} } } },
   },
 } as const;
 
