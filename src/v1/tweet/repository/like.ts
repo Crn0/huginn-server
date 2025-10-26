@@ -42,6 +42,38 @@ export const likeTweet = async (userId: string, tweetId: string) => {
   return like;
 };
 
+export const likeTweets = async (userId: string, tweetIds: string[]) => {
+  const [user, tweets] = await Promise.all([
+    prisma.user.findUnique({ where: { id: userId }, select: { primaryKey: true } }),
+    prisma.tweet.findMany({ where: { id: { in: tweetIds } }, select: { primaryKey: true } }),
+  ]);
+
+  if (!user) {
+    throw new NotFoundError("User not found.");
+  }
+
+  const { error, data: like } = await tryCatch(
+    prisma.like.createManyAndReturn({
+      ...createLikeOptions,
+      data: tweets.map((tweet) => ({ userPk: user.primaryKey, tweetPk: tweet.primaryKey })),
+    }),
+    (e) =>
+      dbErrorHandler(
+        e,
+        "P2002",
+        new ConflictError("Unique constraint violation", {
+          entity: "like",
+          code: LIKE_CONFLICT,
+          message: "Tweet has already been liked.",
+        })
+      )
+  );
+
+  if (error) throw error;
+
+  return like;
+};
+
 export const unlikeTweet = async (userId: string, tweetId: string) => {
   const [user, tweet] = await prisma.$transaction([
     prisma.user.findUnique({ where: { id: userId }, select: { primaryKey: true } }),
