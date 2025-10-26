@@ -19,7 +19,7 @@ export const followUserByUsername = async (id: string, followUsername: string) =
   followRepository.followUserByUsername(id, followUsername);
 
 export const followUsersByUsername = async (id: string, followUsernames: string[]) =>
-  followRepository.followUsersById(id, followUsernames);
+  followRepository.followUsersByUsername(id, followUsernames);
 
 export const unFollowUserById = async (userId: string, unfollowUsername: string) =>
   followRepository.unFollowUserById(userId, unfollowUsername);
@@ -35,50 +35,6 @@ export const getUserFollowCountByUsername = async (username: string) => {
   const followersCount = await followRepository.getFollowingCountByUsername(username);
 
   return Object.freeze({ followingCount, followersCount });
-};
-
-export const getFollowersByIdPagination = async (id: string, cursor: PaginationCursor) => {
-  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: FOLLOW_PAGE_SIZE });
-
-  const options = {
-    ...rest,
-  } as const;
-
-  const [res, total] = await Promise.all([
-    followRepository.getUserFollowersById(id, options),
-    followRepository.getFollowersCountById(id),
-  ]);
-
-  const followers =
-    direction === "backward" ? res.slice(-FOLLOW_PAGE_SIZE) : res.slice(0, FOLLOW_PAGE_SIZE);
-
-  const reversedFollowers = followers.toReversed();
-
-  const hasMore = res.length > FOLLOW_PAGE_SIZE;
-
-  const nextCursor = followers.at?.(-1)?.id;
-  const prevCursor = followers.at?.(0)?.id;
-
-  const normalizedNextHref = normalizeHref(
-    res,
-    `/followers?after=${nextCursor}`,
-    direction === "backward" || hasMore
-  );
-
-  const normalizedPrevHref = normalizeHref(
-    res,
-    `/followers?before=${prevCursor}`,
-    direction === "forward" || (direction === "backward" && hasMore)
-  );
-
-  return Object.freeze({
-    followers: reversedFollowers,
-    nextHref: normalizedNextHref,
-    prevHref: normalizedPrevHref,
-    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
-    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
-    total,
-  });
 };
 
 export const getFollowersByUsernamePagination = async (
@@ -120,50 +76,6 @@ export const getFollowersByUsernamePagination = async (
 
   return Object.freeze({
     followers: reversedFollowers,
-    nextHref: normalizedNextHref,
-    prevHref: normalizedPrevHref,
-    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
-    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
-    total,
-  });
-};
-
-export const getFollowingByIdPagination = async (id: string, cursor: PaginationCursor) => {
-  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: FOLLOW_PAGE_SIZE });
-
-  const options = {
-    ...rest,
-  } as const;
-
-  const [res, total] = await Promise.all([
-    followRepository.getUserFollowingById(id, options),
-    followRepository.getFollowingCountById(id),
-  ]);
-
-  const followers =
-    direction === "backward" ? res.slice(-FOLLOW_PAGE_SIZE) : res.slice(0, FOLLOW_PAGE_SIZE);
-
-  const reversedFollowing = followers.toReversed();
-
-  const hasMore = res.length > FOLLOW_PAGE_SIZE;
-
-  const nextCursor = followers.at?.(-1)?.id;
-  const prevCursor = followers.at?.(0)?.id;
-
-  const normalizedNextHref = normalizeHref(
-    res,
-    `/following?after=${nextCursor}`,
-    direction === "backward" || hasMore
-  );
-
-  const normalizedPrevHref = normalizeHref(
-    res,
-    `/following?before=${prevCursor}`,
-    direction === "forward" || (direction === "backward" && hasMore)
-  );
-
-  return Object.freeze({
-    following: reversedFollowing,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),

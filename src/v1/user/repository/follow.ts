@@ -25,7 +25,7 @@ export const followUserByUsername = async (id: string, followUsername: string) =
   return updatedUser;
 };
 
-export const followUsersById = async (id: string, followUsernames: string[]) => {
+export const followUsersByUsername = async (id: string, followUsernames: string[]) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
@@ -61,21 +61,6 @@ export const unFollowUserById = async (id: string, unfollowUsername: string) => 
   if (error) throw error;
 
   return updatedUser;
-};
-
-export const getUserFollowersById = async (id: string, options?: GetFollowersOption) => {
-  const { error, data: followers } = await tryCatch(
-    prisma.user.findMany({
-      ...getOptions,
-      ...options,
-      where: { following: { some: { id } }, id: { not: id } },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return followers;
 };
 
 export const getUserFollowersByUsername = async (
@@ -129,44 +114,12 @@ export const getUserFollowingByUsername = async (
   return following;
 };
 
-export const getFollowersCountById = async (id: string) => {
-  const { error, data: count } = await tryCatch(
-    prisma.user.count({
-      where: {
-        id: { not: id },
-        following: { some: { id } },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return count;
-};
-
 export const getFollowersCountByUsername = async (username: string) => {
   const { error, data: count } = await tryCatch(
     prisma.user.count({
       where: {
         username: { not: username },
         following: { some: { username } },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return count;
-};
-
-export const getFollowingCountById = async (id: string) => {
-  const { error, data: count } = await tryCatch(
-    prisma.user.count({
-      where: {
-        id: { not: id },
-        followedBy: { some: { id } },
       },
     }),
     dbErrorHandler
