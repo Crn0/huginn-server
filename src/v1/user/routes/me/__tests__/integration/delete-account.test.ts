@@ -28,7 +28,9 @@ beforeAll(async () => {
   await userRequest
     .patch("/api/v1/users/me/profile")
     .set("Authorization", `Bearer ${accessToken}`)
-    .attach("avatar", testFile);
+    .field("birthday", new Date().toISOString())
+    .attach("avatar", testFile)
+    .attach("banner", testFile);
 
   await userRequest
     .post("/api/v1/tweets")
