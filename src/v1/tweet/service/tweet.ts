@@ -5,7 +5,12 @@ import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
 import * as mediaService from "@/v1/media/service/media.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
-import type { CreateTweet, GetTweetsOption, ReplyTweet } from "../types/repository.types.js";
+import type {
+  CreateTweet,
+  GetLikedTweetsOption,
+  GetTweetsOption,
+  ReplyTweet,
+} from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
@@ -221,6 +226,66 @@ export const getRepliesPagination = async (
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
     prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
     total: replies.length > 0 ? total : 0,
+  });
+};
+
+export const getLikedTweetsPagination = async (
+  userId: string,
+  query: { cursor: PaginationCursor }
+) => {
+  const { cursor } = query;
+
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
+
+  const option = {
+    ...rest,
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+    distinct: ["tweetPk" as const],
+  } satisfies GetLikedTweetsOption;
+
+  const [res, total] = await Promise.all([
+    tweetRepository.getLikedTweets(userId, option),
+    tweetRepository.getTweetsCount({
+      likes: {
+        some: { user: { id: userId } },
+      },
+    }),
+  ]);
+
+  const likes =
+    direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
+
+  const hasMore = res.length > TWEETS_PAGE_SIZE;
+
+  const nextCursor = likes.at?.(-1)?.id;
+  const prevCursor = likes.at?.(0)?.id;
+
+  const tweets = likes.map((l) => l.tweet);
+
+  const normalizedNextHref = normalizeHref(
+    tweets,
+    `/likes?after=${nextCursor}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    tweets,
+    `/likes?before=${prevCursor}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: tweets,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total: tweets.length > 0 ? total : 0,
   });
 };
 

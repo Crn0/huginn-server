@@ -12,6 +12,11 @@ export type GetTweetsOption = Pick<
   "where" | "cursor" | "orderBy" | "skip" | "take" | "distinct"
 >;
 
+export type GetLikedTweetsOption = Pick<
+  Prisma.Tweet$likesArgs,
+  "where" | "cursor" | "orderBy" | "skip" | "take" | "distinct"
+>;
+
 export interface TweetMedia {
   type: TweetMediaType;
   filePath: string;

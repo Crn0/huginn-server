@@ -13,6 +13,7 @@ import { toReplyTweet } from "../mapper/to-reply-tweet.js";
 
 import type {
   CreateTweet,
+  GetLikedTweetsOption,
   GetTweetsOption,
   PatchTweet,
   ReplyTweet,
@@ -137,6 +138,30 @@ export const getTweets = async (option?: GetTweetsOption) => {
   if (error) throw error;
 
   return tweets;
+};
+
+export const getLikedTweets = async (userId: string, option?: GetLikedTweetsOption) => {
+  const { error, data: likes } = await tryCatch(
+    prisma.like.findMany({
+      ...option,
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      select: {
+        id: true,
+        tweet: {
+          ...getTweetOptions,
+        },
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return likes;
 };
 
 export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
