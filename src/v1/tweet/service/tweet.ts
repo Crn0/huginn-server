@@ -388,8 +388,8 @@ export const getTweetsByAuthorUsernamePagination = async (
   });
 };
 
-export const getRepliesByAuthorIdPagination = async (
-  authorId: string,
+export const getRepliesByAuthorUsernamePagination = async (
+  username: string,
   cursor: PaginationCursor
 ) => {
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: TWEETS_PAGE_SIZE });
@@ -405,9 +405,9 @@ export const getRepliesByAuthorIdPagination = async (
   } as GetTweetsOption;
 
   const [res, total] = await Promise.all([
-    tweetRepository.getRepliesByAuthorId(authorId, options),
+    tweetRepository.getRepliesByAuthorUsername(username, options),
     tweetRepository.getTweetsCount({
-      author: { id: authorId },
+      author: { username: username },
       replyToPk: { not: null },
     }),
   ]);

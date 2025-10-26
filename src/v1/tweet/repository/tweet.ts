@@ -111,12 +111,15 @@ export const getTweetsByAuthorId = async (id: string, option?: TweetPaginationOp
   return tweets;
 };
 
-export const getRepliesByAuthorId = async (authorId: string, option?: TweetPaginationOption) => {
+export const getRepliesByAuthorUsername = async (
+  username: string,
+  option?: TweetPaginationOption
+) => {
   const { error, data: replies } = await tryCatch(
     prisma.tweet.findMany({
       ...getReplyOptions,
       ...option,
-      where: { author: { id: authorId }, replyToPk: { not: null } },
+      where: { author: { username: username }, replyToPk: { not: null } },
     }),
     dbErrorHandler
   );
