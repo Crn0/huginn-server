@@ -8,6 +8,8 @@ import { getUserTweetMediaByUsername } from "../../api/get-media.js";
 import { getUser } from "../../api/get-user.js";
 
 import type { Router } from "express";
+import { getLikedTweets } from "../../api/get-liked-tweets.js";
+import { checkGetLikedTweets } from "../../middleware/check-get-liked-tweets.js";
 
 export const usernameGet = (router: Router) => {
   router.get("/:username", ZodParamValidation(usernameSchema), getUser);
@@ -31,6 +33,14 @@ export const usernameGet = (router: Router) => {
     ZodParamValidation(usernameSchema),
     ZodQueryValidator(paginationQuerySchema),
     getUserTweetsByUsername
+  );
+
+  router.get(
+    "/:username/tweets/likes",
+    ZodParamValidation(usernameSchema),
+    ZodQueryValidator(paginationQuerySchema),
+    checkGetLikedTweets,
+    getLikedTweets
   );
 
   router.get(
