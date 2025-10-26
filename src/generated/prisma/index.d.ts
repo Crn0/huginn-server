@@ -3976,18 +3976,21 @@ export namespace Prisma {
   }
 
   export type LikeMinAggregateOutputType = {
+    id: string | null
     createdAt: Date | null
     userPk: number | null
     tweetPk: number | null
   }
 
   export type LikeMaxAggregateOutputType = {
+    id: string | null
     createdAt: Date | null
     userPk: number | null
     tweetPk: number | null
   }
 
   export type LikeCountAggregateOutputType = {
+    id: number
     createdAt: number
     userPk: number
     tweetPk: number
@@ -4006,18 +4009,21 @@ export namespace Prisma {
   }
 
   export type LikeMinAggregateInputType = {
+    id?: true
     createdAt?: true
     userPk?: true
     tweetPk?: true
   }
 
   export type LikeMaxAggregateInputType = {
+    id?: true
     createdAt?: true
     userPk?: true
     tweetPk?: true
   }
 
   export type LikeCountAggregateInputType = {
+    id?: true
     createdAt?: true
     userPk?: true
     tweetPk?: true
@@ -4111,6 +4117,7 @@ export namespace Prisma {
   }
 
   export type LikeGroupByOutputType = {
+    id: string
     createdAt: Date
     userPk: number
     tweetPk: number
@@ -4136,6 +4143,7 @@ export namespace Prisma {
 
 
   export type LikeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     createdAt?: boolean
     userPk?: boolean
     tweetPk?: boolean
@@ -4144,6 +4152,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["like"]>
 
   export type LikeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     createdAt?: boolean
     userPk?: boolean
     tweetPk?: boolean
@@ -4152,6 +4161,7 @@ export namespace Prisma {
   }, ExtArgs["result"]["like"]>
 
   export type LikeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     createdAt?: boolean
     userPk?: boolean
     tweetPk?: boolean
@@ -4160,12 +4170,13 @@ export namespace Prisma {
   }, ExtArgs["result"]["like"]>
 
   export type LikeSelectScalar = {
+    id?: boolean
     createdAt?: boolean
     userPk?: boolean
     tweetPk?: boolean
   }
 
-  export type LikeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"createdAt" | "userPk" | "tweetPk", ExtArgs["result"]["like"]>
+  export type LikeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "userPk" | "tweetPk", ExtArgs["result"]["like"]>
   export type LikeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     tweet?: boolean | TweetDefaultArgs<ExtArgs>
@@ -4186,6 +4197,7 @@ export namespace Prisma {
       tweet: Prisma.$TweetPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
+      id: string
       createdAt: Date
       userPk: number
       tweetPk: number
@@ -4272,8 +4284,8 @@ export namespace Prisma {
      * // Get first 10 Likes
      * const likes = await prisma.like.findMany({ take: 10 })
      * 
-     * // Only select the `createdAt`
-     * const likeWithCreatedAtOnly = await prisma.like.findMany({ select: { createdAt: true } })
+     * // Only select the `id`
+     * const likeWithIdOnly = await prisma.like.findMany({ select: { id: true } })
      * 
      */
     findMany<T extends LikeFindManyArgs>(args?: SelectSubset<T, LikeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -4317,9 +4329,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Likes and only return the `createdAt`
-     * const likeWithCreatedAtOnly = await prisma.like.createManyAndReturn({
-     *   select: { createdAt: true },
+     * // Create many Likes and only return the `id`
+     * const likeWithIdOnly = await prisma.like.createManyAndReturn({
+     *   select: { id: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -4408,9 +4420,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Likes and only return the `createdAt`
-     * const likeWithCreatedAtOnly = await prisma.like.updateManyAndReturn({
-     *   select: { createdAt: true },
+     * // Update zero or more Likes and only return the `id`
+     * const likeWithIdOnly = await prisma.like.updateManyAndReturn({
+     *   select: { id: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -4614,6 +4626,7 @@ export namespace Prisma {
    * Fields of the Like model
    */
   interface LikeFieldRefs {
+    readonly id: FieldRef<"Like", 'String'>
     readonly createdAt: FieldRef<"Like", 'DateTime'>
     readonly userPk: FieldRef<"Like", 'Int'>
     readonly tweetPk: FieldRef<"Like", 'Int'>
@@ -11314,6 +11327,7 @@ export namespace Prisma {
 
 
   export const LikeScalarFieldEnum: {
+    id: 'id',
     createdAt: 'createdAt',
     userPk: 'userPk',
     tweetPk: 'tweetPk'
@@ -11668,6 +11682,7 @@ export namespace Prisma {
     AND?: LikeWhereInput | LikeWhereInput[]
     OR?: LikeWhereInput[]
     NOT?: LikeWhereInput | LikeWhereInput[]
+    id?: UuidFilter<"Like"> | string
     createdAt?: DateTimeFilter<"Like"> | Date | string
     userPk?: IntFilter<"Like"> | number
     tweetPk?: IntFilter<"Like"> | number
@@ -11676,6 +11691,7 @@ export namespace Prisma {
   }
 
   export type LikeOrderByWithRelationInput = {
+    id?: SortOrder
     createdAt?: SortOrder
     userPk?: SortOrder
     tweetPk?: SortOrder
@@ -11684,6 +11700,7 @@ export namespace Prisma {
   }
 
   export type LikeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
     userPk_tweetPk?: LikeUserPkTweetPkCompoundUniqueInput
     AND?: LikeWhereInput | LikeWhereInput[]
     OR?: LikeWhereInput[]
@@ -11693,9 +11710,10 @@ export namespace Prisma {
     tweetPk?: IntFilter<"Like"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     tweet?: XOR<TweetScalarRelationFilter, TweetWhereInput>
-  }, "userPk_tweetPk">
+  }, "userPk_tweetPk" | "id">
 
   export type LikeOrderByWithAggregationInput = {
+    id?: SortOrder
     createdAt?: SortOrder
     userPk?: SortOrder
     tweetPk?: SortOrder
@@ -11710,6 +11728,7 @@ export namespace Prisma {
     AND?: LikeScalarWhereWithAggregatesInput | LikeScalarWhereWithAggregatesInput[]
     OR?: LikeScalarWhereWithAggregatesInput[]
     NOT?: LikeScalarWhereWithAggregatesInput | LikeScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Like"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Like"> | Date | string
     userPk?: IntWithAggregatesFilter<"Like"> | number
     tweetPk?: IntWithAggregatesFilter<"Like"> | number
@@ -12289,40 +12308,47 @@ export namespace Prisma {
   }
 
   export type LikeCreateInput = {
+    id?: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutLikesInput
     tweet: TweetCreateNestedOneWithoutLikesInput
   }
 
   export type LikeUncheckedCreateInput = {
+    id?: string
     createdAt?: Date | string
     userPk: number
     tweetPk: number
   }
 
   export type LikeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutLikesNestedInput
     tweet?: TweetUpdateOneRequiredWithoutLikesNestedInput
   }
 
   export type LikeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userPk?: IntFieldUpdateOperationsInput | number
     tweetPk?: IntFieldUpdateOperationsInput | number
   }
 
   export type LikeCreateManyInput = {
+    id?: string
     createdAt?: Date | string
     userPk: number
     tweetPk: number
   }
 
   export type LikeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LikeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userPk?: IntFieldUpdateOperationsInput | number
     tweetPk?: IntFieldUpdateOperationsInput | number
@@ -13056,6 +13082,7 @@ export namespace Prisma {
   }
 
   export type LikeCountOrderByAggregateInput = {
+    id?: SortOrder
     createdAt?: SortOrder
     userPk?: SortOrder
     tweetPk?: SortOrder
@@ -13067,12 +13094,14 @@ export namespace Prisma {
   }
 
   export type LikeMaxOrderByAggregateInput = {
+    id?: SortOrder
     createdAt?: SortOrder
     userPk?: SortOrder
     tweetPk?: SortOrder
   }
 
   export type LikeMinOrderByAggregateInput = {
+    id?: SortOrder
     createdAt?: SortOrder
     userPk?: SortOrder
     tweetPk?: SortOrder
@@ -15281,11 +15310,13 @@ export namespace Prisma {
   }
 
   export type LikeCreateWithoutTweetInput = {
+    id?: string
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutLikesInput
   }
 
   export type LikeUncheckedCreateWithoutTweetInput = {
+    id?: string
     createdAt?: Date | string
     userPk: number
   }
@@ -15466,6 +15497,7 @@ export namespace Prisma {
     AND?: LikeScalarWhereInput | LikeScalarWhereInput[]
     OR?: LikeScalarWhereInput[]
     NOT?: LikeScalarWhereInput | LikeScalarWhereInput[]
+    id?: UuidFilter<"Like"> | string
     createdAt?: DateTimeFilter<"Like"> | Date | string
     userPk?: IntFilter<"Like"> | number
     tweetPk?: IntFilter<"Like"> | number
@@ -15950,11 +15982,13 @@ export namespace Prisma {
   }
 
   export type LikeCreateWithoutUserInput = {
+    id?: string
     createdAt?: Date | string
     tweet: TweetCreateNestedOneWithoutLikesInput
   }
 
   export type LikeUncheckedCreateWithoutUserInput = {
+    id?: string
     createdAt?: Date | string
     tweetPk: number
   }
@@ -16354,6 +16388,7 @@ export namespace Prisma {
   }
 
   export type LikeCreateManyTweetInput = {
+    id?: string
     createdAt?: Date | string
     userPk: number
   }
@@ -16435,16 +16470,19 @@ export namespace Prisma {
   }
 
   export type LikeUpdateWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutLikesNestedInput
   }
 
   export type LikeUncheckedUpdateWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userPk?: IntFieldUpdateOperationsInput | number
   }
 
   export type LikeUncheckedUpdateManyWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userPk?: IntFieldUpdateOperationsInput | number
   }
@@ -16493,6 +16531,7 @@ export namespace Prisma {
   }
 
   export type LikeCreateManyUserInput = {
+    id?: string
     createdAt?: Date | string
     tweetPk: number
   }
@@ -16727,16 +16766,19 @@ export namespace Prisma {
   }
 
   export type LikeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tweet?: TweetUpdateOneRequiredWithoutLikesNestedInput
   }
 
   export type LikeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tweetPk?: IntFieldUpdateOperationsInput | number
   }
 
   export type LikeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tweetPk?: IntFieldUpdateOperationsInput | number
   }

@@ -140,6 +140,7 @@ exports.Prisma.BlacklistedTokenScalarFieldEnum = {
 };
 
 exports.Prisma.LikeScalarFieldEnum = {
+  id: 'id',
   createdAt: 'createdAt',
   userPk: 'userPk',
   tweetPk: 'tweetPk'
