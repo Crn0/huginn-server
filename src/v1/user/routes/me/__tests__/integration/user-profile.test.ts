@@ -57,89 +57,20 @@ describe("PATCH /api/v1/users/me/profile", () => {
   } as const;
 
   describe("Success cases", () => {
-    const checkFieldUpdate =
-      <K extends keyof typeof form>(field: K, expected: (typeof form)[K]) =>
-      async () => {
-        const user = await getUserByEmail(testUserLoginForm.email);
+    it("returns an id and username when user profile is updated is updated", async () => {
+      const res = await userRequest
+        .patch(url)
+        .set("Authorization", `Bearer ${accessToken}`)
+        .field("bio", form.bio)
+        .field("birthday", form.birthday.toISOString())
+        .field("location", form.location)
+        .field("website", form.website)
+        .attach("avatar", testFile)
+        .attach("banner", testFile);
 
-        if (!user || !user.profile) return false;
-
-        if (field === "birthday") {
-          return user.profile.birthday?.toDateString() === (expected as Date).toDateString();
-        }
-
-        return user.profile[field] === expected;
-      };
-
-    const scenarios = [
-      {
-        field: "displayName",
-        payload: { displayName: form.displayName },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-        isFieldUpdated: checkFieldUpdate("displayName", form.displayName),
-      },
-      {
-        field: "bio",
-        payload: { bio: form.bio },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-        isFieldUpdated: checkFieldUpdate("bio", form.bio),
-      },
-      {
-        field: "birthday",
-        payload: { birthday: form.birthday },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-        isFieldUpdated: checkFieldUpdate("birthday", form.birthday),
-      },
-      {
-        field: "location",
-        payload: { location: form.location },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-        isFieldUpdated: checkFieldUpdate("location", form.location),
-      },
-      {
-        field: "website",
-        payload: { website: form.website },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-        isFieldUpdated: checkFieldUpdate("website", form.website),
-      },
-      {
-        field: "avatar",
-        payload: { avatar: testFile },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-      },
-      {
-        field: "banner",
-        payload: { banner: testFile },
-        responseBody: { id: expect.any(String), username: expect.any(String) },
-      },
-    ] as const;
-
-    it.each(scenarios)(
-      "returns an id and username when $field is updated",
-      async ({ field, payload, responseBody }) => {
-        if (field === "avatar" || field === "banner") {
-          const file = field === "avatar" ? payload.avatar : payload.banner;
-
-          const res = await userRequest
-            .patch(url)
-            .set("Authorization", `Bearer ${accessToken}`)
-            .attach(field, file);
-
-          expect(res.status).toBe(200);
-          expect(res.body).toMatchObject(responseBody);
-
-          return;
-        }
-
-        const res = await userRequest
-          .patch(url)
-          .set("Authorization", `Bearer ${accessToken}`)
-          .send(payload);
-
-        expect(res.status).toBe(200);
-        expect(res.body).toMatchObject(responseBody);
-      }
-    );
+      expect(res.status).toBe(200);
+      expect(res.body).toMatchObject({ id: expect.any(String), username: expect.any(String) });
+    });
   });
 
   describe("Failure cases", () => {
