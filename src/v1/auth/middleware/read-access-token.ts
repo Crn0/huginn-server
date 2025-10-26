@@ -27,13 +27,13 @@ export const readAccessToken = (req: Request, _res: Response, next: NextFunction
     throw new AuthenticationError("Invalid or expired token");
   }
 
-  const verifiedToken = verifyToken(accessToken) as JwtPayload;
+  const verifiedToken = verifyToken(accessToken) as JwtPayload & { username: string };
 
   if (typeof verifiedToken.sub !== "string") {
     throw new AuthenticationError("Invalid or expired token");
   }
 
-  req.user = { id: verifiedToken.sub };
+  req.user = { id: verifiedToken.sub, username: verifiedToken.username };
 
   next();
 };

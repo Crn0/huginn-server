@@ -5,6 +5,10 @@ import { generateId } from "./generate-id.js";
 import { UNAUTHORIZED } from "../constants/http-status.js";
 import { AuthenticationError } from "@/lib/errors/auth-error.js";
 
+type Payload = {
+  username: string;
+};
+
 const secret = env.JWT_SECRET;
 
 const DEFAULT_EXP_ACCESS_TOKEN = 15;
@@ -24,14 +28,16 @@ export const verifyToken = (token: string) => {
 
 export const generateAccessToken = (
   id: string,
+  payload: Payload,
   expiresInMinutes: number = DEFAULT_EXP_ACCESS_TOKEN
-) => jwt.sign({}, secret, { expiresIn: `${expiresInMinutes}M`, subject: id });
+) => jwt.sign(payload, secret, { expiresIn: `${expiresInMinutes}M`, subject: id });
 
 export const generateRefreshToken = (
   id: string,
+  payload: Payload,
   expiresInDays: number = DEFAULT_EXP_REFRESH_TOKEN
 ) =>
-  jwt.sign({}, secret, {
+  jwt.sign(payload, secret, {
     jwtid: generateId(),
     subject: id,
     expiresIn: `${expiresInDays}D`,

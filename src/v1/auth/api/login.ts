@@ -10,9 +10,10 @@ import { cookieConfig } from "../configs/cookie.js";
 
 import type { Request, Response } from "express";
 import type { AuthUser } from "@/v1/types/user.types.js";
+import type { JwtPayload } from "jsonwebtoken";
 
-const REFRESH_TOKEN_EXPIRATION = 7 as const; // 7 days
-const ACCESS_TOKEN_EXPIRATION = 15 as const; // 15 mins
+export const REFRESH_TOKEN_EXPIRATION = 7 as const; // 7 days
+export const ACCESS_TOKEN_EXPIRATION = 15 as const; // 15 mins
 
 export const login = async (req: Request, res: Response) => {
   const oldRefreshToken: string = req.cookies["refreshToken"];
@@ -20,7 +21,7 @@ export const login = async (req: Request, res: Response) => {
   if (oldRefreshToken) {
     res.clearCookie("refreshToken", cookieConfig);
 
-    const verifiedToken = verifyToken(oldRefreshToken);
+    const verifiedToken = verifyToken(oldRefreshToken) as JwtPayload & { username: string };
 
     if (typeof verifiedToken === "string") {
       throw new InternalServerError("Something went wrong");
@@ -28,6 +29,7 @@ export const login = async (req: Request, res: Response) => {
 
     const jwtId = verifiedToken?.jti;
     const sub = verifiedToken?.sub;
+    const username = verifiedToken.username;
     const exp = verifiedToken?.exp;
 
     if (typeof jwtId !== "string" || typeof sub !== "string" || typeof exp !== "number") {
@@ -44,13 +46,15 @@ export const login = async (req: Request, res: Response) => {
 
     await blackListToken({ jwtId, sub, expiresAt, type: "RefreshToken" });
 
-    req.user = { id: sub };
+    req.user = { id: sub, username };
   }
 
   const user = req.user as AuthUser;
 
-  const refreshToken = generateRefreshToken(user.id, REFRESH_TOKEN_EXPIRATION);
-  const accessToken = generateAccessToken(user.id, ACCESS_TOKEN_EXPIRATION);
+  const payload = { username: req.user!.username } as const;
+
+  const refreshToken = generateRefreshToken(user.id, payload, REFRESH_TOKEN_EXPIRATION);
+  const accessToken = generateAccessToken(user.id, payload, ACCESS_TOKEN_EXPIRATION);
 
   res.cookie("refreshToken", refreshToken, cookieConfig);
 
