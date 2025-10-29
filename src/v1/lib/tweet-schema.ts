@@ -1,6 +1,5 @@
 import z from "zod";
 
-import { profileMediaSchema } from "@/v1/lib/user-schema.js";
 import { SUPPORTED_FILE_TYPES } from "@/v1/tweet/constants/index.js";
 import { paginationSchema, paginationQuerySchema } from "@/v1/lib/pagination-schema.js";
 
@@ -52,8 +51,8 @@ export const authorSchema = z.object({
   username: z.string(),
   profile: z.object({
     displayName: z.string(),
-    avatar: profileMediaSchema.nullable(),
-    banner: profileMediaSchema.nullable(),
+    avatarUrl: z.url().nullable(),
+    bannerUrl: z.url().nullable(),
   }),
 });
 

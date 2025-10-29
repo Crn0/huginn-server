@@ -6,5 +6,5 @@ import { paginationSchema } from "@/v1/lib/pagination-schema.js";
 export type FollowersPagination = z.infer<typeof followersPaginationSchema>;
 
 export const followersPaginationSchema = paginationSchema.extend({
-  followers: z.array(followSchema),
+  data: z.array(followSchema),
 });

@@ -1,5 +1,5 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
-import { transformProfileMedia } from "./transform-profile-media.js";
+import { transformProfileAvatar, transformProfileBanner } from "./transform-profile-media.js";
 import { userSchema } from "@/v1/lib/user-schema.js";
 
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
@@ -12,8 +12,8 @@ export const toUserResponse = (user: UserByUsername) => {
 
   const profile = {
     ...user.profile,
-    avatar: transformProfileMedia(user.profile?.avatar ?? null),
-    banner: transformProfileMedia(user.profile?.banner ?? null),
+    avatarUrl: transformProfileAvatar(user.profile?.avatar ?? null),
+    bannerUrl: transformProfileBanner(user.profile?.banner ?? null),
   };
 
   const parsedUser = userSchema.safeParse({

@@ -5,22 +5,6 @@ import { paginationQuerySchema, paginationSchema } from "./pagination-schema.js"
 const MIN_FILTER_LENGTH = 1 as const;
 const MAX_FILTER_LENGTH = 36 as const;
 
-const mediaSizeSchema = z.object({
-  url: z.url(),
-  w: z.coerce.number(),
-  h: z.coerce.number(),
-});
-
-export const profileMediaSchema = z.object({
-  url: z.url(),
-  type: z.enum(["IMAGE", "GIF"]),
-  sizes: z.object({
-    small: mediaSizeSchema,
-    medium: mediaSizeSchema,
-    large: mediaSizeSchema,
-  }),
-});
-
 // https://regexr.com/8h173
 export const usernameRegex = /^[a-zA-Z0-9{_,.}]+$/;
 
@@ -29,7 +13,6 @@ export type UserLoginDTO = z.infer<typeof userLoginSchema>;
 export type User = z.infer<typeof userSchema>;
 export type AuthUser = z.infer<typeof authUserSchema>;
 export type UserAccountLevel = z.infer<typeof accountLevelEnum>;
-export type MediaSize = z.infer<typeof mediaSizeSchema>;
 export type UserFilter = z.infer<typeof userQueryFilterSchema>;
 export type UserQuery = z.infer<typeof userQuerySchema>;
 
@@ -76,8 +59,8 @@ export const userSchema = z.object({
     location: z.string().nullable(),
     website: z.url().nullable(),
 
-    avatar: profileMediaSchema.nullable(),
-    banner: profileMediaSchema.nullable(),
+    avatarUrl: z.url().nullable(),
+    bannerUrl: z.url().nullable(),
   }),
 
   _count: z.object({
@@ -117,7 +100,7 @@ export const getUsersSchema = z.array(
     avatarUrl: z.url().nullable(),
     profile: z.object({
       displayName: userSchema.shape.profile.shape.displayName,
-      avatar: userSchema.shape.profile.shape.avatar,
+      avatarUrl: userSchema.shape.profile.shape.avatarUrl,
     }),
   })
 );

@@ -75,7 +75,7 @@ export const getFollowersByUsernamePagination = async (
   );
 
   return Object.freeze({
-    followers: reversedFollowers,
+    data: reversedFollowers,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
@@ -122,7 +122,7 @@ export const getFollowingByUsernamePagination = async (
   );
 
   return Object.freeze({
-    following: reversedFollowing,
+    data: reversedFollowing,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),

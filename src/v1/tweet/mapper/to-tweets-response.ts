@@ -2,9 +2,12 @@ import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { tweetsPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
+import {
+  transformProfileAvatar,
+  transformProfileBanner,
+} from "@/v1/user/mapper/transform-profile-media.js";
 
 import type { getTweetsPagination } from "@/v1/tweet/service/tweet.js";
-import { transformProfileMedia } from "@/v1/user/mapper/transform-profile-media.js";
 
 const debug = createDebug("user:mapper:toTweetsResponse");
 
@@ -15,8 +18,8 @@ export const toTweetsResponse = (props: Awaited<ReturnType<typeof getTweetsPagin
       ...tweet.author,
       profile: {
         ...tweet.author.profile,
-        avatar: transformProfileMedia(tweet.author.profile!.avatar),
-        banner: transformProfileMedia(tweet.author.profile!.banner),
+        avatarUrl: transformProfileAvatar(tweet.author.profile!.avatar),
+        bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
     media: tweet.media.map(transformTweetMedia) ?? [],
