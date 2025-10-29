@@ -21,8 +21,8 @@ export const profileMediaSchema = z.object({
   }),
 });
 
-// Letters and numbers only
-export const usernameRegex = /^[a-zA-Z0-9]+$/;
+// https://regexr.com/8h173
+export const usernameRegex = /^[a-zA-Z0-9{_,.}]+$/;
 
 export type CreateUserDTO = z.infer<typeof createUserSchema>;
 export type UserLoginDTO = z.infer<typeof userLoginSchema>;
