@@ -43,12 +43,12 @@ beforeAll(async () => {
 
 describe("GET /api/v1/users/me/users", () => {
   const url = "/api/v1/users" as const;
-  const s = "user.get" as const;
+  const by = "user.get" as const;
 
   describe("Success cases", () => {
     it("returns a list of users, total and the next and previous href", async () => {
       const res = await userRequest
-        .get(`${url}?s=${s}`)
+        .get(`${url}?by=${by}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -67,7 +67,7 @@ describe("GET /api/v1/users/me/users", () => {
 
     it("paginates results using 'after' cursor query param", async () => {
       const res = await userRequest
-        .get(`${url}?s=${s}&after=${nextCursor}`)
+        .get(`${url}?by=${by}&after=${nextCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -86,7 +86,7 @@ describe("GET /api/v1/users/me/users", () => {
 
     it("paginates results using 'before' cursor query param", async () => {
       const res = await userRequest
-        .get(`${url}?s=${s}&before=${prevCursor}`)
+        .get(`${url}?by=${by}&before=${prevCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.body).toMatchObject({
@@ -102,7 +102,7 @@ describe("GET /api/v1/users/me/users", () => {
 
     it("returns empty users and null pagination fields for an invalid 'after' cursor", async () => {
       const res = await userRequest
-        .get(`${url}?s=${s}&after=${generateId()}`)
+        .get(`${url}?by=${by}&after=${generateId()}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -119,7 +119,7 @@ describe("GET /api/v1/users/me/users", () => {
 
     it("returns empty users and null pagination fields for an invalid 'before' cursor", async () => {
       const res = await userRequest
-        .get(`${url}?s=${s}&before=${generateId()}`)
+        .get(`${url}?by=${by}&before=${generateId()}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -137,7 +137,7 @@ describe("GET /api/v1/users/me/users", () => {
 
   describe("Failure cases", () => {
     describe("Validation errors", () => {
-      it("returns a Validation error when the query param 's' is invalid", async () => {
+      it("returns a Validation error when the query param 'by' is invalid", async () => {
         const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
@@ -147,7 +147,7 @@ describe("GET /api/v1/users/me/users", () => {
           issues: [
             {
               code: "invalid_type",
-              path: ["s"],
+              path: ["by"],
               message: "Invalid query",
             },
           ],
@@ -156,7 +156,7 @@ describe("GET /api/v1/users/me/users", () => {
 
       it("returns a Validation error when the query param 'after' is invalid", async () => {
         const res = await userRequest
-          .get(`${url}?s=${s}&after=invalid-id`)
+          .get(`${url}?by=${by}&after=invalid-id`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
@@ -179,7 +179,7 @@ describe("GET /api/v1/users/me/users", () => {
 
       it("returns a Validation error when the query param 'before' is invalid", async () => {
         const res = await userRequest
-          .get(`${url}?s=${s}&before=invalid-id`)
+          .get(`${url}?by=${by}&before=invalid-id`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);

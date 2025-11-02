@@ -123,21 +123,21 @@ export const getUsersPagination = async (query: {
 }) => {
   const {
     cursor,
-    filter: { s },
+    filter: { by },
   } = query;
 
   const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: USERS_PAGE_SIZE });
 
   const [res, total] = await Promise.all([
-    userRepository.getUsersByUsernameOrDisplayName(s, rest),
+    userRepository.getUsersByUsernameOrDisplayName(by, rest),
     userRepository.getUsersCount({
       deletedAt: null,
       username: {
-        contains: s,
+        contains: by,
         mode: "insensitive",
       },
       profile: {
-        displayName: { contains: s, mode: "insensitive" },
+        displayName: { contains: by, mode: "insensitive" },
       },
     }),
   ]);

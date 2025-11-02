@@ -42,7 +42,7 @@ export const userLoginSchema = z.object({
 export const accountLevelEnum = z.enum(["DEMO", "USER", "ADMIN"]);
 
 export const userQueryFilterSchema = z.object({
-  s: z
+  by: z
     .string({ error: "Invalid query" })
     .trim()
     .min(MIN_FILTER_LENGTH, "Query cannot be empty")

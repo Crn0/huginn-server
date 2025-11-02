@@ -10,7 +10,7 @@ export const getUsers = async (_req: Request, res: Response) => {
   const query: UserQuery = res.locals["query"];
 
   const filter = {
-    s: query.s,
+    by: query.by,
   } as const;
 
   const cursor = {
