@@ -43,26 +43,18 @@ export const toPatchUserProfile = ({
   avatar,
   banner,
 }: PatchUserProfile) => {
-  const data: MappedData = {};
+  const data: MappedData = {
+    bio: bio ?? null,
+    location: location ?? null,
+    website: website ?? null
+  };
 
   if (displayName) {
     setData(data, "displayName", displayName);
   }
 
-  if (bio) {
-    setData(data, "bio", bio);
-  }
-
   if (birthday) {
     setData(data, "birthday", birthday);
-  }
-
-  if (location) {
-    setData(data, "location", location);
-  }
-
-  if (website) {
-    setData(data, "website", website);
   }
 
   if (avatar) {
