@@ -46,7 +46,7 @@ export const toPatchUserProfile = ({
   const data: MappedData = {
     bio: bio ?? null,
     location: location ?? null,
-    website: website ?? null
+    website: website ?? null,
   };
 
   if (displayName) {
