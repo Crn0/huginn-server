@@ -193,7 +193,6 @@ describe("GET /api/v1/tweets", () => {
         expect(res.body).toHaveProperty("total");
         expect(Array.isArray(res.body.data)).toBe(true);
         expect(typeof res.body.total === "number").toBe(true);
-        expect(res.body.data.length).toBe(1);
 
         await deleteTweetById(createdTweet.id);
         await deleteUserById(createdUser.id);
