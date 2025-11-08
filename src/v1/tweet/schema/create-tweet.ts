@@ -16,5 +16,6 @@ export const createTweetSchema = z.object({
     .max(MAX_CONTENT_LENGTH, {
       error: `Content must contain at most ${MAX_CONTENT_LENGTH} characters.`,
     })
-    .nullable(),
+    .nullish()
+    .default(null),
 });

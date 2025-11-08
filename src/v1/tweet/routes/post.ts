@@ -7,6 +7,7 @@ import { handleTweetMedia, tweetMediaProcessor } from "../middleware/tweet-media
 import { createTweet } from "../api/create-tweet.js";
 import { replyTweet } from "../api/reply-tweet.js";
 import { likeTweet } from "../api/like-tweet.js";
+import { checkCreateTweet } from "../middleware/check-create-tweet.js";
 
 import type { Router } from "express";
 
@@ -16,6 +17,7 @@ export const register = (router: Router) => {
     tweetMediaProcessor,
     handleTweetMedia,
     ZodBodyValidator(createTweetSchema),
+    checkCreateTweet,
     createTweet
   );
 
