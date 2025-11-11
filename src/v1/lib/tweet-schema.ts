@@ -70,7 +70,7 @@ export const tweetImageVariantSchema = z.object({
 });
 
 export const tweetVideoSchema = z.object({
-  previewUrl: z.url(),
+  url: z.url(),
   type: z.literal("VIDEO"),
   height: z.coerce.number(),
   width: z.coerce.number(),
@@ -98,7 +98,7 @@ export const tweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
-  _count: z.object({ replies: z.coerce.number() }),
+  _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
 });
 
 export const tweetReply = tweetSchema.extend({ replyTo: tweetSchema });
