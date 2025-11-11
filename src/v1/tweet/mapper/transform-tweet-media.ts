@@ -45,19 +45,19 @@ const getVideoVariant = (media: Media) => {
   const small = {
     bitRate: BITRATE["360p"],
     contentType: "video/mp4",
-    url: getMediaUrl(media.filePath, [{ ...baseOptions }, { bit_rate: BITRATE["360p"] }]),
+    url: getMediaUrl(media.filePath, { ...baseOptions, bit_rate: BITRATE["360p"] }),
   } satisfies TweetVideoVariant;
 
   const medium = {
     bitRate: BITRATE["480p"],
     contentType: "video/mp4",
-    url: getMediaUrl(media.filePath, [{ ...baseOptions }, { bit_rate: BITRATE["480p"] }]),
+    url: getMediaUrl(media.filePath, { ...baseOptions, bit_rate: BITRATE["480p"] }),
   } satisfies TweetVideoVariant;
 
   const large = {
     bitRate: BITRATE["720p"],
     contentType: "video/mp4",
-    url: getMediaUrl(media.filePath, [{ ...baseOptions }, { bit_rate: BITRATE["720p"] }]),
+    url: getMediaUrl(media.filePath, { ...baseOptions, bit_rate: BITRATE["720p"] }),
   } satisfies TweetVideoVariant;
 
   const variants = [small, medium, large] satisfies TweetVideoVariant[];
@@ -71,33 +71,39 @@ const getImageVariant = (media: Media) => {
   const baseOptions = BASE_OPTIONS.image(media);
 
   const small = {
-    url: getMediaUrl(media.filePath, [
-      { ...baseOptions },
-      { width: IMAGE_SIZE.small, height: IMAGE_SIZE.small },
-      { quality: "auto:low" },
-    ]),
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: IMAGE_SIZE.small, height: IMAGE_SIZE.small },
+        { quality: "auto:low" },
+      ],
+    }),
     height: IMAGE_SIZE.small,
     width: IMAGE_SIZE.small,
     contentType: `image/${baseOptions.fetch_format}`,
   } satisfies TweetImageVariant;
 
   const medium = {
-    url: getMediaUrl(media.filePath, [
-      { ...baseOptions },
-      { width: IMAGE_SIZE.medium, height: IMAGE_SIZE.medium },
-      { quality: "auto:good" },
-    ]),
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: IMAGE_SIZE.medium, height: IMAGE_SIZE.medium },
+        { quality: "auto:good" },
+      ],
+    }),
     width: IMAGE_SIZE.medium,
     height: IMAGE_SIZE.medium,
     contentType: `image/${baseOptions.fetch_format}`,
   } satisfies TweetImageVariant;
 
   const large = {
-    url: getMediaUrl(media.filePath, [
-      { ...baseOptions },
-      { width: IMAGE_SIZE.large, height: IMAGE_SIZE.large },
-      { quality: "auto:best" },
-    ]),
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: IMAGE_SIZE.large, height: IMAGE_SIZE.large },
+        { quality: "auto:best" },
+      ],
+    }),
     width: IMAGE_SIZE.large,
     height: IMAGE_SIZE.large,
     contentType: `image/${baseOptions.fetch_format}`,
@@ -119,7 +125,6 @@ const normalizedTweetVideo = (media: Media) => {
       ...baseOptions,
       width: IMAGE_SIZE.medium,
       height: IMAGE_SIZE.medium,
-      format: "webp",
     }),
     type: "VIDEO",
     width: baseOptions.width,
