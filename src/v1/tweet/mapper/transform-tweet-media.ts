@@ -32,7 +32,6 @@ const BASE_OPTIONS = {
   } as const,
   image: (media: Media) =>
     ({
-      crop: "thumb",
       gravity: "auto",
       fetch_format: media.type === "IMAGE" ? "webp" : "gif",
     }) as const,
@@ -75,7 +74,6 @@ const getImageVariant = (media: Media) => {
     url: getMediaUrl(media.filePath, [
       { ...baseOptions },
       { width: IMAGE_SIZE.small, height: IMAGE_SIZE.small },
-      { radius: "max" },
       { quality: "auto:low" },
     ]),
     height: IMAGE_SIZE.small,
@@ -87,7 +85,6 @@ const getImageVariant = (media: Media) => {
     url: getMediaUrl(media.filePath, [
       { ...baseOptions },
       { width: IMAGE_SIZE.medium, height: IMAGE_SIZE.medium },
-      { radius: "max" },
       { quality: "auto:good" },
     ]),
     width: IMAGE_SIZE.medium,
@@ -99,7 +96,6 @@ const getImageVariant = (media: Media) => {
     url: getMediaUrl(media.filePath, [
       { ...baseOptions },
       { width: IMAGE_SIZE.large, height: IMAGE_SIZE.large },
-      { radius: "max" },
       { quality: "auto:best" },
     ]),
     width: IMAGE_SIZE.large,
@@ -119,7 +115,7 @@ const normalizedTweetVideo = (media: Media) => {
   const baseOptions = BASE_OPTIONS.video;
 
   const video = {
-    previewUrl: getMediaUrl(media.filePath, {
+    url: getMediaUrl(media.filePath, {
       ...baseOptions,
       width: IMAGE_SIZE.medium,
       height: IMAGE_SIZE.medium,
