@@ -12,11 +12,8 @@ import {
 
 export const getMediaUrl = (
   filePath: string,
-  transformation?: TransformationOptions | ConfigAndUrlOptions
-) =>
-  cloudinary.url(filePath, {
-    transformation,
-  });
+  option?: TransformationOptions | ConfigAndUrlOptions
+) => cloudinary.url(filePath, option);
 
 export const getUsage = async () => cloudinary.api.usage();
 
