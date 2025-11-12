@@ -70,19 +70,23 @@ export const tweetImageVariantSchema = z.object({
 });
 
 export const tweetVideoSchema = z.object({
+  id: z.uuidv7({ error: "Invalid ID" }),
   url: z.url(),
   type: z.literal("VIDEO"),
   height: z.coerce.number(),
   width: z.coerce.number(),
   variants: z.array(tweetVideoVariantSchema),
   tweet: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
+  createdAt: z.date().transform((d) => d.toISOString()),
 });
 
 export const tweetImageSchema = z.object({
+  id: z.uuidv7({ error: "Invalid ID" }),
   url: z.url(),
   type: z.enum(["IMAGE", "GIF"]),
   variants: z.array(tweetImageVariantSchema),
   tweet: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
+  createdAt: z.date().transform((d) => d.toISOString()),
 });
 
 export const tweetMedia = z.discriminatedUnion("type", [tweetVideoSchema, tweetImageSchema]);

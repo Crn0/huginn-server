@@ -1,12 +1,7 @@
 import { getMediaUrl } from "@/v1/storage/cloudinary-service.js";
 
 import type { Media as DbMedia } from "@/generated/prisma/index.js";
-import type {
-  tweetImage,
-  TweetImageVariant,
-  TweetVideo,
-  TweetVideoVariant,
-} from "@/v1/lib/tweet-schema.js";
+import type { TweetImageVariant, TweetVideoVariant } from "@/v1/lib/tweet-schema.js";
 
 type Media = DbMedia & { tweet: { id: string } | null };
 
@@ -121,6 +116,7 @@ const normalizedTweetVideo = (media: Media) => {
   const baseOptions = BASE_OPTIONS.video;
 
   const video = {
+    id: media.id,
     url: getMediaUrl(media.filePath, {
       ...baseOptions,
       width: IMAGE_SIZE.medium,
@@ -131,7 +127,8 @@ const normalizedTweetVideo = (media: Media) => {
     height: baseOptions.height,
     variants: getVideoVariant(media),
     tweet: { id: media.tweet.id },
-  } satisfies TweetVideo;
+    createdAt: media.createdAt,
+  };
 
   return Object.freeze(video);
 };
@@ -143,11 +140,13 @@ const normalizedTweetImage = (media: Media) => {
   const baseOptions = BASE_OPTIONS.image(media);
 
   const image = {
+    id: media.id,
     url: getMediaUrl(media.filePath, { fetch_format: baseOptions.fetch_format }),
     type: media.type,
     variants: getImageVariant(media),
     tweet: { id: media.tweet.id },
-  } satisfies tweetImage;
+    createdAt: media.createdAt,
+  };
 
   return Object.freeze(image);
 };
