@@ -19,9 +19,10 @@ const baseOptions = {
         },
       },
     },
+    likes: { select: { id: true } },
     _count: { select: { replies: { where: {} }, likes: { where: {} } } },
   },
-} as const;
+} satisfies Prisma.TweetDefaultArgs;
 
 export const createTweetOptions = {
   ...baseOptions,
