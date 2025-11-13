@@ -28,7 +28,7 @@ const transformReplyTo = (replyTo: ReplyTo) => {
   };
 };
 
-export const toUserRepliesResponse = (props: Prop) => {
+export const toUserRepliesResponse = (props: Prop, user?: { id: string }) => {
   const replies = props.data.map((reply) => ({
     ...reply,
     author: {
@@ -39,6 +39,7 @@ export const toUserRepliesResponse = (props: Prop) => {
         bannerUrl: transformProfileBanner(reply.author.profile!.banner),
       },
     },
+    liked: !user ? false : reply.likes.some((p) => p.id == user.id),
     replyTo: transformReplyTo(reply.replyTo),
     media: reply.media.map(transformTweetMedia) ?? [],
   }));

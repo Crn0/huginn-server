@@ -102,6 +102,7 @@ export const tweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
+  liked: z.boolean().default(false),
   _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
 });
 

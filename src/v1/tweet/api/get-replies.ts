@@ -10,6 +10,8 @@ export const getReplies = async (
   req: RequestWithPagination<{ tweetId: string }>,
   res: Response
 ) => {
+  const user = req.user;
+
   const tweetId = req.params.tweetId as string;
 
   const query: TweetQuery = res.locals["query"];
@@ -21,5 +23,5 @@ export const getReplies = async (
 
   const pagination = await getRepliesPagination(tweetId, { cursor });
 
-  return res.status(OK).json({ ...toTweetsResponse(pagination) });
+  return res.status(OK).json({ ...toTweetsResponse(pagination, user) });
 };

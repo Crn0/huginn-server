@@ -11,7 +11,10 @@ import type { getTweetsPagination } from "@/v1/tweet/service/tweet.js";
 
 const debug = createDebug("user:mapper:toTweetsResponse");
 
-export const toTweetsResponse = (props: Awaited<ReturnType<typeof getTweetsPagination>>) => {
+export const toTweetsResponse = (
+  props: Awaited<ReturnType<typeof getTweetsPagination>>,
+  user?: { id: string }
+) => {
   const tweets = props.data.map((tweet) => ({
     ...tweet,
     author: {
@@ -22,6 +25,7 @@ export const toTweetsResponse = (props: Awaited<ReturnType<typeof getTweetsPagin
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    liked: !user ? false : tweet.likes.some((p) => p.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 

@@ -10,6 +10,8 @@ export const getUserTweetsByUsername = async (
   req: RequestWithPagination<{ username: string }>,
   res: Response
 ) => {
+  const user = req.user;
+
   const username = req.params["username"] as string;
 
   const query: PaginationQuery = res.locals["query"];
@@ -21,5 +23,5 @@ export const getUserTweetsByUsername = async (
 
   const pagination = await getTweetsByAuthorUsernamePagination(username, cursor);
 
-  return res.status(OK).json({ ...toUserTweetsResponse(pagination) });
+  return res.status(OK).json({ ...toUserTweetsResponse(pagination, user) });
 };

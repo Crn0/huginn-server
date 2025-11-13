@@ -7,7 +7,8 @@ import type { RequestWithPagination } from "@/v1/types/express.js";
 import type { TweetQuery } from "@/v1/lib/tweet-schema.js";
 
 export const getTweets = async (req: RequestWithPagination, res: Response) => {
-  const userId = req.user?.id;
+  const user = req.user;
+  const userId = user?.id;
 
   const query: TweetQuery = res.locals["query"];
 
@@ -23,5 +24,5 @@ export const getTweets = async (req: RequestWithPagination, res: Response) => {
 
   const pagination = await getTweetsPagination(userId, { filter, cursor });
 
-  return res.status(OK).json({ ...toTweetsResponse(pagination) });
+  return res.status(OK).json({ ...toTweetsResponse(pagination, user) });
 };

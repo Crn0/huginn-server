@@ -9,7 +9,8 @@ import type { getTweetsByAuthorUsernamePagination } from "@/v1/tweet/service/twe
 const debug = createDebug("user:mapper:toUserTweetsResponse");
 
 export const toUserTweetsResponse = (
-  props: Awaited<ReturnType<typeof getTweetsByAuthorUsernamePagination>>
+  props: Awaited<ReturnType<typeof getTweetsByAuthorUsernamePagination>>,
+  user?: { id: string }
 ) => {
   const tweets = props.data.map((tweet) => ({
     ...tweet,
@@ -21,6 +22,7 @@ export const toUserTweetsResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    liked: !user ? false : tweet.likes.some((p) => p.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 

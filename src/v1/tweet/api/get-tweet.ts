@@ -6,11 +6,12 @@ import { toTweetResponse } from "../mapper/to-tweet-response.js";
 import type { Request, Response } from "express";
 
 export const getTweet = async (req: Request, res: Response) => {
+  const user = req.user;
   const tweetId = req.params["tweetId"] as string;
 
   const { error, data: tweet } = await tryCatch(getTweetById(tweetId));
 
   if (error) throw error;
 
-  return res.status(OK).json({ ...toTweetResponse(tweet) });
+  return res.status(OK).json({ ...toTweetResponse(tweet, user) });
 };

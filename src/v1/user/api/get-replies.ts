@@ -10,6 +10,7 @@ export const getUserReplies = async (
   req: RequestWithPagination<{ username: string }>,
   res: Response
 ) => {
+  const user = req.user;
   const username = req.params["username"] as string;
 
   const query: PaginationQuery = res.locals["query"];
@@ -21,5 +22,5 @@ export const getUserReplies = async (
 
   const pagination = await getRepliesByAuthorUsernamePagination(username, cursor);
 
-  return res.status(OK).json({ ...toUserRepliesResponse(pagination) });
+  return res.status(OK).json({ ...toUserRepliesResponse(pagination, user) });
 };

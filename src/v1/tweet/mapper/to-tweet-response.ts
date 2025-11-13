@@ -11,7 +11,10 @@ import type { getTweetById } from "@/v1/tweet/service/tweet.js";
 
 const debug = createDebug("user:mapper:toTweetResponse");
 
-export const toTweetResponse = (tweet: Awaited<ReturnType<typeof getTweetById>>) => {
+export const toTweetResponse = (
+  tweet: Awaited<ReturnType<typeof getTweetById>>,
+  user?: { id: string }
+) => {
   const _tweet = {
     ...tweet,
     author: {
@@ -22,6 +25,7 @@ export const toTweetResponse = (tweet: Awaited<ReturnType<typeof getTweetById>>)
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    liked: !user ? false : tweet.likes.some((p) => p.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   };
 
