@@ -52,7 +52,7 @@ const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter
       ...option.where,
       author: {
         id: { not: userId },
-        followedBy: { every: { id: userId } },
+        followedBy: { some: { id: userId } },
       },
     };
   }
