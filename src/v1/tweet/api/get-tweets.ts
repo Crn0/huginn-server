@@ -13,8 +13,8 @@ export const getTweets = async (req: RequestWithPagination, res: Response) => {
   const query: TweetQuery = res.locals["query"];
 
   const filter = {
-    s: query.s,
-    w: query.w,
+    search: query.search,
+    scope: query.scope,
   } as const;
 
   const cursor = {

@@ -1,4 +1,5 @@
 import { env } from "@/configs/env.js";
+import { buildQueryParam } from "@/v1/lib/build-query-param.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
@@ -41,17 +42,17 @@ const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter
     option.where = {};
   }
 
-  if (typeof filter.s === "string") {
+  if (typeof filter.search === "string") {
     option.where = {
       ...option.where,
       content: {
-        contains: filter.s,
+        contains: filter.search,
         mode: "insensitive",
       },
     };
   }
 
-  if (userId && filter.w === "following") {
+  if (userId && filter.scope === "following") {
     option.where = {
       ...option.where,
       author: {
@@ -150,15 +151,17 @@ export const getTweetsPagination = async (
   const nextCursor = tweets.at?.(-1)?.id;
   const prevCursor = tweets.at?.(0)?.id;
 
+  const queryParam = buildQueryParam(filter);
+
   const normalizedNextHref = normalizeHref(
     tweets,
-    `/tweets?after=${nextCursor}`,
+    `/tweets?after=${nextCursor}${queryParam ? `&${queryParam}` : ""}`,
     direction === "backward" || hasMore
   );
 
   const normalizedPrevHref = normalizeHref(
     tweets,
-    `/tweets?before=${prevCursor}`,
+    `/tweets?before=${prevCursor}${queryParam ? `&${queryParam}` : ""}`,
     direction === "forward" || (direction === "backward" && hasMore)
   );
 

@@ -138,13 +138,13 @@ describe("GET /api/v1/tweets", () => {
     });
 
     describe("Filter", () => {
-      it("filters the result based on the query param 's' ", async () => {
+      it("filters the result based on the query param 'search' ", async () => {
         const createdTweet = await createTweet({ authorId, content: "hello world foo", media: [] });
 
         const content = "foo" as const;
 
         const res = await userRequest
-          .get(`${url}?s=${content}`)
+          .get(`${url}?search=${content}`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);
@@ -161,15 +161,15 @@ describe("GET /api/v1/tweets", () => {
         await deleteTweetById(createdTweet.id);
       });
 
-      it("filters the result based on the query param 'w' ", async () => {
+      it("filters the result based on the query param 'scope' ", async () => {
         const createdUser = await createUser({
           email: generateEmail(),
-          displayName: generateDisplayName("query param 'w'"),
+          displayName: generateDisplayName("query param 'scope'"),
           password: "Crnocrno123",
           birthday: new Date(),
         });
 
-        const where = "following" as const;
+        const scope = "following" as const;
 
         const [createdTweet] = await Promise.all([
           createTweet({
@@ -181,7 +181,7 @@ describe("GET /api/v1/tweets", () => {
         ]);
 
         const res = await userRequest
-          .get(`${url}?w=${where}`)
+          .get(`${url}?scope=${scope}`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(200);

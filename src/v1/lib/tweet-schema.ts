@@ -3,7 +3,7 @@ import z from "zod";
 import { SUPPORTED_FILE_TYPES } from "@/v1/tweet/constants/index.js";
 import { paginationSchema, paginationQuerySchema } from "@/v1/lib/pagination-schema.js";
 
-export const tweetWhereFilter = ["following"] as const;
+export const tweetWhereFilter = ["all", "following"] as const;
 
 export const MAX_CONTENT_FILTER_LENGTH = 1024 as const;
 
@@ -38,8 +38,8 @@ export const tweetIdSchema = z.object({
 });
 
 export const tweetQueryFilterSchema = z.object({
-  s: z.string({ error: "Invalid query" }).max(MAX_CONTENT_FILTER_LENGTH).optional(),
-  w: z.enum(tweetWhereFilter).optional(),
+  search: z.string({ error: "Invalid query" }).max(MAX_CONTENT_FILTER_LENGTH).optional(),
+  scope: z.enum(tweetWhereFilter).optional(),
 });
 
 export const tweetMediaType = z.enum(["IMAGE", "GIF", "VIDEO"]);
