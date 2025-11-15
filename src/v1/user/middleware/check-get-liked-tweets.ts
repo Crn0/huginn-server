@@ -3,16 +3,21 @@ import { tryCatch } from "@/v1/lib/try-catch.js";
 import { getUserById } from "../service/user-service.js";
 
 import type { Request, Response, NextFunction } from "express";
+import type { UserTweetFilter } from "@/v1/lib/tweet-schema.js";
 
-export const checkGetLikedTweets = async (req: Request, _res: Response, next: NextFunction) => {
+export const checkGetLikedTweets = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.user?.id as string;
   const username = req.params["username"] as string;
 
-  const user = await getUserById(userId);
+  const query: UserTweetFilter = res.locals["query"];
 
-  const { error } = tryCatch(() => userPolicy.tweet.getLikes(user, { username }));
+  if (query.scope === "likes") {
+    const user = await getUserById(userId);
 
-  if (error) throw error;
+    const { error } = tryCatch(() => userPolicy.tweet.getLikes(user, { username }));
+
+    if (error) throw error;
+  }
 
   return next();
 };

@@ -1,23 +1,26 @@
 import z from "zod";
 
-const refineHref = (v: string | null, ctx: z.core.$RefinementCtx) => {
-  if (typeof v === "string") {
-    const arrStrings = v.split("=");
+const refineHref = (href: string | null, ctx: z.core.$RefinementCtx) => {
+  if (typeof href === "string") {
+    const regex = /(?:after|before)=([^&]+)/g;
+    const arrStrings = href.split("=");
     const field = arrStrings?.[0]?.split?.("?")?.[1] ?? "";
-    const cursorId = arrStrings[1];
+    const matches = [...href.matchAll(regex)];
 
-    const parsedCursorId = z.uuidv7().safeParse(cursorId);
+    for (const m of matches) {
+      const parsedCursorId = z.uuidv7().safeParse(m[1]);
 
-    if (!parsedCursorId.success) {
-      return ctx.addIssue({
-        origin: "string",
-        code: "invalid_format",
-        format: "uuid",
-        pattern:
-          "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$/",
-        path: [field],
-        message: "Invalid cursor",
-      });
+      if (!parsedCursorId.success) {
+        return ctx.addIssue({
+          origin: "string",
+          code: "invalid_format",
+          format: "uuid",
+          pattern:
+            "/^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$/",
+          path: [field],
+          message: "Invalid cursor",
+        });
+      }
     }
   }
 };

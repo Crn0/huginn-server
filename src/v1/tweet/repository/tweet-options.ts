@@ -38,12 +38,6 @@ export const replyTweetOptions = {
 export const getTweetOptions = {
   include: {
     ...baseOptions.include,
-  },
-} satisfies Prisma.TweetDefaultArgs;
-
-export const getReplyOptions = {
-  include: {
-    ...baseOptions.include,
     replyTo: {
       include: {
         ...baseOptions.include,

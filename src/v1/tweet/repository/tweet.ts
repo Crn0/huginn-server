@@ -6,14 +6,12 @@ import {
   replyTweetOptions,
   deleteTweetOptions,
   getTweetOptions,
-  getReplyOptions,
 } from "./tweet-options.js";
 import { toCreateTweet } from "../mapper/to-create-tweet.js";
 import { toReplyTweet } from "../mapper/to-reply-tweet.js";
 
 import type {
   CreateTweet,
-  GetLikedTweetsOption,
   GetTweetsOption,
   PatchTweet,
   ReplyTweet,
@@ -75,14 +73,11 @@ export const getTweetsByAuthorUsername = async (
       ...getTweetOptions,
       ...option,
       where: {
+        ...option?.where,
         author: { username: username },
-        replyToPk: null,
       },
     }),
-    (e) => {
-      console.log(e);
-      return e;
-    }
+    dbErrorHandler
   );
 
   if (error) throw error;
@@ -111,24 +106,6 @@ export const getTweetsByAuthorId = async (id: string, option?: TweetPaginationOp
   return tweets;
 };
 
-export const getRepliesByAuthorUsername = async (
-  username: string,
-  option?: TweetPaginationOption
-) => {
-  const { error, data: replies } = await tryCatch(
-    prisma.tweet.findMany({
-      ...getReplyOptions,
-      ...option,
-      where: { author: { username: username }, replyToPk: { not: null } },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return replies;
-};
-
 export const getTweets = async (option?: GetTweetsOption) => {
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
@@ -143,30 +120,6 @@ export const getTweets = async (option?: GetTweetsOption) => {
   return tweets;
 };
 
-export const getLikedTweets = async (userId: string, option?: GetLikedTweetsOption) => {
-  const { error, data: likes } = await tryCatch(
-    prisma.like.findMany({
-      ...option,
-      where: {
-        user: {
-          id: userId,
-        },
-      },
-      select: {
-        id: true,
-        tweet: {
-          ...getTweetOptions,
-        },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return likes;
-};
-
 export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
   const { error, data: count } = await tryCatch(prisma.tweet.count({ where }), dbErrorHandler);
 
@@ -175,12 +128,15 @@ export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
   return count;
 };
 
-export const getTweetsCountByAuthorUsername = async (username: string) => {
+export const getTweetsCountByAuthorUsername = async (
+  username: string,
+  where: GetTweetsOption["where"]
+) => {
   const { error, data: count } = await tryCatch(
     prisma.tweet.count({
       where: {
+        ...where,
         author: { username: username },
-        replyToPk: null,
       },
     }),
     dbErrorHandler

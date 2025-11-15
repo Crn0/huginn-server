@@ -4,11 +4,11 @@ import { tweetRepliesPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "@/v1/tweet/mapper/transform-tweet-media.js";
 import { transformProfileAvatar, transformProfileBanner } from "./transform-profile-media.js";
 
-import type { getRepliesByAuthorUsernamePagination } from "@/v1/tweet/service/tweet.js";
+import type { getTweetsByAuthorUsernamePagination } from "@/v1/tweet/service/tweet.js";
 
 const debug = createDebug("user:mapper:toUserRepliesResponse");
 
-type Prop = Awaited<ReturnType<typeof getRepliesByAuthorUsernamePagination>>;
+type Prop = Awaited<ReturnType<typeof getTweetsByAuthorUsernamePagination>>;
 
 type ReplyTo = Prop["data"][number]["replyTo"];
 

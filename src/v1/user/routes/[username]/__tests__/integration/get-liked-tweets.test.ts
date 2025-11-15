@@ -63,7 +63,7 @@ describe("GET /api/v1/users/:username/tweets", () => {
 
   describe("Success cases", () => {
     it("returns a list of tweets, total and the next and previous href", async () => {
-      const url = `${baseUrl}/${username}/tweets/likes` as const;
+      const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
       const res = await userRequest.get(url).set("Authorization", `Bearer ${accessToken}`);
 
@@ -82,10 +82,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
     });
 
     it("paginates results using 'after' cursor query param", async () => {
-      const url = `${baseUrl}/${username}/tweets/likes` as const;
+      const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
       const res = await userRequest
-        .get(`${url}?after=${nextCursor}`)
+        .get(`${url}&after=${nextCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -103,10 +103,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
     });
 
     it("paginates results using 'before' cursor query param", async () => {
-      const url = `${baseUrl}/${username}/tweets/likes` as const;
+      const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
       const res = await userRequest
-        .get(`${url}?before=${prevCursor}`)
+        .get(`${url}&before=${prevCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.body).toMatchObject({
@@ -121,10 +121,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
     });
 
     it("returns empty tweets and null pagination fields for an invalid 'after' cursor", async () => {
-      const url = `${baseUrl}/${username}/tweets/likes` as const;
+      const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
       const res = await userRequest
-        .get(`${url}?after=${generateId()}`)
+        .get(`${url}&after=${generateId()}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -140,10 +140,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
     });
 
     it("returns empty tweets and null pagination fields for an invalid 'before' cursor", async () => {
-      const url = `${baseUrl}/${username}/tweets/likes` as const;
+      const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
       const res = await userRequest
-        .get(`${url}?before=${generateId()}`)
+        .get(`${url}&before=${generateId()}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
@@ -162,7 +162,7 @@ describe("GET /api/v1/users/:username/tweets", () => {
   describe("Failure cases", () => {
     describe("Forbidden errors", () => {
       it("returns a forbidden error when fetching another user's liked tweets", async () => {
-        const url = `${baseUrl}/${username}/tweets/likes` as const;
+        const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
         const res = await userRequest.get(url).set("Authorization", `Bearer ${unauthAccessToken}`);
 
@@ -176,10 +176,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
 
     describe("Validation errors", () => {
       it("returns a Validation error when the query param 'after' is invalid", async () => {
-        const url = `${baseUrl}/${username}/tweets/likes` as const;
+        const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
         const res = await userRequest
-          .get(`${url}?after=invalid-id`)
+          .get(`${url}&after=invalid-id`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
@@ -201,10 +201,10 @@ describe("GET /api/v1/users/:username/tweets", () => {
       });
 
       it("returns a Validation error when the query param 'before' is invalid", async () => {
-        const url = `${baseUrl}/${username}/tweets/likes` as const;
+        const url = `${baseUrl}/${username}/tweets?scope=likes` as const;
 
         const res = await userRequest
-          .get(`${url}?before=invalid-id`)
+          .get(`${url}&before=invalid-id`)
           .set("Authorization", `Bearer ${accessToken}`);
 
         expect(res.status).toBe(422);
