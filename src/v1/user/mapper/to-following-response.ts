@@ -9,6 +9,7 @@ export type ToFollowingProp = Awaited<ReturnType<typeof getFollowingByUsernamePa
 export const toFollowingResponse = (props: ToFollowingProp) => {
   const following = props.data.map((f) => ({
     ...f,
+    followed: true,
     profile: {
       ...f.profile,
       avatarUrl: transformProfileAvatar(f.profile?.avatar ?? null),

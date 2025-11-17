@@ -7,6 +7,12 @@ const baseOptions = {
         id: true,
         username: true,
         profile: { select: { displayName: true, avatar: true, banner: true } },
+        following: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     },
     replyTo: true,

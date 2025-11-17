@@ -6,7 +6,7 @@ import { toUsersResponse } from "../mapper/to-users-response.js";
 import type { Request, Response } from "express";
 import type { UserQuery } from "@/v1/lib/user-schema.js";
 
-export const getUsers = async (_req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   const query: UserQuery = res.locals["query"];
 
   const filter = {
@@ -22,5 +22,5 @@ export const getUsers = async (_req: Request, res: Response) => {
 
   if (error) throw error;
 
-  return res.status(OK).json({ ...toUsersResponse(pagination) });
+  return res.status(OK).json({ ...toUsersResponse(pagination, req.user) });
 };

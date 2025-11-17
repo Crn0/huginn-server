@@ -5,7 +5,7 @@ import { userSchema } from "@/v1/lib/user-schema.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import type { UserByUsername } from "../service/user-service.js";
 
-export const toUserResponse = (user: UserByUsername) => {
+export const toUserResponse = (user: UserByUsername, authUser?: { id: string }) => {
   if (!user) {
     throw new NotFoundError("User not found,");
   }
@@ -18,6 +18,7 @@ export const toUserResponse = (user: UserByUsername) => {
 
   const parsedUser = userSchema.safeParse({
     ...user,
+    followed: !authUser ? false : user.following.some((u) => u.id === authUser.id),
     avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     profile,
   });

@@ -64,6 +64,7 @@ export const authorSchema = z.object({
     avatarUrl: z.url().nullable(),
     bannerUrl: z.url().nullable(),
   }),
+  followed: z.boolean().default(false),
 });
 
 export const tweetVideoVariantSchema = z.object({

@@ -21,5 +21,5 @@ export const getFollowersByUsername = async (
 
   const pagination = await getFollowersByUsernamePagination(username, cursor);
 
-  return res.status(OK).json({ ...toFollowersResponse(pagination) });
+  return res.status(OK).json({ ...toFollowersResponse(pagination, req.user) });
 };

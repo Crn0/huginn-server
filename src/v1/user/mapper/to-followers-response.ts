@@ -6,9 +6,10 @@ import type { getFollowersByUsernamePagination } from "../service/follow-service
 
 export type ToFollowersProp = Awaited<ReturnType<typeof getFollowersByUsernamePagination>>;
 
-export const toFollowersResponse = (props: ToFollowersProp) => {
+export const toFollowersResponse = (props: ToFollowersProp, authUser?: { id: string }) => {
   const followers = props.data.map((f) => ({
     ...f,
+    followed: !authUser ? false : f.following.some((u) => u.id === authUser.id),
     profile: {
       ...f.profile,
       avatarUrl: transformProfileAvatar(f.profile?.avatar ?? null),

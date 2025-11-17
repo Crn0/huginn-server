@@ -49,10 +49,9 @@ export const userQueryFilterSchema = z.object({
     .max(MAX_FILTER_LENGTH),
 });
 
-export const userSchema = z.object({
+const baseUserSchema = z.object({
   id: z.uuidv7(),
   username: z.string(),
-  avatarUrl: z.url().nullable(),
   profile: z.object({
     displayName: z.string().nullable(),
     bio: z.string().nullable(),
@@ -76,6 +75,10 @@ export const userSchema = z.object({
     .nullable(),
 });
 
+export const userSchema = baseUserSchema.extend({
+  followed: z.boolean().default(false),
+});
+
 export const authUserSchema = userSchema.extend({
   email: z.email().trim(),
   accountLevel: accountLevelEnum,
@@ -97,7 +100,7 @@ export const getUsersSchema = z.array(
     id: userSchema.shape.id,
     username: userSchema.shape.username,
     createdAt: userSchema.shape.createdAt,
-    avatarUrl: z.url().nullable(),
+    followed: userSchema.shape.followed,
     profile: z.object({
       displayName: userSchema.shape.profile.shape.displayName,
       avatarUrl: userSchema.shape.profile.shape.avatarUrl,

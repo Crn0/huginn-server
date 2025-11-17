@@ -4,10 +4,14 @@ import { getUsersPaginationSchema } from "@/v1/lib/user-schema.js";
 
 import type { getUsersPagination } from "../service/user-service.js";
 
-export const toUsersResponse = (props: Awaited<ReturnType<typeof getUsersPagination>>) => {
+export const toUsersResponse = (
+  props: Awaited<ReturnType<typeof getUsersPagination>>,
+  authUser?: { id: string }
+) => {
   const users = props.data.map((user) => ({
     ...user,
     avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
+    followed: !authUser ? false : user.following.some((u) => u.id === authUser.id),
     profile: {
       ...user.profile,
       avatarUrl: transformProfileAvatar(user.profile!.avatar),

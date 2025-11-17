@@ -17,6 +17,12 @@ export const getUserOptions = {
         provider: true,
       },
     },
+    following: {
+      select: {
+        id: true,
+        username: true,
+      },
+    },
     _count: {
       select: {
         followedBy: true,
@@ -42,6 +48,12 @@ export const getUsersOptions = {
     openIds: {
       select: {
         avatarUrl: true,
+      },
+    },
+    following: {
+      select: {
+        id: true,
+        username: true,
       },
     },
   },

@@ -9,5 +9,5 @@ export const getUser = async (req: Request, res: Response) => {
 
   const user = await getUserByUsername(username);
 
-  return res.status(OK).json({ ...toUserResponse(user) });
+  return res.status(OK).json({ ...toUserResponse(user, req.user) });
 };
