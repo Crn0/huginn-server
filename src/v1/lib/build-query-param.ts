@@ -5,7 +5,7 @@ export const buildQueryParam = <T extends Record<string, string | number | undef
 
   Object.entries(param ?? {}).forEach(([key, value]) => {
     if (value) {
-       search.set(key, String(value));
+      search.set(key, String(value));
     }
   });
 

@@ -31,8 +31,8 @@ export const toTweetResponse = (
       tweet.replyTo && scope === "replies"
         ? {
             ...tweet.replyTo,
-               liked: !user ? false : tweet.replyTo.likes.some((p) => p.id == user.id),
-    media: tweet.replyTo.media.map(transformTweetMedia) ?? [],
+            liked: !user ? false : tweet.replyTo.likes.some((p) => p.id == user.id),
+            media: tweet.replyTo.media.map(transformTweetMedia) ?? [],
             withReply: false,
             replyTo: null,
             author: {
