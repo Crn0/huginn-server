@@ -1,6 +1,6 @@
 import { OK } from "@/v1/constants/http-status.js";
 import { getTweetsByAuthorUsernamePagination } from "@/v1/tweet/service/tweet.js";
-import { toUserTweetsResponse } from "../mapper/to-user-tweets-response.js";
+import { toTweetsResponse } from "@/v1/tweet/mapper/to-tweets-response.js";
 
 import type { Request, Response } from "express";
 import type { UserTweetQuery } from "@/v1/lib/tweet-schema.js";
@@ -23,5 +23,5 @@ export const getUserTweetsByUsername = async (req: Request, res: Response) => {
 
   const pagination = await getTweetsByAuthorUsernamePagination(username, { cursor, filter });
 
-  return res.status(OK).json({ ...toUserTweetsResponse(pagination, user) });
+  return res.status(OK).json({ ...toTweetsResponse(pagination, user, filter.scope) });
 };

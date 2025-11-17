@@ -246,18 +246,6 @@ export const getTweetsByAuthorUsernamePagination = async (
     ],
   } as GetTweetsOption;
 
-  if (filter.scope === "posts") {
-    options.where = {
-      replyTo: null,
-    };
-  }
-
-  if (filter.scope == "replies") {
-    options.where = {
-      replyToPk: { not: null },
-    };
-  }
-
   if (filter.scope === "likes") {
     options.where = {
       likes: {
