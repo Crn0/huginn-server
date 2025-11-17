@@ -31,7 +31,7 @@ export const toTweetsResponse = (
       tweet.replyTo && scope === "replies"
         ? {
             ...tweet.replyTo,
-            liked: !user ? false : tweet.replyTo.likes.some((p) => p.id == user.id),
+            liked: !user ? false : tweet.replyTo.likes.some((p) => p.user.id == user.id),
             media: tweet.replyTo.media.map(transformTweetMedia) ?? [],
             withReply: false,
             replyTo: null,
@@ -45,7 +45,7 @@ export const toTweetsResponse = (
             },
           }
         : null,
-    liked: !user ? false : tweet.likes.some((p) => p.id == user.id),
+    liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));
 

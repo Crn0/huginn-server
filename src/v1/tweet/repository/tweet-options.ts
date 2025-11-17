@@ -19,7 +19,7 @@ const baseOptions = {
         },
       },
     },
-    likes: { select: { id: true } },
+    likes: { select: { user: { select: { id: true } } } },
     _count: { select: { replies: { where: {} }, likes: { where: {} } } },
   },
 } satisfies Prisma.TweetDefaultArgs;

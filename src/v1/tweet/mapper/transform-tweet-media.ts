@@ -71,6 +71,7 @@ const getImageVariant = (media: Media) => {
         { ...baseOptions },
         { width: IMAGE_SIZE.small, height: IMAGE_SIZE.small },
         { quality: "auto:low" },
+        media.type !== "GIF" ? null : { page: 1 },
       ],
     }),
     height: IMAGE_SIZE.small,
