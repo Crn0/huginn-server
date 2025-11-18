@@ -23,7 +23,7 @@ export const getUserOptions = {
         username: true,
       },
     },
-     followedBy: {
+    followedBy: {
       select: {
         id: true,
         username: true,
@@ -62,7 +62,7 @@ export const getUsersOptions = {
         username: true,
       },
     },
-     followedBy: {
+    followedBy: {
       select: {
         id: true,
         username: true,

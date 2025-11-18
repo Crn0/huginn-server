@@ -13,7 +13,7 @@ const baseOptions = {
             username: true,
           },
         },
-         followedBy: {
+        followedBy: {
           select: {
             id: true,
             username: true,
