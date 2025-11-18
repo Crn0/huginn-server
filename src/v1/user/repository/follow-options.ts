@@ -22,6 +22,7 @@ export const getOptions = {
   distinct,
   include: {
     profile,
-    following: { select: { id: true, username: true } },
+    following: { select: { id: true, username: true, profile: { select: { displayName: true, avatar: true,  } } } },
+    followedBy: { select: { id: true, username: true, profile: { select: { displayName: true, avatar: true,   } } } },
   },
 } satisfies Prisma.User$followedByArgs;

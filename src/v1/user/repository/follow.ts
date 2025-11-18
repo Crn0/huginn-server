@@ -4,7 +4,7 @@ import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { getOptions, insertOptions } from "./follow-options.js";
 
-import type { GetFollowersOption, GetFollowingOption } from "../types/repository.types.js";
+import type { GetFollowingOption, GetFollowOption } from "../types/repository.types.js";
 
 export const followUserByUsername = async (id: string, followUsername: string) => {
   const { error, data: updatedUser } = await tryCatch(
@@ -63,22 +63,38 @@ export const unFollowUserById = async (id: string, unfollowUsername: string) => 
   return updatedUser;
 };
 
-export const getUserFollowersByUsername = async (
-  username: string,
-  options?: GetFollowersOption
-) => {
-  const { error, data: followers } = await tryCatch(
+export const getUserFollowByUsername = async (username: string, options: GetFollowOption) => {
+    const { error, data: following } = await tryCatch(
     prisma.user.findMany({
       ...getOptions,
       ...options,
-      where: { following: { some: { username } }, username: { not: username } },
+      where: {
+        ...options.where,
+        username: { not: username },
+      }
     }),
     dbErrorHandler
   );
 
   if (error) throw error;
 
-  return followers;
+  return following;
+}
+
+export const getFollowCountByUsername = async (username: string, where: GetFollowOption['where']) => {
+  const { error, data: count } = await tryCatch(
+    prisma.user.count({
+      where: {
+        ...where,
+        username: { not: username },
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
 };
 
 export const getUserFollowingById = async (id: string, options?: GetFollowingOption) => {
@@ -94,54 +110,4 @@ export const getUserFollowingById = async (id: string, options?: GetFollowingOpt
   if (error) throw error;
 
   return following;
-};
-
-export const getUserFollowingByUsername = async (
-  username: string,
-  options?: GetFollowingOption
-) => {
-  const { error, data: following } = await tryCatch(
-    prisma.user.findMany({
-      ...getOptions,
-      ...options,
-      where: { followedBy: { some: { username } }, username: { not: username } },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return following;
-};
-
-export const getFollowersCountByUsername = async (username: string) => {
-  const { error, data: count } = await tryCatch(
-    prisma.user.count({
-      where: {
-        username: { not: username },
-        following: { some: { username } },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return count;
-};
-
-export const getFollowingCountByUsername = async (username: string) => {
-  const { error, data: count } = await tryCatch(
-    prisma.user.count({
-      where: {
-        username: { not: username },
-        followedBy: { some: { username } },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return count;
 };

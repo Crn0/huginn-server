@@ -6,7 +6,7 @@ import { followUser } from "../../api/follow-user.js";
 import type { Router } from "express";
 
 export const mePost = (router: Router) => {
-  router.post("/me/following", ZodBodyValidator(userFollowSchema), checkFollowUser, followUser);
+  router.post("/me/follow", ZodBodyValidator(userFollowSchema), checkFollowUser, followUser);
 
   return router;
 };

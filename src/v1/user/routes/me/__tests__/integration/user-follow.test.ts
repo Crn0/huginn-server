@@ -16,8 +16,8 @@ beforeAll(async () => {
   const [login, user] = await Promise.all([
     userRequest.post("/api/v1/auth/login").send(testUserLoginForm),
     createUser({
-      email: "user.post@following.com",
-      displayName: "user.following",
+      email: "user.post@follow.com",
+      displayName: "user.follow",
       password: "Crnocrno123",
       birthday: new Date(),
     }),
@@ -32,8 +32,8 @@ beforeAll(async () => {
   };
 });
 
-describe("POST /api/v1/users/me/following", () => {
-  const url = "/api/v1/users/me/following" as const;
+describe("POST /api/v1/users/me/follow", () => {
+  const url = "/api/v1/users/me/follow" as const;
 
   describe("Success cases", () => {
     it("returns 200 when a user successfully follows another user", async () => {

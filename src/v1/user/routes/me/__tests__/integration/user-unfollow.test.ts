@@ -15,8 +15,8 @@ beforeAll(async () => {
   const [login, user] = await Promise.all([
     userRequest.post("/api/v1/auth/login").send(testUserLoginForm),
     createUser({
-      email: "userunfllow.post@following.com",
-      displayName: "user.post.following",
+      email: "userunfllow.post@follow.com",
+      displayName: "user.post.follow",
       password: "Crnocrno123",
       birthday: new Date(),
     }),
@@ -31,8 +31,8 @@ beforeAll(async () => {
   };
 });
 
-describe("DELETE /api/v1/users/me/following/:followUsername", () => {
-  const baseUrl = "/api/v1/users/me/following" as const;
+describe("DELETE /api/v1/users/me/follow/:followUsername", () => {
+  const baseUrl = "/api/v1/users/me/follow" as const;
 
   describe("Success cases", () => {
     it("returns 204 when a user successfully unfollows another user", async () => {

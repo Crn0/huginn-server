@@ -12,6 +12,8 @@ export type GetFollowingOption = Omit<
   "where" | "include" | "select" | "omit"
 >;
 
+export type GetFollowOption = Omit<Prisma.User$followingArgs, "include">;
+
 export interface UserProfileMedia {
   id: string;
   type: UserProfileMediaType;
