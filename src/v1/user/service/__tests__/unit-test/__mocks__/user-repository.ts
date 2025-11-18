@@ -19,6 +19,7 @@ const generateUser = (email?: string) => ({
   profile: null,
   openIds: [],
   following: [],
+  followedBy: [],
   _count: {
     followedBy: 0,
     following: 0,

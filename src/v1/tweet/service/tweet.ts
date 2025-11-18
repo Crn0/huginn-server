@@ -246,6 +246,10 @@ export const getTweetsByAuthorUsernamePagination = async (
     ],
   } as GetTweetsOption;
 
+  if (filter.scope === "posts" || filter.scope == "replies") {
+    options.where = { author: { username }}
+  }
+
   if (filter.scope === "likes") {
     options.where = {
       likes: {
@@ -259,8 +263,8 @@ export const getTweetsByAuthorUsernamePagination = async (
   }
 
   const [res, total] = await Promise.all([
-    tweetRepository.getTweetsByAuthorUsername(username, options),
-    tweetRepository.getTweetsCountByAuthorUsername(username, options.where),
+    tweetRepository.getTweets(options),
+    tweetRepository.getTweetsCount(options.where),
   ]);
 
   const tweets =
