@@ -27,27 +27,30 @@ export const followUsersByUsername = async (id: string, followUsernames: string[
 export const unFollowUserById = async (userId: string, unfollowUsername: string) =>
   followRepository.unFollowUserById(userId, unfollowUsername);
 
-export const getFollowByUsernamePagination = async (username: string, query: FollowUsersQueryParam) => {
-  const { before, after, scope } = query
+export const getFollowByUsernamePagination = async (
+  username: string,
+  query: FollowUsersQueryParam
+) => {
+  const { before, after, scope } = query;
 
   const { direction, ...rest } = toPrismaPagination({ before, after, pageSize: FOLLOW_PAGE_SIZE });
 
-  const options = { ...rest, where: {} } as GetFollowOption
-// get followers
+  const options = { ...rest, where: {} } as GetFollowOption;
+  // get followers
   if (scope === "followers") {
-    options.where =  { following: { some: { username } } }
+    options.where = { following: { some: { username } } };
   }
   // get followed users
-  else if (scope === "following") { 
-    options.where = { followedBy: { some: { username } } }
+  else if (scope === "following") {
+    options.where = { followedBy: { some: { username } } };
   }
 
-    const [res, total] = await Promise.all([
+  const [res, total] = await Promise.all([
     followRepository.getUserFollowByUsername(username, options),
     followRepository.getFollowCountByUsername(username, options.where),
   ]);
 
-    const followUsers =
+  const followUsers =
     direction === "backward" ? res.slice(-FOLLOW_PAGE_SIZE) : res.slice(0, FOLLOW_PAGE_SIZE);
 
   const reversedFollowUsers = followUsers.toReversed();
@@ -57,7 +60,7 @@ export const getFollowByUsernamePagination = async (username: string, query: Fol
   const nextCursor = followUsers.at?.(-1)?.id;
   const prevCursor = followUsers.at?.(0)?.id;
 
-  const queryParam =  buildQueryParam({ scope })
+  const queryParam = buildQueryParam({ scope });
 
   const normalizedNextHref = normalizeHref(
     res,
@@ -79,5 +82,4 @@ export const getFollowByUsernamePagination = async (username: string, query: Fol
     prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
     total,
   });
-
-}
+};

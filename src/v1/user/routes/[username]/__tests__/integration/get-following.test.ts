@@ -72,7 +72,7 @@ describe("GET /api/v1/users/:username/follow?scope=following", () => {
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.data.every((f: { followed: boolean; }) => f.followed)).toBeTruthy()
+      expect(res.body.data.every((f: { followed: boolean }) => f.followed)).toBeTruthy();
       expect(res.body.data.length).toBe(20);
 
       nextCursor = res.body.nextCursor;

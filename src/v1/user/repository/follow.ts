@@ -64,14 +64,14 @@ export const unFollowUserById = async (id: string, unfollowUsername: string) => 
 };
 
 export const getUserFollowByUsername = async (username: string, options: GetFollowOption) => {
-    const { error, data: following } = await tryCatch(
+  const { error, data: following } = await tryCatch(
     prisma.user.findMany({
       ...getOptions,
       ...options,
       where: {
         ...options.where,
         username: { not: username },
-      }
+      },
     }),
     dbErrorHandler
   );
@@ -79,9 +79,12 @@ export const getUserFollowByUsername = async (username: string, options: GetFoll
   if (error) throw error;
 
   return following;
-}
+};
 
-export const getFollowCountByUsername = async (username: string, where: GetFollowOption['where']) => {
+export const getFollowCountByUsername = async (
+  username: string,
+  where: GetFollowOption["where"]
+) => {
   const { error, data: count } = await tryCatch(
     prisma.user.count({
       where: {

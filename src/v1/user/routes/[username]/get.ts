@@ -14,7 +14,12 @@ import { followUsersQueryParamSchema } from "../../schema/follow.js";
 export const usernameGet = (router: Router) => {
   router.get("/:username", ZodParamValidation(usernameSchema), getUser);
 
-  router.get("/:username/follow", ZodParamValidation(usernameSchema), ZodQueryValidator(followUsersQueryParamSchema), getUserFollows )
+  router.get(
+    "/:username/follow",
+    ZodParamValidation(usernameSchema),
+    ZodQueryValidator(followUsersQueryParamSchema),
+    getUserFollows
+  );
 
   router.get(
     "/:username/tweets",
@@ -23,21 +28,6 @@ export const usernameGet = (router: Router) => {
     checkGetLikedTweets,
     getUserTweetsByUsername
   );
-
-  // router.get(
-  //   "/:username/tweets/replies",
-  //   ZodParamValidation(usernameSchema),
-  //   ZodQueryValidator(paginationQuerySchema),
-  //   getUserReplies
-  // );
-
-  // router.get(
-  //   "/:username/tweets/likes",
-  //   ZodParamValidation(usernameSchema),
-  //   ZodQueryValidator(paginationQuerySchema),
-  //   checkGetLikedTweets,
-  //   getLikedTweets
-  // );
 
   router.get(
     "/:username/media",

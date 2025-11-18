@@ -6,18 +6,26 @@ import { followUsersPaginationSchema, type FollowUserQueryParam } from "../schem
 
 export type ToFollowProp = Awaited<ReturnType<typeof getFollowByUsernamePagination>>;
 
-const isFollowed = (user: { following: { id: string }[] }, authUser: { id: string }, scope: FollowUserQueryParam["scope"]) => {
-  if ( scope !== "following") { 
-     if (!authUser) {
-    return false;
-  }
-   return user.following.some((u) => u.id === authUser.id)
+const isFollowed = (
+  user: { following: { id: string }[] },
+  authUser: { id: string },
+  scope: FollowUserQueryParam["scope"]
+) => {
+  if (scope !== "following") {
+    if (!authUser) {
+      return false;
+    }
+    return user.following.some((u) => u.id === authUser.id);
   }
 
   return true;
-}
+};
 
-export const toFollowResponse = (props: ToFollowProp, authUser: { id: string }, scope: FollowUserQueryParam["scope"]) => {
+export const toFollowResponse = (
+  props: ToFollowProp,
+  authUser: { id: string },
+  scope: FollowUserQueryParam["scope"]
+) => {
   const follow = props.data.map((f) => ({
     ...f,
     followed: isFollowed(f, authUser, scope),

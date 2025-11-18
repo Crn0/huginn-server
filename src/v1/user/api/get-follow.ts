@@ -14,7 +14,6 @@ export const getUserFollows = async (
 
   const query: FollowUsersQueryParam = res.locals["query"];
 
-
   const pagination = await getFollowByUsernamePagination(username, query);
 
   return res.status(OK).json({ ...toFollowResponse(pagination, req.user!, query.scope) });
