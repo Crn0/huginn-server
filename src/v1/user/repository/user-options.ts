@@ -23,6 +23,12 @@ export const getUserOptions = {
         username: true,
       },
     },
+     followedBy: {
+      select: {
+        id: true,
+        username: true,
+      },
+    },
     _count: {
       select: {
         followedBy: true,
@@ -51,6 +57,12 @@ export const getUsersOptions = {
       },
     },
     following: {
+      select: {
+        id: true,
+        username: true,
+      },
+    },
+     followedBy: {
       select: {
         id: true,
         username: true,

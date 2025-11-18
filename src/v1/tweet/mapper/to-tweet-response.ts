@@ -21,7 +21,7 @@ export const toTweetResponse = (
     withReply: scope === "replies",
     author: {
       ...tweet.author,
-      followed: !user ? false : tweet.author.following.some((u) => u.id === user.id),
+      followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
       profile: {
         ...tweet.author.profile,
         avatarUrl: transformProfileAvatar(tweet.author.profile!.avatar),

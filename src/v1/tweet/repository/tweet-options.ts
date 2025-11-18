@@ -13,6 +13,12 @@ const baseOptions = {
             username: true,
           },
         },
+         followedBy: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     },
     replyTo: true,

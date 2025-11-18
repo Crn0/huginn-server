@@ -11,7 +11,7 @@ export const toUsersResponse = (
   const users = props.data.map((user) => ({
     ...user,
     avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
-    followed: !authUser ? false : user.following.some((u) => u.id === authUser.id),
+    followed: !authUser ? false : user.followedBy.some((u) => u.id === authUser.id),
     profile: {
       ...user.profile,
       avatarUrl: transformProfileAvatar(user.profile!.avatar),
