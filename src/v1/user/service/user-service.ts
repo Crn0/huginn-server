@@ -8,6 +8,7 @@ import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { AuthenticationError } from "@/lib/errors/auth-error.js";
 import { ConflictError } from "@/lib/errors/conflict-error.js";
+import { StorageError } from "@/lib/errors/storage-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
@@ -252,7 +253,7 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
 };
 
 export const deleteUserById = async (id: string) => {
-  const mediaFolder = `${env.CLOUDINARY_ROOT_FOLDER}/avatars/${id}`;
+  const avatarsFolder = `${env.CLOUDINARY_ROOT_FOLDER}/avatars/${id}`;
 
   const transaction = await prisma.$transaction(
     async (ctx) => {
@@ -284,7 +285,11 @@ export const deleteUserById = async (id: string) => {
 
       if (userError) throw userError;
 
-      await storage.deleteFolder(mediaFolder);
+      const { error } = await tryCatch<Promise<never>, InstanceType<typeof StorageError>>(
+        storage.deleteFolder(avatarsFolder)
+      );
+
+      if (error?.status !== 404) throw error;
 
       return Object.freeze({ user, tweetCount });
     },
