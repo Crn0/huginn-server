@@ -7,11 +7,13 @@ import { dbErrorHandler } from "@/v1/lib/db-error-handler.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { AuthenticationError } from "@/lib/errors/auth-error.js";
+import { ConflictError } from "@/lib/errors/conflict-error.js";
 import { generateUsername } from "@/v1/lib/generate-username.js";
 import { createDebug } from "@/v1/lib/debug.js";
 import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
+import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import * as userRepository from "../repository/user.js";
 import * as mediaService from "@/v1/media/service/media.js";
 import * as oidcService from "../oidc-account/service/oidc-account.js";
@@ -53,6 +55,16 @@ const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
 export const createUser = async (DTO: CreateUserDTO) => {
   let username: string;
   let retry = 0;
+
+  const isEmailAvailable = await userRepository.isEmailAvailable(DTO.email);
+
+  if (!isEmailAvailable) {
+    throw new ConflictError("Unique constraint violation", {
+      path: ["email"],
+      code: EMAIL_CONFLICT,
+      message: "Email has already been taken.",
+    });
+  }
 
   do {
     if (retry >= MAX_USERNAME_RETRY) {
