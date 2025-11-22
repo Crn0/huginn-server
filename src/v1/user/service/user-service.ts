@@ -267,7 +267,7 @@ export const deleteUserById = async (id: string) => {
       if (mediaError) throw mediaError;
 
       const { error: tweetError, data: tweetCount } = await tryCatch(
-        prisma.tweet.deleteMany({
+        ctx.tweet.deleteMany({
           where: { author: { id } },
         }),
         dbErrorHandler
@@ -276,7 +276,7 @@ export const deleteUserById = async (id: string) => {
       if (tweetError) throw tweetError;
 
       const { error: userError, data: user } = await tryCatch(
-        prisma.user.delete({
+        ctx.user.delete({
           where: { id },
         }),
         (e) => dbErrorHandler(e, "P2025", new NotFoundError("User not found."))
