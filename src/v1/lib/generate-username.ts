@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 
 import { usernameRegex } from "./user-schema.js";
-import { generateId } from "./generate-id.js";
 
 export const generateUsername = (firstName: string, lastName?: string) => {
   const maxAttempts = 20;
@@ -16,5 +15,5 @@ export const generateUsername = (firstName: string, lastName?: string) => {
     attempt += 1;
   }
 
-  return `user.${generateId()}`;
+  return faker.internet.username();
 };
