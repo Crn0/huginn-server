@@ -155,7 +155,7 @@ export const tweetsSchema = z.array(tweetSchema);
 
 export const tweetsPaginationSchema = paginationSchema.extend({ data: tweetsSchema });
 
-export const tweetMediaPaginationSchema = paginationSchema.extend({ media: z.array(tweetMedia) });
+export const tweetMediaPaginationSchema = paginationSchema.extend({ data: z.array(tweetMedia) });
 
 export const tweetQuerySchema = z.intersection(paginationQuerySchema, tweetQueryFilterSchema);
 

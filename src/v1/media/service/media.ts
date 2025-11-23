@@ -156,7 +156,7 @@ export const getMediaByUploaderUsernamePagination = async (
   );
 
   return Object.freeze({
-    media,
+    data: media,
     nextHref: normalizedNextHref,
     prevHref: normalizedPrevHref,
     nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),

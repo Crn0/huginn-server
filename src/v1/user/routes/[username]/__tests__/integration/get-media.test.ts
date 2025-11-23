@@ -21,7 +21,7 @@ const userRequest = request(app);
 beforeAll(async () => {
   const form = {
     email: generateEmail(),
-    displayName: generateDisplayName("username", "get.media"),
+    displayName: generateDisplayName("username", "get.data"),
     password: "Crnocrno123",
     birthday: new Date(),
   } as const;
@@ -55,7 +55,7 @@ beforeAll(async () => {
   const tweet = await createTweet({
     content: "test get media",
     authorId: user.id,
-    media: media,
+    data: media,
   });
 
   accessToken = login.body.token;
@@ -79,14 +79,14 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        data: expect.any(Array),
         nextHref: expect.any(String),
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.data.length).toBe(20);
 
       nextCursor = res.body.nextCursor;
     });
@@ -100,14 +100,14 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        data: expect.any(Array),
         nextHref: null,
         prevHref: expect.any(String),
         nextCursor: null,
         prevCursor: expect.any(String),
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.data.length).toBe(20);
 
       prevCursor = res.body.prevCursor;
     });
@@ -120,14 +120,14 @@ describe("GET /api/v1/users/me/media", () => {
         .set("Authorization", `Bearer ${accessToken}`);
 
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        data: expect.any(Array),
         nextHref: expect.any(String),
         prevHref: null,
         nextCursor: expect.any(String),
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(20);
+      expect(res.body.data.length).toBe(20);
     });
 
     it("returns empty media and null pagination fields for an invalid 'after' cursor", async () => {
@@ -139,14 +139,14 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        data: expect.any(Array),
         nextHref: null,
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(0);
+      expect(res.body.data.length).toBe(0);
     });
 
     it("returns empty media and null pagination fields for an invalid 'before' cursor", async () => {
@@ -158,14 +158,14 @@ describe("GET /api/v1/users/me/media", () => {
 
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
-        media: expect.any(Array),
+        data: expect.any(Array),
         nextHref: null,
         prevHref: null,
         nextCursor: null,
         prevCursor: null,
         total: expect.any(Number),
       });
-      expect(res.body.media.length).toBe(0);
+      expect(res.body.data.length).toBe(0);
     });
   });
 

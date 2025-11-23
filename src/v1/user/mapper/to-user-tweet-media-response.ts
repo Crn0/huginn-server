@@ -10,9 +10,9 @@ const debug = createDebug("user:mapper:toUserMediaResponse");
 export const toUserTweetMediaResponse = (
   props: Awaited<ReturnType<typeof getMediaByUploaderUsernamePagination>>
 ) => {
-  const media = props.media.map(transformTweetMedia);
+  const data = props.data.map(transformTweetMedia);
 
-  const parsedData = tweetMediaPaginationSchema.safeParse({ ...props, media });
+  const parsedData = tweetMediaPaginationSchema.safeParse({ ...props, data });
 
   if (!parsedData.success) {
     debug("issues", parsedData.error.issues);
