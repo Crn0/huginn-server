@@ -289,7 +289,7 @@ export const deleteUserById = async (id: string) => {
         storage.deleteFolder(avatarsFolder)
       );
 
-      if (error?.status !== 404) throw error;
+      if (error && error.status !== 404) throw error;
 
       return Object.freeze({ user, tweetCount });
     },
