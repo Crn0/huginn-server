@@ -1,6 +1,6 @@
 import { OK } from "@/v1/constants/http-status.js";
 import { getRepliesPagination } from "@/v1/tweet/service/tweet.js";
-import { toTweetsResponse } from "../mapper/to-tweets-response.js";
+import { toRepliesResponse } from "../mapper/to-replies-response.js";
 
 import type { Response } from "express";
 import type { RequestWithPagination } from "@/v1/types/express.js";
@@ -23,5 +23,5 @@ export const getReplies = async (
 
   const pagination = await getRepliesPagination(tweetId, { cursor });
 
-  return res.status(OK).json({ ...toTweetsResponse(pagination, user) });
+  return res.status(OK).json({ ...toRepliesResponse(pagination, user) });
 };
