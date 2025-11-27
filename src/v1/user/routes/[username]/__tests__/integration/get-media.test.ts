@@ -53,9 +53,9 @@ beforeAll(async () => {
   const media = await createMedia(mediaFiles, { uploaderId: user.id });
 
   const tweet = await createTweet({
+    media,
     content: "test get media",
     authorId: user.id,
-    data: media,
   });
 
   accessToken = login.body.token;
