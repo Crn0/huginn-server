@@ -107,9 +107,29 @@ export const getTweetsByAuthorId = async (id: string, option?: TweetPaginationOp
 };
 
 export const getTweets = async (option?: GetTweetsOption) => {
+  let tweet = null;
+
+  if (typeof option?.where?.replyTo?.id === "string") {
+    const tweetId = option.where.replyTo.id;
+
+    tweet = await prisma.tweet.findUnique({ where: { id: tweetId } });
+  }
+
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
-      ...getTweetOptions,
+      include: {
+        ...getTweetOptions.include,
+        ...(!tweet
+          ? {}
+          : {
+              replies: {
+                where: { author: { primaryKey: tweet.authorPk } },
+                include: {
+                  ...getTweetOptions.include,
+                },
+              },
+            }),
+      },
       ...option,
     }),
     dbErrorHandler
