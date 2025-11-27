@@ -31,6 +31,8 @@ export type Tweets = Tweet[];
 
 export type TweetPagination = z.infer<typeof tweetsPaginationSchema>;
 
+export type ReplyPagination = z.infer<typeof repliesPaginationSchema>;
+
 export type TweetQuery = z.infer<typeof tweetQuerySchema>;
 
 export type UserTweetQuery = z.infer<typeof userTweetQuerySchema>;
@@ -153,7 +155,32 @@ export const tweetSchema = z.discriminatedUnion("withReply", [
 
 export const tweetsSchema = z.array(tweetSchema);
 
+export const replySchema = tweetSchema.extend({
+  replies: z.array(
+    z.object({
+      id: z.uuidv7({ error: "Invalid ID" }),
+      content: z.string().nullable(),
+      author: authorSchema,
+      media: z.array(tweetMedia),
+      replyTo: z.object({
+        id: z.uuidv7({ error: "Invalid ID" }),
+      }),
+      createdAt: z.coerce.date().transform((d) => d.toISOString()),
+      updatedAt: z.coerce
+        .date()
+        .transform((d) => d.toISOString())
+        .nullable(),
+      liked: z.boolean().default(false),
+      _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
+    })
+  ),
+});
+
+export const repliesSchema = z.array(replySchema);
+
 export const tweetsPaginationSchema = paginationSchema.extend({ data: tweetsSchema });
+
+export const repliesPaginationSchema = paginationSchema.extend({ data: repliesSchema });
 
 export const tweetMediaPaginationSchema = paginationSchema.extend({ data: z.array(tweetMedia) });
 
