@@ -23,5 +23,5 @@ export const getUserTweetsByUsername = async (req: Request, res: Response) => {
 
   const pagination = await getTweetsByAuthorUsernamePagination(username, { cursor, filter });
 
-  return res.status(OK).json({ ...toTweetsResponse(pagination, user, filter.scope) });
+  return res.status(OK).json({ ...toTweetsResponse(pagination, user) });
 };

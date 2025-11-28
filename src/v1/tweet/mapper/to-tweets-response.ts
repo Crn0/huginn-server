@@ -1,6 +1,6 @@
 import { InternalServerError } from "@/lib/errors/internal-server-error.js";
 import { createDebug } from "@/v1/lib/debug.js";
-import { tweetsPaginationSchema, type UserTweetQuery } from "@/v1/lib/tweet-schema.js";
+import { tweetsPaginationSchema } from "@/v1/lib/tweet-schema.js";
 import { transformTweetMedia } from "./transform-tweet-media.js";
 import {
   transformProfileAvatar,
@@ -13,12 +13,10 @@ const debug = createDebug("user:mapper:toTweetsResponse");
 
 export const toTweetsResponse = (
   props: Awaited<ReturnType<typeof getTweetsPagination>>,
-  user?: { id: string },
-  scope?: UserTweetQuery["scope"]
+  user?: { id: string }
 ) => {
   const tweets = props.data.map((tweet) => ({
     ...tweet,
-    withReply: scope === "replies",
     author: {
       ...tweet.author,
       followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
@@ -28,24 +26,6 @@ export const toTweetsResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
-    replyTo:
-      tweet.replyTo && scope === "replies"
-        ? {
-            ...tweet.replyTo,
-            liked: !user ? false : tweet.replyTo.likes.some((p) => p.user.id == user.id),
-            media: tweet.replyTo.media.map(transformTweetMedia) ?? [],
-            withReply: false,
-            replyTo: null,
-            author: {
-              ...tweet.replyTo.author,
-              profile: {
-                ...tweet.replyTo.author.profile,
-                avatarUrl: transformProfileAvatar(tweet.replyTo.author.profile!.avatar),
-                bannerUrl: transformProfileBanner(tweet.replyTo.author.profile!.banner),
-              },
-            },
-          }
-        : null,
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   }));

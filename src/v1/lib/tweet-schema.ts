@@ -104,54 +104,20 @@ export const tweetImageSchema = z.object({
 
 export const tweetMedia = z.discriminatedUnion("type", [tweetVideoSchema, tweetImageSchema]);
 
-export const tweetSchema = z.discriminatedUnion("withReply", [
-  z.object({
-    id: z.uuidv7({ error: "Invalid ID" }),
-    content: z.string().nullable(),
-    author: authorSchema,
-    media: z.array(tweetMedia),
-    replyTo: z.literal(null),
-    createdAt: z.coerce.date().transform((d) => d.toISOString()),
-    updatedAt: z.coerce
-      .date()
-      .transform((d) => d.toISOString())
-      .nullable(),
-    liked: z.boolean().default(false),
-    _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
-    withReply: z.literal(false),
-  }),
-  z.object({
-    id: z.uuidv7({ error: "Invalid ID" }),
-    content: z.string().nullable(),
-    author: authorSchema,
-    media: z.array(tweetMedia),
-    replyTo: z
-      .object({
-        id: z.uuidv7({ error: "Invalid ID" }),
-        content: z.string().nullable(),
-        author: authorSchema,
-        media: z.array(tweetMedia),
-        replyTo: z.literal(null),
-        createdAt: z.coerce.date().transform((d) => d.toISOString()),
-        updatedAt: z.coerce
-          .date()
-          .transform((d) => d.toISOString())
-          .nullable(),
-        liked: z.boolean().default(false),
-        _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
-        withReply: z.literal(false),
-      })
-      .nullable(),
-    createdAt: z.coerce.date().transform((d) => d.toISOString()),
-    updatedAt: z.coerce
-      .date()
-      .transform((d) => d.toISOString())
-      .nullable(),
-    liked: z.boolean().default(false),
-    _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
-    withReply: z.literal(true),
-  }),
-]);
+export const tweetSchema = z.object({
+  id: z.uuidv7({ error: "Invalid ID" }),
+  content: z.string().nullable(),
+  author: authorSchema,
+  media: z.array(tweetMedia),
+  replyTo: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
+  createdAt: z.coerce.date().transform((d) => d.toISOString()),
+  updatedAt: z.coerce
+    .date()
+    .transform((d) => d.toISOString())
+    .nullable(),
+  liked: z.boolean().default(false),
+  _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
+});
 
 export const tweetsSchema = z.array(tweetSchema);
 
