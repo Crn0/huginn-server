@@ -5,7 +5,7 @@ import { paginationSchema, paginationQuerySchema } from "@/v1/lib/pagination-sch
 
 export const tweetWhereFilter = ["all", "following"] as const;
 
-export const userTweetQueryParams = ["posts", "replies", "likes"] as const;
+export const userTweetQueryParams = ["posts", "likes"] as const;
 
 export const MAX_CONTENT_FILTER_LENGTH = 1024 as const;
 

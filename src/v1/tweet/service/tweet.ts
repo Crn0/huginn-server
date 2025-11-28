@@ -246,7 +246,7 @@ export const getTweetsByAuthorUsernamePagination = async (
     ],
   } as GetTweetsOption;
 
-  if (filter.scope === "posts" || filter.scope == "replies") {
+  if (filter.scope === "posts") {
     options.where = { author: { username } };
   }
 
