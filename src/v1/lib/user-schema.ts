@@ -104,6 +104,7 @@ export const getUsersSchema = z.array(
     profile: z.object({
       displayName: userSchema.shape.profile.shape.displayName,
       avatarUrl: userSchema.shape.profile.shape.avatarUrl,
+      bannerUrl: userSchema.shape.profile.shape.bannerUrl,
     }),
   })
 );
