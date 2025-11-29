@@ -143,16 +143,7 @@ export const getUsersPagination = async (query: {
 
   const [res, total] = await Promise.all([
     userRepository.getUsersByUsernameOrDisplayName(by, rest),
-    userRepository.getUsersCount({
-      deletedAt: null,
-      username: {
-        contains: by,
-        mode: "insensitive",
-      },
-      profile: {
-        displayName: { contains: by, mode: "insensitive" },
-      },
-    }),
+    userRepository.getUsersByUsernameOrDisplayNameCount(by),
   ]);
 
   const users =

@@ -121,6 +121,34 @@ export const getUsersCount = async (where: GetUsersOption["where"] = { deletedAt
   return count;
 };
 
+export const getUsersByUsernameOrDisplayNameCount = async (name: string) => {
+  const { error, data: count } = await tryCatch(
+    prisma.user.count({
+      where: {
+        deletedAt: null,
+        OR: [
+          {
+            username: {
+              contains: name,
+              mode: "insensitive",
+            },
+          },
+          {
+            profile: {
+              displayName: { contains: name, mode: "insensitive" },
+            },
+          },
+        ],
+      },
+    }),
+    dbErrorHandler
+  );
+
+  if (error) throw error;
+
+  return count;
+};
+
 export const isEmailAvailable = async (email: string) => {
   const { error, data: user } = await tryCatch(
     prisma.user.findUnique({ where: { email } }),
