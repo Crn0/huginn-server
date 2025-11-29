@@ -19,6 +19,11 @@ const baseOptions = {
             username: true,
           },
         },
+        openIds: {
+          select: {
+            avatarUrl: true,
+          },
+        },
       },
     },
     replyTo: true,

@@ -12,13 +12,16 @@ export const toUserResponse = (user: UserByUsername, authUser?: { id: string }) 
 
   const profile = {
     ...user.profile,
-    avatarUrl: transformProfileAvatar(user.profile?.avatar ?? null),
+    avatarUrl:
+      transformProfileAvatar(user.profile!.avatar) ??
+      user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
+      null,
     bannerUrl: transformProfileBanner(user.profile?.banner ?? null),
   };
+
   const parsedUser = userSchema.safeParse({
     ...user,
     followed: !authUser ? false : user.followedBy.some((u) => u.id === authUser.id),
-    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     profile,
   });
 

@@ -10,11 +10,13 @@ export const toUsersResponse = (
 ) => {
   const users = props.data.map((user) => ({
     ...user,
-    avatarUrl: user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ?? null,
     followed: !authUser ? false : user.followedBy.some((u) => u.id === authUser.id),
     profile: {
       ...user.profile,
-      avatarUrl: transformProfileAvatar(user.profile!.avatar),
+      avatarUrl:
+        transformProfileAvatar(user.profile!.avatar) ??
+        user.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
+        null,
       bannerUrl: transformProfileBanner(user.profile!.banner),
     },
   }));

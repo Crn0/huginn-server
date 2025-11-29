@@ -22,7 +22,10 @@ export const toTweetResponse = (
       followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
       profile: {
         ...tweet.author.profile,
-        avatarUrl: transformProfileAvatar(tweet.author.profile!.avatar),
+        avatarUrl:
+          transformProfileAvatar(tweet.author.profile!.avatar) ??
+          tweet.author.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
+          null,
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
