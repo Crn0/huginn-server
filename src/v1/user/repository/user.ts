@@ -84,13 +84,19 @@ export const getUsersByUsernameOrDisplayName = async (
       ...pagination,
       where: {
         deletedAt: null,
-        username: {
-          contains: name,
-          mode: "insensitive",
-        },
-        profile: {
-          displayName: { contains: name, mode: "insensitive" },
-        },
+        OR: [
+          {
+            username: {
+              contains: name,
+              mode: "insensitive",
+            },
+          },
+          {
+            profile: {
+              displayName: { contains: name, mode: "insensitive" },
+            },
+          },
+        ],
       },
       orderBy: [
         {
