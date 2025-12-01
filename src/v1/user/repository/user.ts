@@ -7,7 +7,6 @@ import {
   createUserOptions,
   deleteUserOptions,
   getUserOptions,
-  getUsersOptions,
   updateUserOptions,
 } from "./user-options.js";
 import { toPatchUserProfile } from "../mapper/to-patch-user-profile.js";
@@ -80,7 +79,7 @@ export const getUsersByUsernameOrDisplayName = async (
 ) => {
   const { error, data: users } = await tryCatch(
     prisma.user.findMany({
-      ...getUsersOptions,
+      ...getUserOptions,
       ...pagination,
       where: {
         deletedAt: null,
