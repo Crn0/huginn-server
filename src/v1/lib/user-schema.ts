@@ -69,10 +69,6 @@ const baseUserSchema = z.object({
   }),
 
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
-  updatedAt: z.coerce
-    .date()
-    .transform((d) => d.toISOString())
-    .nullable(),
 });
 
 export const userSchema = baseUserSchema.extend({
