@@ -51,5 +51,10 @@ export const patchUserProfileSchema = z.object({
     .trim()
     .max(30, { error: "Location must be at most 30 characters" })
     .optional(),
-  website: z.url().trim().max(160, { error: "Website must be at most 160 characters" }).optional(),
+  website: z
+    .url()
+    .trim()
+    .max(160, { error: "Website must be at most 160 characters" })
+    .refine((v) => !/^http:\/\//.test(v), { error: "Invalid URL" })
+    .optional(),
 });
