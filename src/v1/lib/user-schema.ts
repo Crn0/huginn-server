@@ -75,6 +75,8 @@ export const userSchema = baseUserSchema.extend({
   followed: z.boolean().default(false),
 });
 
+export const usersSchema = z.array(userSchema)
+
 export const authUserSchema = userSchema.extend({
   email: z.email().trim(),
   accountLevel: accountLevelEnum,
@@ -91,20 +93,6 @@ export const authUserSchema = userSchema.extend({
   ),
 });
 
-export const getUsersSchema = z.array(
-  z.object({
-    id: userSchema.shape.id,
-    username: userSchema.shape.username,
-    createdAt: userSchema.shape.createdAt,
-    followed: userSchema.shape.followed,
-    profile: z.object({
-      displayName: userSchema.shape.profile.shape.displayName,
-      avatarUrl: userSchema.shape.profile.shape.avatarUrl,
-      bannerUrl: userSchema.shape.profile.shape.bannerUrl,
-    }),
-  })
-);
-
-export const getUsersPaginationSchema = paginationSchema.extend({ data: getUsersSchema });
+export const getUsersPaginationSchema = paginationSchema.extend({ data: usersSchema });
 
 export const userQuerySchema = z.intersection(paginationQuerySchema, userQueryFilterSchema);

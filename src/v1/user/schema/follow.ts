@@ -1,7 +1,7 @@
 import z from "zod";
 
 import { paginationQuerySchema, paginationSchema } from "@/v1/lib/pagination-schema.js";
-import { getUsersSchema } from "@/v1/lib/user-schema.js";
+import { usersSchema } from "@/v1/lib/user-schema.js";
 
 export type FollowUserScope = (typeof followUsersScope)[number];
 
@@ -17,13 +17,6 @@ export type FollowUserQueryParam = z.infer<typeof followUsersQueryParamSchema>;
 
 export type FollowUsersPagination = z.infer<typeof followUsersPaginationSchema>;
 
-export const followUserSchema = getUsersSchema.unwrap().safeExtend({
-  profile: z.object({
-    ...getUsersSchema.unwrap().shape.profile.shape,
-    bio: z.string().nullable().default(null),
-  }),
-});
-
 export const followUsersPaginationSchema = paginationSchema.extend({
-  data: z.array(followUserSchema),
+  data: z.array(usersSchema),
 });
