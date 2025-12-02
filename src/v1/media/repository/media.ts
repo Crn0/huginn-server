@@ -72,6 +72,44 @@ export const getMediaByUploaderUsername = async (username: string, option: GetMe
   return media;
 };
 
+export const getMediaByTweetContent = async (content: string, option: GetMediaOption) => {
+  const [{ error: mediaError, data: media }, { error: countError, data: count }] =
+    await Promise.all([
+      tryCatch(
+        prisma.media.findMany({
+          ...getMediaByUploaderOptions,
+          ...option,
+          where: {
+            tweet: {
+              content: {
+                mode: "insensitive",
+                contains: content,
+              },
+            },
+          },
+        }),
+        dbErrorHandler
+      ),
+      tryCatch(
+        prisma.media.count({
+          where: {
+            tweet: {
+              content: {
+                mode: "insensitive",
+                contains: content,
+              },
+            },
+          },
+        }),
+        dbErrorHandler
+      ),
+    ]);
+
+  if (mediaError || countError) throw mediaError || countError;
+
+  return { media, count };
+};
+
 export const getMediaCountByUploaderId = async (id: string) => {
   const { error, data: count } = await tryCatch(
     prisma.media.count({

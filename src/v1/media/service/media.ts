@@ -2,6 +2,7 @@ import * as storage from "@/v1/storage/cloudinary-service.js";
 
 import * as mediaRepository from "../repository/media.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
+import { buildQueryParam } from "@/v1/lib/build-query-param.js";
 
 import type { MediaFiles, SupportedFile } from "../types/service.types.js";
 
@@ -164,6 +165,57 @@ export const getMediaByUploaderUsernamePagination = async (
     total,
   });
 };
+
+export const getMediaByTweetContentPagination = async (
+  content: string,
+  cursor: PaginationCursor
+) => {
+  const { direction, ...rest } = toPrismaPagination({ ...cursor, pageSize: MEDIA_PAGE_SIZE });
+
+  const options = {
+    ...rest,
+    orderBy: [
+      {
+        createdAt: "desc",
+      } as const,
+      { id: "desc" } as const,
+    ],
+  };
+
+const { media: res, count: total } = await mediaRepository.getMediaByTweetContent(content, options)
+
+  const media =
+    direction === "backward" ? res.slice(-MEDIA_PAGE_SIZE) : res.slice(0, MEDIA_PAGE_SIZE);
+
+  const hasMore = res.length > MEDIA_PAGE_SIZE;
+
+  const nextCursor = media.at?.(-1)?.id;
+  const prevCursor = media.at?.(0)?.id;
+
+    const queryParam = buildQueryParam({ search: content });
+
+  const normalizedNextHref = normalizeHref(
+    media,
+    `/media?after=${nextCursor}${queryParam ? `&${queryParam}` : ""}`,
+    direction === "backward" || hasMore
+  );
+
+  const normalizedPrevHref = normalizeHref(
+    media,
+    `/media?before=${prevCursor}${queryParam ? `&${queryParam}` : ""}`,
+    direction === "forward" || (direction === "backward" && hasMore)
+  );
+
+  return Object.freeze({
+    data: media,
+    nextHref: normalizedNextHref,
+    prevHref: normalizedPrevHref,
+    nextCursor: normalizeCursor(nextCursor, normalizedNextHref !== null),
+    prevCursor: normalizeCursor(prevCursor, normalizedPrevHref !== null),
+    total,
+  });
+};
+
 
 export const deleteMediaByTweetId = async (tweetId: string) => {
   const media = await mediaRepository.getMediaByTweetId(tweetId);
