@@ -34,6 +34,11 @@ export type Like = $Result.DefaultSelection<Prisma.$LikePayload>
  */
 export type Media = $Result.DefaultSelection<Prisma.$MediaPayload>
 /**
+ * Model Repost
+ * 
+ */
+export type Repost = $Result.DefaultSelection<Prisma.$RepostPayload>
+/**
  * Model Tweet
  * 
  */
@@ -264,6 +269,16 @@ export class PrismaClient<
     * ```
     */
   get media(): Prisma.MediaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.repost`: Exposes CRUD operations for the **Repost** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Reposts
+    * const reposts = await prisma.repost.findMany()
+    * ```
+    */
+  get repost(): Prisma.RepostDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tweet`: Exposes CRUD operations for the **Tweet** model.
@@ -748,6 +763,7 @@ export namespace Prisma {
     BlacklistedToken: 'BlacklistedToken',
     Like: 'Like',
     Media: 'Media',
+    Repost: 'Repost',
     Tweet: 'Tweet',
     UserProfile: 'UserProfile',
     User: 'User',
@@ -770,7 +786,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "authProvider" | "blacklistedToken" | "like" | "media" | "tweet" | "userProfile" | "user" | "userOIDCAccount"
+      modelProps: "authProvider" | "blacklistedToken" | "like" | "media" | "repost" | "tweet" | "userProfile" | "user" | "userOIDCAccount"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1067,6 +1083,80 @@ export namespace Prisma {
           count: {
             args: Prisma.MediaCountArgs<ExtArgs>
             result: $Utils.Optional<MediaCountAggregateOutputType> | number
+          }
+        }
+      }
+      Repost: {
+        payload: Prisma.$RepostPayload<ExtArgs>
+        fields: Prisma.RepostFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RepostFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RepostFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          findFirst: {
+            args: Prisma.RepostFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RepostFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          findMany: {
+            args: Prisma.RepostFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>[]
+          }
+          create: {
+            args: Prisma.RepostCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          createMany: {
+            args: Prisma.RepostCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RepostCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>[]
+          }
+          delete: {
+            args: Prisma.RepostDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          update: {
+            args: Prisma.RepostUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          deleteMany: {
+            args: Prisma.RepostDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RepostUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RepostUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>[]
+          }
+          upsert: {
+            args: Prisma.RepostUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RepostPayload>
+          }
+          aggregate: {
+            args: Prisma.RepostAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRepost>
+          }
+          groupBy: {
+            args: Prisma.RepostGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RepostGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RepostCountArgs<ExtArgs>
+            result: $Utils.Optional<RepostCountAggregateOutputType> | number
           }
         }
       }
@@ -1466,6 +1556,7 @@ export namespace Prisma {
     blacklistedToken?: BlacklistedTokenOmit
     like?: LikeOmit
     media?: MediaOmit
+    repost?: RepostOmit
     tweet?: TweetOmit
     userProfile?: UserProfileOmit
     user?: UserOmit
@@ -1584,12 +1675,14 @@ export namespace Prisma {
     media: number
     replies: number
     likes: number
+    repost: number
   }
 
   export type TweetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     media?: boolean | TweetCountOutputTypeCountMediaArgs
     replies?: boolean | TweetCountOutputTypeCountRepliesArgs
     likes?: boolean | TweetCountOutputTypeCountLikesArgs
+    repost?: boolean | TweetCountOutputTypeCountRepostArgs
   }
 
   // Custom InputTypes
@@ -1624,6 +1717,13 @@ export namespace Prisma {
     where?: LikeWhereInput
   }
 
+  /**
+   * TweetCountOutputType without action
+   */
+  export type TweetCountOutputTypeCountRepostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepostWhereInput
+  }
+
 
   /**
    * Count Type UserCountOutputType
@@ -1637,6 +1737,7 @@ export namespace Prisma {
     following: number
     media: number
     likes: number
+    repost: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1647,6 +1748,7 @@ export namespace Prisma {
     following?: boolean | UserCountOutputTypeCountFollowingArgs
     media?: boolean | UserCountOutputTypeCountMediaArgs
     likes?: boolean | UserCountOutputTypeCountLikesArgs
+    repost?: boolean | UserCountOutputTypeCountRepostArgs
   }
 
   // Custom InputTypes
@@ -1707,6 +1809,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LikeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRepostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepostWhereInput
   }
 
 
@@ -6361,6 +6470,1097 @@ export namespace Prisma {
 
 
   /**
+   * Model Repost
+   */
+
+  export type AggregateRepost = {
+    _count: RepostCountAggregateOutputType | null
+    _avg: RepostAvgAggregateOutputType | null
+    _sum: RepostSumAggregateOutputType | null
+    _min: RepostMinAggregateOutputType | null
+    _max: RepostMaxAggregateOutputType | null
+  }
+
+  export type RepostAvgAggregateOutputType = {
+    tweetPk: number | null
+    userPk: number | null
+  }
+
+  export type RepostSumAggregateOutputType = {
+    tweetPk: number | null
+    userPk: number | null
+  }
+
+  export type RepostMinAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    tweetPk: number | null
+    userPk: number | null
+  }
+
+  export type RepostMaxAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    tweetPk: number | null
+    userPk: number | null
+  }
+
+  export type RepostCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    tweetPk: number
+    userPk: number
+    _all: number
+  }
+
+
+  export type RepostAvgAggregateInputType = {
+    tweetPk?: true
+    userPk?: true
+  }
+
+  export type RepostSumAggregateInputType = {
+    tweetPk?: true
+    userPk?: true
+  }
+
+  export type RepostMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    tweetPk?: true
+    userPk?: true
+  }
+
+  export type RepostMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    tweetPk?: true
+    userPk?: true
+  }
+
+  export type RepostCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    tweetPk?: true
+    userPk?: true
+    _all?: true
+  }
+
+  export type RepostAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Repost to aggregate.
+     */
+    where?: RepostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reposts to fetch.
+     */
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RepostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reposts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reposts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Reposts
+    **/
+    _count?: true | RepostCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RepostAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RepostSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RepostMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RepostMaxAggregateInputType
+  }
+
+  export type GetRepostAggregateType<T extends RepostAggregateArgs> = {
+        [P in keyof T & keyof AggregateRepost]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRepost[P]>
+      : GetScalarType<T[P], AggregateRepost[P]>
+  }
+
+
+
+
+  export type RepostGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RepostWhereInput
+    orderBy?: RepostOrderByWithAggregationInput | RepostOrderByWithAggregationInput[]
+    by: RepostScalarFieldEnum[] | RepostScalarFieldEnum
+    having?: RepostScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RepostCountAggregateInputType | true
+    _avg?: RepostAvgAggregateInputType
+    _sum?: RepostSumAggregateInputType
+    _min?: RepostMinAggregateInputType
+    _max?: RepostMaxAggregateInputType
+  }
+
+  export type RepostGroupByOutputType = {
+    id: string
+    createdAt: Date
+    tweetPk: number
+    userPk: number
+    _count: RepostCountAggregateOutputType | null
+    _avg: RepostAvgAggregateOutputType | null
+    _sum: RepostSumAggregateOutputType | null
+    _min: RepostMinAggregateOutputType | null
+    _max: RepostMaxAggregateOutputType | null
+  }
+
+  type GetRepostGroupByPayload<T extends RepostGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RepostGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RepostGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RepostGroupByOutputType[P]>
+            : GetScalarType<T[P], RepostGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RepostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    tweetPk?: boolean
+    userPk?: boolean
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["repost"]>
+
+  export type RepostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    tweetPk?: boolean
+    userPk?: boolean
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["repost"]>
+
+  export type RepostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    tweetPk?: boolean
+    userPk?: boolean
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["repost"]>
+
+  export type RepostSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    tweetPk?: boolean
+    userPk?: boolean
+  }
+
+  export type RepostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "tweetPk" | "userPk", ExtArgs["result"]["repost"]>
+  export type RepostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RepostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RepostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tweet?: boolean | TweetDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RepostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Repost"
+    objects: {
+      tweet: Prisma.$TweetPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      createdAt: Date
+      tweetPk: number
+      userPk: number
+    }, ExtArgs["result"]["repost"]>
+    composites: {}
+  }
+
+  type RepostGetPayload<S extends boolean | null | undefined | RepostDefaultArgs> = $Result.GetResult<Prisma.$RepostPayload, S>
+
+  type RepostCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RepostFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RepostCountAggregateInputType | true
+    }
+
+  export interface RepostDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Repost'], meta: { name: 'Repost' } }
+    /**
+     * Find zero or one Repost that matches the filter.
+     * @param {RepostFindUniqueArgs} args - Arguments to find a Repost
+     * @example
+     * // Get one Repost
+     * const repost = await prisma.repost.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RepostFindUniqueArgs>(args: SelectSubset<T, RepostFindUniqueArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Repost that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RepostFindUniqueOrThrowArgs} args - Arguments to find a Repost
+     * @example
+     * // Get one Repost
+     * const repost = await prisma.repost.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RepostFindUniqueOrThrowArgs>(args: SelectSubset<T, RepostFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Repost that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostFindFirstArgs} args - Arguments to find a Repost
+     * @example
+     * // Get one Repost
+     * const repost = await prisma.repost.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RepostFindFirstArgs>(args?: SelectSubset<T, RepostFindFirstArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Repost that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostFindFirstOrThrowArgs} args - Arguments to find a Repost
+     * @example
+     * // Get one Repost
+     * const repost = await prisma.repost.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RepostFindFirstOrThrowArgs>(args?: SelectSubset<T, RepostFindFirstOrThrowArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Reposts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Reposts
+     * const reposts = await prisma.repost.findMany()
+     * 
+     * // Get first 10 Reposts
+     * const reposts = await prisma.repost.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const repostWithIdOnly = await prisma.repost.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RepostFindManyArgs>(args?: SelectSubset<T, RepostFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Repost.
+     * @param {RepostCreateArgs} args - Arguments to create a Repost.
+     * @example
+     * // Create one Repost
+     * const Repost = await prisma.repost.create({
+     *   data: {
+     *     // ... data to create a Repost
+     *   }
+     * })
+     * 
+     */
+    create<T extends RepostCreateArgs>(args: SelectSubset<T, RepostCreateArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Reposts.
+     * @param {RepostCreateManyArgs} args - Arguments to create many Reposts.
+     * @example
+     * // Create many Reposts
+     * const repost = await prisma.repost.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RepostCreateManyArgs>(args?: SelectSubset<T, RepostCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Reposts and returns the data saved in the database.
+     * @param {RepostCreateManyAndReturnArgs} args - Arguments to create many Reposts.
+     * @example
+     * // Create many Reposts
+     * const repost = await prisma.repost.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Reposts and only return the `id`
+     * const repostWithIdOnly = await prisma.repost.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RepostCreateManyAndReturnArgs>(args?: SelectSubset<T, RepostCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Repost.
+     * @param {RepostDeleteArgs} args - Arguments to delete one Repost.
+     * @example
+     * // Delete one Repost
+     * const Repost = await prisma.repost.delete({
+     *   where: {
+     *     // ... filter to delete one Repost
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RepostDeleteArgs>(args: SelectSubset<T, RepostDeleteArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Repost.
+     * @param {RepostUpdateArgs} args - Arguments to update one Repost.
+     * @example
+     * // Update one Repost
+     * const repost = await prisma.repost.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RepostUpdateArgs>(args: SelectSubset<T, RepostUpdateArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Reposts.
+     * @param {RepostDeleteManyArgs} args - Arguments to filter Reposts to delete.
+     * @example
+     * // Delete a few Reposts
+     * const { count } = await prisma.repost.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RepostDeleteManyArgs>(args?: SelectSubset<T, RepostDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reposts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Reposts
+     * const repost = await prisma.repost.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RepostUpdateManyArgs>(args: SelectSubset<T, RepostUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Reposts and returns the data updated in the database.
+     * @param {RepostUpdateManyAndReturnArgs} args - Arguments to update many Reposts.
+     * @example
+     * // Update many Reposts
+     * const repost = await prisma.repost.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Reposts and only return the `id`
+     * const repostWithIdOnly = await prisma.repost.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RepostUpdateManyAndReturnArgs>(args: SelectSubset<T, RepostUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Repost.
+     * @param {RepostUpsertArgs} args - Arguments to update or create a Repost.
+     * @example
+     * // Update or create a Repost
+     * const repost = await prisma.repost.upsert({
+     *   create: {
+     *     // ... data to create a Repost
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Repost we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RepostUpsertArgs>(args: SelectSubset<T, RepostUpsertArgs<ExtArgs>>): Prisma__RepostClient<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Reposts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostCountArgs} args - Arguments to filter Reposts to count.
+     * @example
+     * // Count the number of Reposts
+     * const count = await prisma.repost.count({
+     *   where: {
+     *     // ... the filter for the Reposts we want to count
+     *   }
+     * })
+    **/
+    count<T extends RepostCountArgs>(
+      args?: Subset<T, RepostCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RepostCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Repost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RepostAggregateArgs>(args: Subset<T, RepostAggregateArgs>): Prisma.PrismaPromise<GetRepostAggregateType<T>>
+
+    /**
+     * Group by Repost.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RepostGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RepostGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RepostGroupByArgs['orderBy'] }
+        : { orderBy?: RepostGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RepostGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRepostGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Repost model
+   */
+  readonly fields: RepostFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Repost.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RepostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    tweet<T extends TweetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TweetDefaultArgs<ExtArgs>>): Prisma__TweetClient<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Repost model
+   */
+  interface RepostFieldRefs {
+    readonly id: FieldRef<"Repost", 'String'>
+    readonly createdAt: FieldRef<"Repost", 'DateTime'>
+    readonly tweetPk: FieldRef<"Repost", 'Int'>
+    readonly userPk: FieldRef<"Repost", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Repost findUnique
+   */
+  export type RepostFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter, which Repost to fetch.
+     */
+    where: RepostWhereUniqueInput
+  }
+
+  /**
+   * Repost findUniqueOrThrow
+   */
+  export type RepostFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter, which Repost to fetch.
+     */
+    where: RepostWhereUniqueInput
+  }
+
+  /**
+   * Repost findFirst
+   */
+  export type RepostFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter, which Repost to fetch.
+     */
+    where?: RepostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reposts to fetch.
+     */
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Reposts.
+     */
+    cursor?: RepostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reposts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reposts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Reposts.
+     */
+    distinct?: RepostScalarFieldEnum | RepostScalarFieldEnum[]
+  }
+
+  /**
+   * Repost findFirstOrThrow
+   */
+  export type RepostFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter, which Repost to fetch.
+     */
+    where?: RepostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reposts to fetch.
+     */
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Reposts.
+     */
+    cursor?: RepostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reposts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reposts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Reposts.
+     */
+    distinct?: RepostScalarFieldEnum | RepostScalarFieldEnum[]
+  }
+
+  /**
+   * Repost findMany
+   */
+  export type RepostFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter, which Reposts to fetch.
+     */
+    where?: RepostWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Reposts to fetch.
+     */
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Reposts.
+     */
+    cursor?: RepostWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Reposts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Reposts.
+     */
+    skip?: number
+    distinct?: RepostScalarFieldEnum | RepostScalarFieldEnum[]
+  }
+
+  /**
+   * Repost create
+   */
+  export type RepostCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Repost.
+     */
+    data: XOR<RepostCreateInput, RepostUncheckedCreateInput>
+  }
+
+  /**
+   * Repost createMany
+   */
+  export type RepostCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Reposts.
+     */
+    data: RepostCreateManyInput | RepostCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Repost createManyAndReturn
+   */
+  export type RepostCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * The data used to create many Reposts.
+     */
+    data: RepostCreateManyInput | RepostCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Repost update
+   */
+  export type RepostUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Repost.
+     */
+    data: XOR<RepostUpdateInput, RepostUncheckedUpdateInput>
+    /**
+     * Choose, which Repost to update.
+     */
+    where: RepostWhereUniqueInput
+  }
+
+  /**
+   * Repost updateMany
+   */
+  export type RepostUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Reposts.
+     */
+    data: XOR<RepostUpdateManyMutationInput, RepostUncheckedUpdateManyInput>
+    /**
+     * Filter which Reposts to update
+     */
+    where?: RepostWhereInput
+    /**
+     * Limit how many Reposts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Repost updateManyAndReturn
+   */
+  export type RepostUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * The data used to update Reposts.
+     */
+    data: XOR<RepostUpdateManyMutationInput, RepostUncheckedUpdateManyInput>
+    /**
+     * Filter which Reposts to update
+     */
+    where?: RepostWhereInput
+    /**
+     * Limit how many Reposts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Repost upsert
+   */
+  export type RepostUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Repost to update in case it exists.
+     */
+    where: RepostWhereUniqueInput
+    /**
+     * In case the Repost found by the `where` argument doesn't exist, create a new Repost with this data.
+     */
+    create: XOR<RepostCreateInput, RepostUncheckedCreateInput>
+    /**
+     * In case the Repost was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RepostUpdateInput, RepostUncheckedUpdateInput>
+  }
+
+  /**
+   * Repost delete
+   */
+  export type RepostDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    /**
+     * Filter which Repost to delete.
+     */
+    where: RepostWhereUniqueInput
+  }
+
+  /**
+   * Repost deleteMany
+   */
+  export type RepostDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Reposts to delete
+     */
+    where?: RepostWhereInput
+    /**
+     * Limit how many Reposts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Repost without action
+   */
+  export type RepostDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Tweet
    */
 
@@ -6587,6 +7787,7 @@ export namespace Prisma {
     replyTo?: boolean | Tweet$replyToArgs<ExtArgs>
     replies?: boolean | Tweet$repliesArgs<ExtArgs>
     likes?: boolean | Tweet$likesArgs<ExtArgs>
+    repost?: boolean | Tweet$repostArgs<ExtArgs>
     _count?: boolean | TweetCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tweet"]>
 
@@ -6631,6 +7832,7 @@ export namespace Prisma {
     replyTo?: boolean | Tweet$replyToArgs<ExtArgs>
     replies?: boolean | Tweet$repliesArgs<ExtArgs>
     likes?: boolean | Tweet$likesArgs<ExtArgs>
+    repost?: boolean | Tweet$repostArgs<ExtArgs>
     _count?: boolean | TweetCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TweetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6650,6 +7852,7 @@ export namespace Prisma {
       replyTo: Prisma.$TweetPayload<ExtArgs> | null
       replies: Prisma.$TweetPayload<ExtArgs>[]
       likes: Prisma.$LikePayload<ExtArgs>[]
+      repost: Prisma.$RepostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       primaryKey: number
@@ -7058,6 +8261,7 @@ export namespace Prisma {
     replyTo<T extends Tweet$replyToArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$replyToArgs<ExtArgs>>): Prisma__TweetClient<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     replies<T extends Tweet$repliesArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$repliesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TweetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     likes<T extends Tweet$likesArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    repost<T extends Tweet$repostArgs<ExtArgs> = {}>(args?: Subset<T, Tweet$repostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7578,6 +8782,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+  /**
+   * Tweet.repost
+   */
+  export type Tweet$repostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    where?: RepostWhereInput
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    cursor?: RepostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepostScalarFieldEnum | RepostScalarFieldEnum[]
   }
 
   /**
@@ -9018,6 +10246,7 @@ export namespace Prisma {
     following?: boolean | User$followingArgs<ExtArgs>
     media?: boolean | User$mediaArgs<ExtArgs>
     likes?: boolean | User$likesArgs<ExtArgs>
+    repost?: boolean | User$repostArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -9067,6 +10296,7 @@ export namespace Prisma {
     following?: boolean | User$followingArgs<ExtArgs>
     media?: boolean | User$mediaArgs<ExtArgs>
     likes?: boolean | User$likesArgs<ExtArgs>
+    repost?: boolean | User$repostArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9083,6 +10313,7 @@ export namespace Prisma {
       following: Prisma.$UserPayload<ExtArgs>[]
       media: Prisma.$MediaPayload<ExtArgs>[]
       likes: Prisma.$LikePayload<ExtArgs>[]
+      repost: Prisma.$RepostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       primaryKey: number
@@ -9496,6 +10727,7 @@ export namespace Prisma {
     following<T extends User$followingArgs<ExtArgs> = {}>(args?: Subset<T, User$followingArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     media<T extends User$mediaArgs<ExtArgs> = {}>(args?: Subset<T, User$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     likes<T extends User$likesArgs<ExtArgs> = {}>(args?: Subset<T, User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    repost<T extends User$repostArgs<ExtArgs> = {}>(args?: Subset<T, User$repostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RepostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10106,6 +11338,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+  /**
+   * User.repost
+   */
+  export type User$repostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Repost
+     */
+    select?: RepostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Repost
+     */
+    omit?: RepostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RepostInclude<ExtArgs> | null
+    where?: RepostWhereInput
+    orderBy?: RepostOrderByWithRelationInput | RepostOrderByWithRelationInput[]
+    cursor?: RepostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RepostScalarFieldEnum | RepostScalarFieldEnum[]
   }
 
   /**
@@ -11355,6 +12611,16 @@ export namespace Prisma {
   export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
 
 
+  export const RepostScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    tweetPk: 'tweetPk',
+    userPk: 'userPk'
+  };
+
+  export type RepostScalarFieldEnum = (typeof RepostScalarFieldEnum)[keyof typeof RepostScalarFieldEnum]
+
+
   export const TweetScalarFieldEnum: {
     primaryKey: 'primaryKey',
     id: 'id',
@@ -11840,6 +13106,62 @@ export namespace Prisma {
     uploaderPk?: IntNullableWithAggregatesFilter<"Media"> | number | null
   }
 
+  export type RepostWhereInput = {
+    AND?: RepostWhereInput | RepostWhereInput[]
+    OR?: RepostWhereInput[]
+    NOT?: RepostWhereInput | RepostWhereInput[]
+    id?: UuidFilter<"Repost"> | string
+    createdAt?: DateTimeFilter<"Repost"> | Date | string
+    tweetPk?: IntFilter<"Repost"> | number
+    userPk?: IntFilter<"Repost"> | number
+    tweet?: XOR<TweetScalarRelationFilter, TweetWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RepostOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+    tweet?: TweetOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type RepostWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    tweetPk_userPk?: RepostTweetPkUserPkCompoundUniqueInput
+    AND?: RepostWhereInput | RepostWhereInput[]
+    OR?: RepostWhereInput[]
+    NOT?: RepostWhereInput | RepostWhereInput[]
+    createdAt?: DateTimeFilter<"Repost"> | Date | string
+    tweetPk?: IntFilter<"Repost"> | number
+    userPk?: IntFilter<"Repost"> | number
+    tweet?: XOR<TweetScalarRelationFilter, TweetWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "tweetPk_userPk" | "id">
+
+  export type RepostOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+    _count?: RepostCountOrderByAggregateInput
+    _avg?: RepostAvgOrderByAggregateInput
+    _max?: RepostMaxOrderByAggregateInput
+    _min?: RepostMinOrderByAggregateInput
+    _sum?: RepostSumOrderByAggregateInput
+  }
+
+  export type RepostScalarWhereWithAggregatesInput = {
+    AND?: RepostScalarWhereWithAggregatesInput | RepostScalarWhereWithAggregatesInput[]
+    OR?: RepostScalarWhereWithAggregatesInput[]
+    NOT?: RepostScalarWhereWithAggregatesInput | RepostScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"Repost"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Repost"> | Date | string
+    tweetPk?: IntWithAggregatesFilter<"Repost"> | number
+    userPk?: IntWithAggregatesFilter<"Repost"> | number
+  }
+
   export type TweetWhereInput = {
     AND?: TweetWhereInput | TweetWhereInput[]
     OR?: TweetWhereInput[]
@@ -11856,6 +13178,7 @@ export namespace Prisma {
     replyTo?: XOR<TweetNullableScalarRelationFilter, TweetWhereInput> | null
     replies?: TweetListRelationFilter
     likes?: LikeListRelationFilter
+    repost?: RepostListRelationFilter
   }
 
   export type TweetOrderByWithRelationInput = {
@@ -11871,6 +13194,7 @@ export namespace Prisma {
     replyTo?: TweetOrderByWithRelationInput
     replies?: TweetOrderByRelationAggregateInput
     likes?: LikeOrderByRelationAggregateInput
+    repost?: RepostOrderByRelationAggregateInput
   }
 
   export type TweetWhereUniqueInput = Prisma.AtLeast<{
@@ -11889,6 +13213,7 @@ export namespace Prisma {
     replyTo?: XOR<TweetNullableScalarRelationFilter, TweetWhereInput> | null
     replies?: TweetListRelationFilter
     likes?: LikeListRelationFilter
+    repost?: RepostListRelationFilter
   }, "primaryKey" | "id">
 
   export type TweetOrderByWithAggregationInput = {
@@ -12018,6 +13343,7 @@ export namespace Prisma {
     following?: UserListRelationFilter
     media?: MediaListRelationFilter
     likes?: LikeListRelationFilter
+    repost?: RepostListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -12038,6 +13364,7 @@ export namespace Prisma {
     following?: UserOrderByRelationAggregateInput
     media?: MediaOrderByRelationAggregateInput
     likes?: LikeOrderByRelationAggregateInput
+    repost?: RepostOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12061,6 +13388,7 @@ export namespace Prisma {
     following?: UserListRelationFilter
     media?: MediaListRelationFilter
     likes?: LikeListRelationFilter
+    repost?: RepostListRelationFilter
   }, "primaryKey" | "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -12459,6 +13787,53 @@ export namespace Prisma {
     uploaderPk?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
+  export type RepostCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    tweet: TweetCreateNestedOneWithoutRepostInput
+    user: UserCreateNestedOneWithoutRepostInput
+  }
+
+  export type RepostUncheckedCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    tweetPk: number
+    userPk: number
+  }
+
+  export type RepostUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweet?: TweetUpdateOneRequiredWithoutRepostNestedInput
+    user?: UserUpdateOneRequiredWithoutRepostNestedInput
+  }
+
+  export type RepostUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweetPk?: IntFieldUpdateOperationsInput | number
+    userPk?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RepostCreateManyInput = {
+    id?: string
+    createdAt?: Date | string
+    tweetPk: number
+    userPk: number
+  }
+
+  export type RepostUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RepostUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweetPk?: IntFieldUpdateOperationsInput | number
+    userPk?: IntFieldUpdateOperationsInput | number
+  }
+
   export type TweetCreateInput = {
     id?: string
     content?: string | null
@@ -12469,6 +13844,7 @@ export namespace Prisma {
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
     likes?: LikeCreateNestedManyWithoutTweetInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateInput = {
@@ -12482,6 +13858,7 @@ export namespace Prisma {
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
     likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUpdateInput = {
@@ -12494,6 +13871,7 @@ export namespace Prisma {
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
     likes?: LikeUpdateManyWithoutTweetNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateInput = {
@@ -12507,6 +13885,7 @@ export namespace Prisma {
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
     likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetCreateManyInput = {
@@ -12634,6 +14013,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12654,6 +14034,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12673,6 +14054,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12693,6 +14075,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -13237,6 +14620,42 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type RepostTweetPkUserPkCompoundUniqueInput = {
+    tweetPk: number
+    userPk: number
+  }
+
+  export type RepostCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+  }
+
+  export type RepostAvgOrderByAggregateInput = {
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+  }
+
+  export type RepostMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+  }
+
+  export type RepostMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+  }
+
+  export type RepostSumOrderByAggregateInput = {
+    tweetPk?: SortOrder
+    userPk?: SortOrder
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -13270,6 +14689,12 @@ export namespace Prisma {
     none?: LikeWhereInput
   }
 
+  export type RepostListRelationFilter = {
+    every?: RepostWhereInput
+    some?: RepostWhereInput
+    none?: RepostWhereInput
+  }
+
   export type MediaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -13279,6 +14704,10 @@ export namespace Prisma {
   }
 
   export type LikeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RepostOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13722,6 +15151,34 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type TweetCreateNestedOneWithoutRepostInput = {
+    create?: XOR<TweetCreateWithoutRepostInput, TweetUncheckedCreateWithoutRepostInput>
+    connectOrCreate?: TweetCreateOrConnectWithoutRepostInput
+    connect?: TweetWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutRepostInput = {
+    create?: XOR<UserCreateWithoutRepostInput, UserUncheckedCreateWithoutRepostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRepostInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TweetUpdateOneRequiredWithoutRepostNestedInput = {
+    create?: XOR<TweetCreateWithoutRepostInput, TweetUncheckedCreateWithoutRepostInput>
+    connectOrCreate?: TweetCreateOrConnectWithoutRepostInput
+    upsert?: TweetUpsertWithoutRepostInput
+    connect?: TweetWhereUniqueInput
+    update?: XOR<XOR<TweetUpdateToOneWithWhereWithoutRepostInput, TweetUpdateWithoutRepostInput>, TweetUncheckedUpdateWithoutRepostInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutRepostNestedInput = {
+    create?: XOR<UserCreateWithoutRepostInput, UserUncheckedCreateWithoutRepostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRepostInput
+    upsert?: UserUpsertWithoutRepostInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRepostInput, UserUpdateWithoutRepostInput>, UserUncheckedUpdateWithoutRepostInput>
+  }
+
   export type UserCreateNestedOneWithoutTweetsInput = {
     create?: XOR<UserCreateWithoutTweetsInput, UserUncheckedCreateWithoutTweetsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTweetsInput
@@ -13755,6 +15212,13 @@ export namespace Prisma {
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
+  export type RepostCreateNestedManyWithoutTweetInput = {
+    create?: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput> | RepostCreateWithoutTweetInput[] | RepostUncheckedCreateWithoutTweetInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutTweetInput | RepostCreateOrConnectWithoutTweetInput[]
+    createMany?: RepostCreateManyTweetInputEnvelope
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+  }
+
   export type MediaUncheckedCreateNestedManyWithoutTweetInput = {
     create?: XOR<MediaCreateWithoutTweetInput, MediaUncheckedCreateWithoutTweetInput> | MediaCreateWithoutTweetInput[] | MediaUncheckedCreateWithoutTweetInput[]
     connectOrCreate?: MediaCreateOrConnectWithoutTweetInput | MediaCreateOrConnectWithoutTweetInput[]
@@ -13774,6 +15238,13 @@ export namespace Prisma {
     connectOrCreate?: LikeCreateOrConnectWithoutTweetInput | LikeCreateOrConnectWithoutTweetInput[]
     createMany?: LikeCreateManyTweetInputEnvelope
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+  }
+
+  export type RepostUncheckedCreateNestedManyWithoutTweetInput = {
+    create?: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput> | RepostCreateWithoutTweetInput[] | RepostUncheckedCreateWithoutTweetInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutTweetInput | RepostCreateOrConnectWithoutTweetInput[]
+    createMany?: RepostCreateManyTweetInputEnvelope
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -13840,6 +15311,20 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type RepostUpdateManyWithoutTweetNestedInput = {
+    create?: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput> | RepostCreateWithoutTweetInput[] | RepostUncheckedCreateWithoutTweetInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutTweetInput | RepostCreateOrConnectWithoutTweetInput[]
+    upsert?: RepostUpsertWithWhereUniqueWithoutTweetInput | RepostUpsertWithWhereUniqueWithoutTweetInput[]
+    createMany?: RepostCreateManyTweetInputEnvelope
+    set?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    disconnect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    delete?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    update?: RepostUpdateWithWhereUniqueWithoutTweetInput | RepostUpdateWithWhereUniqueWithoutTweetInput[]
+    updateMany?: RepostUpdateManyWithWhereWithoutTweetInput | RepostUpdateManyWithWhereWithoutTweetInput[]
+    deleteMany?: RepostScalarWhereInput | RepostScalarWhereInput[]
+  }
+
   export type MediaUncheckedUpdateManyWithoutTweetNestedInput = {
     create?: XOR<MediaCreateWithoutTweetInput, MediaUncheckedCreateWithoutTweetInput> | MediaCreateWithoutTweetInput[] | MediaUncheckedCreateWithoutTweetInput[]
     connectOrCreate?: MediaCreateOrConnectWithoutTweetInput | MediaCreateOrConnectWithoutTweetInput[]
@@ -13880,6 +15365,20 @@ export namespace Prisma {
     update?: LikeUpdateWithWhereUniqueWithoutTweetInput | LikeUpdateWithWhereUniqueWithoutTweetInput[]
     updateMany?: LikeUpdateManyWithWhereWithoutTweetInput | LikeUpdateManyWithWhereWithoutTweetInput[]
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
+  }
+
+  export type RepostUncheckedUpdateManyWithoutTweetNestedInput = {
+    create?: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput> | RepostCreateWithoutTweetInput[] | RepostUncheckedCreateWithoutTweetInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutTweetInput | RepostCreateOrConnectWithoutTweetInput[]
+    upsert?: RepostUpsertWithWhereUniqueWithoutTweetInput | RepostUpsertWithWhereUniqueWithoutTweetInput[]
+    createMany?: RepostCreateManyTweetInputEnvelope
+    set?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    disconnect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    delete?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    update?: RepostUpdateWithWhereUniqueWithoutTweetInput | RepostUpdateWithWhereUniqueWithoutTweetInput[]
+    updateMany?: RepostUpdateManyWithWhereWithoutTweetInput | RepostUpdateManyWithWhereWithoutTweetInput[]
+    deleteMany?: RepostScalarWhereInput | RepostScalarWhereInput[]
   }
 
   export type MediaCreateNestedOneWithoutUserProfileAvatarInput = {
@@ -14013,6 +15512,13 @@ export namespace Prisma {
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
+  export type RepostCreateNestedManyWithoutUserInput = {
+    create?: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput> | RepostCreateWithoutUserInput[] | RepostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutUserInput | RepostCreateOrConnectWithoutUserInput[]
+    createMany?: RepostCreateManyUserInputEnvelope
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+  }
+
   export type UserProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -14064,6 +15570,13 @@ export namespace Prisma {
     connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
     createMany?: LikeCreateManyUserInputEnvelope
     connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+  }
+
+  export type RepostUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput> | RepostCreateWithoutUserInput[] | RepostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutUserInput | RepostCreateOrConnectWithoutUserInput[]
+    createMany?: RepostCreateManyUserInputEnvelope
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
   }
 
   export type EnumAccountLevelFieldUpdateOperationsInput = {
@@ -14176,6 +15689,20 @@ export namespace Prisma {
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
+  export type RepostUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput> | RepostCreateWithoutUserInput[] | RepostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutUserInput | RepostCreateOrConnectWithoutUserInput[]
+    upsert?: RepostUpsertWithWhereUniqueWithoutUserInput | RepostUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RepostCreateManyUserInputEnvelope
+    set?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    disconnect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    delete?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    update?: RepostUpdateWithWhereUniqueWithoutUserInput | RepostUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RepostUpdateManyWithWhereWithoutUserInput | RepostUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RepostScalarWhereInput | RepostScalarWhereInput[]
+  }
+
   export type UserProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -14280,6 +15807,20 @@ export namespace Prisma {
     update?: LikeUpdateWithWhereUniqueWithoutUserInput | LikeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: LikeUpdateManyWithWhereWithoutUserInput | LikeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
+  }
+
+  export type RepostUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput> | RepostCreateWithoutUserInput[] | RepostUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: RepostCreateOrConnectWithoutUserInput | RepostCreateOrConnectWithoutUserInput[]
+    upsert?: RepostUpsertWithWhereUniqueWithoutUserInput | RepostUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: RepostCreateManyUserInputEnvelope
+    set?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    disconnect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    delete?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    connect?: RepostWhereUniqueInput | RepostWhereUniqueInput[]
+    update?: RepostUpdateWithWhereUniqueWithoutUserInput | RepostUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: RepostUpdateManyWithWhereWithoutUserInput | RepostUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: RepostScalarWhereInput | RepostScalarWhereInput[]
   }
 
   export type AuthProviderCreateNestedOneWithoutAccountsInput = {
@@ -14665,6 +16206,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTokensInput = {
@@ -14684,6 +16226,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTokensInput = {
@@ -14718,6 +16261,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTokensInput = {
@@ -14737,6 +16281,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLikesInput = {
@@ -14755,6 +16300,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLikesInput = {
@@ -14774,6 +16320,7 @@ export namespace Prisma {
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLikesInput = {
@@ -14790,6 +16337,7 @@ export namespace Prisma {
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateWithoutLikesInput = {
@@ -14802,6 +16350,7 @@ export namespace Prisma {
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetCreateOrConnectWithoutLikesInput = {
@@ -14836,6 +16385,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLikesInput = {
@@ -14855,6 +16405,7 @@ export namespace Prisma {
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TweetUpsertWithoutLikesInput = {
@@ -14877,6 +16428,7 @@ export namespace Prisma {
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateWithoutLikesInput = {
@@ -14889,6 +16441,7 @@ export namespace Prisma {
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type UserProfileCreateWithoutAvatarInput = {
@@ -14956,6 +16509,7 @@ export namespace Prisma {
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
     likes?: LikeCreateNestedManyWithoutTweetInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateWithoutMediaInput = {
@@ -14968,6 +16522,7 @@ export namespace Prisma {
     replyToPk?: number | null
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
     likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetCreateOrConnectWithoutMediaInput = {
@@ -14991,6 +16546,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     following?: UserCreateNestedManyWithoutFollowedByInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMediaInput = {
@@ -15010,6 +16566,7 @@ export namespace Prisma {
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMediaInput = {
@@ -15105,6 +16662,7 @@ export namespace Prisma {
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
     likes?: LikeUpdateManyWithoutTweetNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateWithoutMediaInput = {
@@ -15117,6 +16675,7 @@ export namespace Prisma {
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
     likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type UserUpsertWithoutMediaInput = {
@@ -15146,6 +16705,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     following?: UserUpdateManyWithoutFollowedByNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMediaInput = {
@@ -15165,6 +16725,167 @@ export namespace Prisma {
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TweetCreateWithoutRepostInput = {
+    id?: string
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    author: UserCreateNestedOneWithoutTweetsInput
+    media?: MediaCreateNestedManyWithoutTweetInput
+    replyTo?: TweetCreateNestedOneWithoutRepliesInput
+    replies?: TweetCreateNestedManyWithoutReplyToInput
+    likes?: LikeCreateNestedManyWithoutTweetInput
+  }
+
+  export type TweetUncheckedCreateWithoutRepostInput = {
+    primaryKey?: number
+    id?: string
+    content?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    authorPk: number
+    replyToPk?: number | null
+    media?: MediaUncheckedCreateNestedManyWithoutTweetInput
+    replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
+    likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+  }
+
+  export type TweetCreateOrConnectWithoutRepostInput = {
+    where: TweetWhereUniqueInput
+    create: XOR<TweetCreateWithoutRepostInput, TweetUncheckedCreateWithoutRepostInput>
+  }
+
+  export type UserCreateWithoutRepostInput = {
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenCreateNestedManyWithoutUserInput
+    tweets?: TweetCreateNestedManyWithoutAuthorInput
+    followedBy?: UserCreateNestedManyWithoutFollowingInput
+    following?: UserCreateNestedManyWithoutFollowedByInput
+    media?: MediaCreateNestedManyWithoutUploaderInput
+    likes?: LikeCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRepostInput = {
+    primaryKey?: number
+    id?: string
+    email: string
+    username: string
+    password?: string | null
+    accountLevel?: $Enums.AccountLevel
+    createdAt?: Date | string
+    updatedAt?: Date | string | null
+    deletedAt?: Date | string | null
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    openIds?: UserOIDCAccountUncheckedCreateNestedManyWithoutUserInput
+    tokens?: BlacklistedTokenUncheckedCreateNestedManyWithoutUserInput
+    tweets?: TweetUncheckedCreateNestedManyWithoutAuthorInput
+    followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
+    following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
+    media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
+    likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRepostInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRepostInput, UserUncheckedCreateWithoutRepostInput>
+  }
+
+  export type TweetUpsertWithoutRepostInput = {
+    update: XOR<TweetUpdateWithoutRepostInput, TweetUncheckedUpdateWithoutRepostInput>
+    create: XOR<TweetCreateWithoutRepostInput, TweetUncheckedCreateWithoutRepostInput>
+    where?: TweetWhereInput
+  }
+
+  export type TweetUpdateToOneWithWhereWithoutRepostInput = {
+    where?: TweetWhereInput
+    data: XOR<TweetUpdateWithoutRepostInput, TweetUncheckedUpdateWithoutRepostInput>
+  }
+
+  export type TweetUpdateWithoutRepostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    author?: UserUpdateOneRequiredWithoutTweetsNestedInput
+    media?: MediaUpdateManyWithoutTweetNestedInput
+    replyTo?: TweetUpdateOneWithoutRepliesNestedInput
+    replies?: TweetUpdateManyWithoutReplyToNestedInput
+    likes?: LikeUpdateManyWithoutTweetNestedInput
+  }
+
+  export type TweetUncheckedUpdateWithoutRepostInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    authorPk?: IntFieldUpdateOperationsInput | number
+    replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
+    media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
+    replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+  }
+
+  export type UserUpsertWithoutRepostInput = {
+    update: XOR<UserUpdateWithoutRepostInput, UserUncheckedUpdateWithoutRepostInput>
+    create: XOR<UserCreateWithoutRepostInput, UserUncheckedCreateWithoutRepostInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRepostInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRepostInput, UserUncheckedUpdateWithoutRepostInput>
+  }
+
+  export type UserUpdateWithoutRepostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUpdateManyWithoutUserNestedInput
+    tweets?: TweetUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUpdateManyWithoutFollowingNestedInput
+    following?: UserUpdateManyWithoutFollowedByNestedInput
+    media?: MediaUpdateManyWithoutUploaderNestedInput
+    likes?: LikeUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRepostInput = {
+    primaryKey?: IntFieldUpdateOperationsInput | number
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accountLevel?: EnumAccountLevelFieldUpdateOperationsInput | $Enums.AccountLevel
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    openIds?: UserOIDCAccountUncheckedUpdateManyWithoutUserNestedInput
+    tokens?: BlacklistedTokenUncheckedUpdateManyWithoutUserNestedInput
+    tweets?: TweetUncheckedUpdateManyWithoutAuthorNestedInput
+    followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
+    following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
+    media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTweetsInput = {
@@ -15183,6 +16904,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTweetsInput = {
@@ -15202,6 +16924,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTweetsInput = {
@@ -15257,6 +16980,7 @@ export namespace Prisma {
     media?: MediaCreateNestedManyWithoutTweetInput
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     likes?: LikeCreateNestedManyWithoutTweetInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateWithoutRepliesInput = {
@@ -15269,6 +16993,7 @@ export namespace Prisma {
     replyToPk?: number | null
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetCreateOrConnectWithoutRepliesInput = {
@@ -15285,6 +17010,7 @@ export namespace Prisma {
     media?: MediaCreateNestedManyWithoutTweetInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
     likes?: LikeCreateNestedManyWithoutTweetInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateWithoutReplyToInput = {
@@ -15297,6 +17023,7 @@ export namespace Prisma {
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
     likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetCreateOrConnectWithoutReplyToInput = {
@@ -15331,6 +17058,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RepostCreateWithoutTweetInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutRepostInput
+  }
+
+  export type RepostUncheckedCreateWithoutTweetInput = {
+    id?: string
+    createdAt?: Date | string
+    userPk: number
+  }
+
+  export type RepostCreateOrConnectWithoutTweetInput = {
+    where: RepostWhereUniqueInput
+    create: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput>
+  }
+
+  export type RepostCreateManyTweetInputEnvelope = {
+    data: RepostCreateManyTweetInput | RepostCreateManyTweetInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutTweetsInput = {
     update: XOR<UserUpdateWithoutTweetsInput, UserUncheckedUpdateWithoutTweetsInput>
     create: XOR<UserCreateWithoutTweetsInput, UserUncheckedCreateWithoutTweetsInput>
@@ -15358,6 +17107,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTweetsInput = {
@@ -15377,6 +17127,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MediaUpsertWithWhereUniqueWithoutTweetInput = {
@@ -15434,6 +17185,7 @@ export namespace Prisma {
     media?: MediaUpdateManyWithoutTweetNestedInput
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     likes?: LikeUpdateManyWithoutTweetNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateWithoutRepliesInput = {
@@ -15446,6 +17198,7 @@ export namespace Prisma {
     replyToPk?: NullableIntFieldUpdateOperationsInput | number | null
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUpsertWithWhereUniqueWithoutReplyToInput = {
@@ -15501,6 +17254,32 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Like"> | Date | string
     userPk?: IntFilter<"Like"> | number
     tweetPk?: IntFilter<"Like"> | number
+  }
+
+  export type RepostUpsertWithWhereUniqueWithoutTweetInput = {
+    where: RepostWhereUniqueInput
+    update: XOR<RepostUpdateWithoutTweetInput, RepostUncheckedUpdateWithoutTweetInput>
+    create: XOR<RepostCreateWithoutTweetInput, RepostUncheckedCreateWithoutTweetInput>
+  }
+
+  export type RepostUpdateWithWhereUniqueWithoutTweetInput = {
+    where: RepostWhereUniqueInput
+    data: XOR<RepostUpdateWithoutTweetInput, RepostUncheckedUpdateWithoutTweetInput>
+  }
+
+  export type RepostUpdateManyWithWhereWithoutTweetInput = {
+    where: RepostScalarWhereInput
+    data: XOR<RepostUpdateManyMutationInput, RepostUncheckedUpdateManyWithoutTweetInput>
+  }
+
+  export type RepostScalarWhereInput = {
+    AND?: RepostScalarWhereInput | RepostScalarWhereInput[]
+    OR?: RepostScalarWhereInput[]
+    NOT?: RepostScalarWhereInput | RepostScalarWhereInput[]
+    id?: UuidFilter<"Repost"> | string
+    createdAt?: DateTimeFilter<"Repost"> | Date | string
+    tweetPk?: IntFilter<"Repost"> | number
+    userPk?: IntFilter<"Repost"> | number
   }
 
   export type MediaCreateWithoutUserProfileAvatarInput = {
@@ -15587,6 +17366,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -15606,6 +17386,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -15720,6 +17501,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -15739,6 +17521,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserProfileCreateWithoutUserInput = {
@@ -15834,6 +17617,7 @@ export namespace Prisma {
     replyTo?: TweetCreateNestedOneWithoutRepliesInput
     replies?: TweetCreateNestedManyWithoutReplyToInput
     likes?: LikeCreateNestedManyWithoutTweetInput
+    repost?: RepostCreateNestedManyWithoutTweetInput
   }
 
   export type TweetUncheckedCreateWithoutAuthorInput = {
@@ -15846,6 +17630,7 @@ export namespace Prisma {
     media?: MediaUncheckedCreateNestedManyWithoutTweetInput
     replies?: TweetUncheckedCreateNestedManyWithoutReplyToInput
     likes?: LikeUncheckedCreateNestedManyWithoutTweetInput
+    repost?: RepostUncheckedCreateNestedManyWithoutTweetInput
   }
 
   export type TweetCreateOrConnectWithoutAuthorInput = {
@@ -15874,6 +17659,7 @@ export namespace Prisma {
     followedBy?: UserCreateNestedManyWithoutFollowingInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowingInput = {
@@ -15893,6 +17679,7 @@ export namespace Prisma {
     followedBy?: UserUncheckedCreateNestedManyWithoutFollowingInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowingInput = {
@@ -15916,6 +17703,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowedByInput = {
@@ -15935,6 +17723,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowedByInput = {
@@ -16000,6 +17789,28 @@ export namespace Prisma {
 
   export type LikeCreateManyUserInputEnvelope = {
     data: LikeCreateManyUserInput | LikeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RepostCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    tweet: TweetCreateNestedOneWithoutRepostInput
+  }
+
+  export type RepostUncheckedCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    tweetPk: number
+  }
+
+  export type RepostCreateOrConnectWithoutUserInput = {
+    where: RepostWhereUniqueInput
+    create: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput>
+  }
+
+  export type RepostCreateManyUserInputEnvelope = {
+    data: RepostCreateManyUserInput | RepostCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -16176,6 +17987,22 @@ export namespace Prisma {
     data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutUserInput>
   }
 
+  export type RepostUpsertWithWhereUniqueWithoutUserInput = {
+    where: RepostWhereUniqueInput
+    update: XOR<RepostUpdateWithoutUserInput, RepostUncheckedUpdateWithoutUserInput>
+    create: XOR<RepostCreateWithoutUserInput, RepostUncheckedCreateWithoutUserInput>
+  }
+
+  export type RepostUpdateWithWhereUniqueWithoutUserInput = {
+    where: RepostWhereUniqueInput
+    data: XOR<RepostUpdateWithoutUserInput, RepostUncheckedUpdateWithoutUserInput>
+  }
+
+  export type RepostUpdateManyWithWhereWithoutUserInput = {
+    where: RepostScalarWhereInput
+    data: XOR<RepostUpdateManyMutationInput, RepostUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type AuthProviderCreateWithoutAccountsInput = {
     id?: string
     key: string
@@ -16216,6 +18043,7 @@ export namespace Prisma {
     following?: UserCreateNestedManyWithoutFollowedByInput
     media?: MediaCreateNestedManyWithoutUploaderInput
     likes?: LikeCreateNestedManyWithoutUserInput
+    repost?: RepostCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOpenIdsInput = {
@@ -16235,6 +18063,7 @@ export namespace Prisma {
     following?: UserUncheckedCreateNestedManyWithoutFollowedByInput
     media?: MediaUncheckedCreateNestedManyWithoutUploaderInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
+    repost?: RepostUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOpenIdsInput = {
@@ -16299,6 +18128,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOpenIdsInput = {
@@ -16318,6 +18148,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserOIDCAccountCreateManyProviderInput = {
@@ -16393,6 +18224,12 @@ export namespace Prisma {
     userPk: number
   }
 
+  export type RepostCreateManyTweetInput = {
+    id?: string
+    createdAt?: Date | string
+    userPk: number
+  }
+
   export type MediaUpdateWithoutTweetInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumMediaTypeFieldUpdateOperationsInput | $Enums.MediaType
@@ -16446,6 +18283,7 @@ export namespace Prisma {
     media?: MediaUpdateManyWithoutTweetNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
     likes?: LikeUpdateManyWithoutTweetNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateWithoutReplyToInput = {
@@ -16458,6 +18296,7 @@ export namespace Prisma {
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
     likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateManyWithoutReplyToInput = {
@@ -16482,6 +18321,24 @@ export namespace Prisma {
   }
 
   export type LikeUncheckedUpdateManyWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userPk?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RepostUpdateWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutRepostNestedInput
+  }
+
+  export type RepostUncheckedUpdateWithoutTweetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userPk?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RepostUncheckedUpdateManyWithoutTweetInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userPk?: IntFieldUpdateOperationsInput | number
@@ -16531,6 +18388,12 @@ export namespace Prisma {
   }
 
   export type LikeCreateManyUserInput = {
+    id?: string
+    createdAt?: Date | string
+    tweetPk: number
+  }
+
+  export type RepostCreateManyUserInput = {
     id?: string
     createdAt?: Date | string
     tweetPk: number
@@ -16600,6 +18463,7 @@ export namespace Prisma {
     replyTo?: TweetUpdateOneWithoutRepliesNestedInput
     replies?: TweetUpdateManyWithoutReplyToNestedInput
     likes?: LikeUpdateManyWithoutTweetNestedInput
+    repost?: RepostUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateWithoutAuthorInput = {
@@ -16612,6 +18476,7 @@ export namespace Prisma {
     media?: MediaUncheckedUpdateManyWithoutTweetNestedInput
     replies?: TweetUncheckedUpdateManyWithoutReplyToNestedInput
     likes?: LikeUncheckedUpdateManyWithoutTweetNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutTweetNestedInput
   }
 
   export type TweetUncheckedUpdateManyWithoutAuthorInput = {
@@ -16639,6 +18504,7 @@ export namespace Prisma {
     followedBy?: UserUpdateManyWithoutFollowingNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowingInput = {
@@ -16658,6 +18524,7 @@ export namespace Prisma {
     followedBy?: UserUncheckedUpdateManyWithoutFollowingNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutFollowingInput = {
@@ -16688,6 +18555,7 @@ export namespace Prisma {
     following?: UserUpdateManyWithoutFollowedByNestedInput
     media?: MediaUpdateManyWithoutUploaderNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
+    repost?: RepostUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedByInput = {
@@ -16707,6 +18575,7 @@ export namespace Prisma {
     following?: UserUncheckedUpdateManyWithoutFollowedByNestedInput
     media?: MediaUncheckedUpdateManyWithoutUploaderNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
+    repost?: RepostUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutFollowedByInput = {
@@ -16778,6 +18647,24 @@ export namespace Prisma {
   }
 
   export type LikeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweetPk?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RepostUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweet?: TweetUpdateOneRequiredWithoutRepostNestedInput
+  }
+
+  export type RepostUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tweetPk?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type RepostUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tweetPk?: IntFieldUpdateOperationsInput | number

@@ -72,6 +72,19 @@ enum MediaType {
   VIDEO @map("video")
 }
 
+model Repost {
+  id        String   @unique @default(uuid(7)) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  tweetPk Int   @map("tweet_pk")
+  tweet   Tweet @relation(fields: [tweetPk], references: [primaryKey], onDelete: Cascade)
+  userPk  Int   @map("user_pk")
+  user    User  @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+
+  @@id([tweetPk, userPk])
+  @@map("Repost")
+}
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -96,13 +109,14 @@ model Tweet {
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz
 
-  authorPk  Int     @map("author_pk")
-  author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
+  authorPk  Int      @map("author_pk")
+  author    User     @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
   media     Media[]
-  replyToPk Int?    @map("reply_pk")
-  replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
-  replies   Tweet[] @relation(name: "PostReplies")
+  replyToPk Int?     @map("reply_pk")
+  replyTo   Tweet?   @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
+  replies   Tweet[]  @relation(name: "PostReplies")
   likes     Like[]
+  repost    Repost[]
 
   @@index([content(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("Tweets")
@@ -146,6 +160,7 @@ model User {
   following  User[]             @relation("UserFollowers")
   media      Media[]
   likes      Like[]
+  repost     Repost[]
 
   @@map("Users")
 }

@@ -162,6 +162,13 @@ exports.Prisma.MediaScalarFieldEnum = {
   uploaderPk: 'uploaderPk'
 };
 
+exports.Prisma.RepostScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  tweetPk: 'tweetPk',
+  userPk: 'userPk'
+};
+
 exports.Prisma.TweetScalarFieldEnum = {
   primaryKey: 'primaryKey',
   id: 'id',
@@ -243,6 +250,7 @@ exports.Prisma.ModelName = {
   BlacklistedToken: 'BlacklistedToken',
   Like: 'Like',
   Media: 'Media',
+  Repost: 'Repost',
   Tweet: 'Tweet',
   UserProfile: 'UserProfile',
   User: 'User',
