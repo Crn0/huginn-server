@@ -5,12 +5,12 @@ model Tweet {
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz
 
-  authorPk  Int     @map("author_pk")
-  author    User    @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
+  authorPk  Int      @map("author_pk")
+  author    User     @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
   media     Media[]
-  replyToPk Int?    @map("reply_pk")
-  replyTo   Tweet?  @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
-  replies   Tweet[] @relation(name: "PostReplies")
+  replyToPk Int?     @map("reply_pk")
+  replyTo   Tweet?   @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
+  replies   Tweet[]  @relation(name: "PostReplies")
   likes     Like[]
   repost    Repost[]
 

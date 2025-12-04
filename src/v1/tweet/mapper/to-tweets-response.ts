@@ -18,36 +18,36 @@ export const toTweetsResponse = (
 ) => {
   const tweets = props.data.map((tweet) => {
     const transformedTweet = {
-          ...tweet,
-    author: {
-      ...tweet.author,
-      followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
-      profile: {
-        ...tweet.author.profile,
-        avatarUrl:
-          transformProfileAvatar(tweet.author.profile!.avatar) ??
-          tweet.author.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
-          null,
-        bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
+      ...tweet,
+      author: {
+        ...tweet.author,
+        followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
+        profile: {
+          ...tweet.author.profile,
+          avatarUrl:
+            transformProfileAvatar(tweet.author.profile!.avatar) ??
+            tweet.author.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
+            null,
+          bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
+        },
       },
-    },
-    reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
-    liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
-    media: tweet.media.map(transformTweetMedia) ?? [],
-    }
+      reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
+      liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
+      media: tweet.media.map(transformTweetMedia) ?? [],
+    };
 
     if (!isRepost(tweet)) {
       return {
         ...transformedTweet,
-        isRepost: false
-      }
+        isRepost: false,
+      };
     }
 
-    return ({
+    return {
       ...transformedTweet,
       isRepost: true,
-      reposterId: tweet.reposterId
-  })
+      reposterId: tweet.reposterId,
+    };
   });
   const parsedData = tweetsPaginationSchema.safeParse({ ...props, data: tweets });
 

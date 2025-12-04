@@ -34,25 +34,24 @@ export const toRepliesResponse = (
     reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
-    replies:
-      tweet.replies.map((r) => {
-        const reply = r as typeof tweet;
-        return {
-          ...reply,
-          withReply: true,
-          author: {
-            ...reply.author,
-            followed: !user ? false : reply.author.followedBy.some((u) => u.id === user.id),
-            profile: {
-              ...reply.author.profile,
-              avatarUrl: transformProfileAvatar(reply.author.profile!.avatar),
-              bannerUrl: transformProfileBanner(reply.author.profile!.banner),
-            },
+    replies: tweet.replies.map((r) => {
+      const reply = r as typeof tweet;
+      return {
+        ...reply,
+        withReply: true,
+        author: {
+          ...reply.author,
+          followed: !user ? false : reply.author.followedBy.some((u) => u.id === user.id),
+          profile: {
+            ...reply.author.profile,
+            avatarUrl: transformProfileAvatar(reply.author.profile!.avatar),
+            bannerUrl: transformProfileBanner(reply.author.profile!.banner),
           },
-          liked: !user ? false : reply.likes.some((p) => p.user.id == user.id),
-          media: reply.media.map(transformTweetMedia) ?? [],
-        };
-      })
+        },
+        liked: !user ? false : reply.likes.some((p) => p.user.id == user.id),
+        media: reply.media.map(transformTweetMedia) ?? [],
+      };
+    }),
   }));
 
   const parsedData = repliesPaginationSchema.safeParse({ ...props, data: tweets });

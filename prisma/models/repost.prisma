@@ -1,13 +1,12 @@
 model Repost {
-  id         String    @unique @default(uuid(7)) @db.Uuid
-  createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
+  id        String   @unique @default(uuid(7)) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
 
-  tweetPk Int @map("tweet_pk")
+  tweetPk Int   @map("tweet_pk")
   tweet   Tweet @relation(fields: [tweetPk], references: [primaryKey], onDelete: Cascade)
-  userPk Int @map("user_pk")
-  user   User @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
+  userPk  Int   @map("user_pk")
+  user    User  @relation(fields: [userPk], references: [primaryKey], onDelete: Cascade)
 
   @@id([tweetPk, userPk])
-
   @@map("Repost")
 }

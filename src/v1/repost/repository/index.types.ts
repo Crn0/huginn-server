@@ -1,4 +1,4 @@
 export interface CreateRepost {
-    tweetId: string;
-    userId: string;
+  tweetId: string;
+  userId: string;
 }

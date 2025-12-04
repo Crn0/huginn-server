@@ -118,7 +118,11 @@ const baseTweetSchema = z.object({
   isRepost: z.boolean(),
   reposted: z.boolean().default(false),
   liked: z.boolean().default(false),
-  _count: z.object({ replies: z.coerce.number(), repost: z.coerce.number(), likes: z.coerce.number() }),
+  _count: z.object({
+    replies: z.coerce.number(),
+    repost: z.coerce.number(),
+    likes: z.coerce.number(),
+  }),
 });
 
 export const tweetSchema = z.discriminatedUnion("isRepost", [
@@ -133,33 +137,40 @@ export const tweetSchema = z.discriminatedUnion("isRepost", [
       username: z.string(),
       profile: z.object({
         displayName: z.string(),
-      })
+      }),
     }),
   }),
-])
+]);
 
 export const tweetsSchema = z.array(tweetSchema);
 
-export const replySchema = z.intersection(tweetSchema,  z.object( {
-  replies: z.array(
-    z.object({
-      id: z.uuidv7({ error: "Invalid ID" }),
-      content: z.string().nullable(),
-      author: authorSchema,
-      media: z.array(tweetMedia),
-      replyTo: z.object({
+export const replySchema = z.intersection(
+  tweetSchema,
+  z.object({
+    replies: z.array(
+      z.object({
         id: z.uuidv7({ error: "Invalid ID" }),
-      }),
-      createdAt: z.coerce.date().transform((d) => d.toISOString()),
-      updatedAt: z.coerce
-        .date()
-        .transform((d) => d.toISOString())
-        .nullable(),
-      liked: z.boolean().default(false),
-      _count: z.object({ replies: z.coerce.number(), repost: z.coerce.number(),likes: z.coerce.number() }),
-    })
-  )
-}));
+        content: z.string().nullable(),
+        author: authorSchema,
+        media: z.array(tweetMedia),
+        replyTo: z.object({
+          id: z.uuidv7({ error: "Invalid ID" }),
+        }),
+        createdAt: z.coerce.date().transform((d) => d.toISOString()),
+        updatedAt: z.coerce
+          .date()
+          .transform((d) => d.toISOString())
+          .nullable(),
+        liked: z.boolean().default(false),
+        _count: z.object({
+          replies: z.coerce.number(),
+          repost: z.coerce.number(),
+          likes: z.coerce.number(),
+        }),
+      })
+    ),
+  })
+);
 
 export const repliesSchema = z.array(replySchema);
 

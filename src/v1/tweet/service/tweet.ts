@@ -7,7 +7,12 @@ import * as mediaService from "@/v1/media/service/media.js";
 import { isRepost } from "@/v1/lib/is-tweet-repost.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
-import type { CreateTweet, GetTweetReplyOption, GetTweetsOption, ReplyTweet } from "../types/repository.types.js";
+import type {
+  CreateTweet,
+  GetTweetReplyOption,
+  GetTweetsOption,
+  ReplyTweet,
+} from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
@@ -52,13 +57,14 @@ const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter
     option.where = {
       ...option.where,
       OR: [
-        { author: { id: userId }},
-        {author: {
-        followedBy: { some: { id: userId } },
-      }}, 
-      { repost: { some: { user: { followedBy: { some: { id: userId }}}}}}
-    ]
-      ,
+        { author: { id: userId } },
+        {
+          author: {
+            followedBy: { some: { id: userId } },
+          },
+        },
+        { repost: { some: { user: { followedBy: { some: { id: userId } } } } } },
+      ],
     };
   }
 
@@ -145,7 +151,7 @@ export const getTweetsPagination = async (
 
   const hasMore = res.length > TWEETS_PAGE_SIZE;
 
-  const filteredTweets = tweets.filter((tweet) => !isRepost(tweet))
+  const filteredTweets = tweets.filter((tweet) => !isRepost(tweet));
 
   const nextCursor = filteredTweets.at?.(-1)?.id;
   const prevCursor = filteredTweets.at?.(0)?.id;
@@ -193,7 +199,7 @@ export const getRepliesPagination = async (
     distinct: ["id" as const],
   } satisfies GetTweetReplyOption;
 
-  const { replies: res, count: total } = await tweetRepository.getTweetReplies(tweetId, options)
+  const { replies: res, count: total } = await tweetRepository.getTweetReplies(tweetId, options);
 
   const replies =
     direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
@@ -245,7 +251,9 @@ export const getTweetsByAuthorUsernamePagination = async (
   } as GetTweetsOption;
 
   if (filter.scope === "posts") {
-    options.where = { OR: [{author: { username }}, { repost: { some: { user: { username}}} }] };
+    options.where = {
+      OR: [{ author: { username } }, { repost: { some: { user: { username } } } }],
+    };
   }
 
   if (filter.scope === "likes") {

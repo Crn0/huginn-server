@@ -3,12 +3,12 @@ import { Prisma } from "@/generated/prisma/edge.js";
 const baseOptions = {
   include: {
     tweet: true,
-   user: {
-    omit: {
+    user: {
+      omit: {
         email: true,
         password: true,
-    }
-   },
+      },
+    },
   },
 } satisfies Prisma.RepostDefaultArgs;
 

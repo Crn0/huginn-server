@@ -5,11 +5,7 @@ import { toMediaResponse } from "../mapper/media-response.js";
 import type { Request, Response } from "express";
 import type { MediaPagination } from "../schema/media-pagination.js";
 
-export const getMedia = async (
-  _req: Request,
-  res: Response
-) => {
-
+export const getMedia = async (_req: Request, res: Response) => {
   const query: MediaPagination = res.locals["query"];
 
   const cursor = {

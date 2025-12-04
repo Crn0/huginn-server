@@ -79,86 +79,106 @@ export const getTweets = async (option?: GetTweetsOption) => {
 
   if (error) throw error;
 
-
-    const repost = ((await prisma.repost.findMany({
-    where: {
-      tweet:{ id:  {in: tweets?.map(({id}) => id)}}
-    },
-    include: {
-      ...getRepostOptions.include,
-    }
-  })).map((r) => ({ ...r.tweet, repostAt: r.createdAt, repostId: r.id, reposter: r.user})))  as (typeof tweets[0] & { repostId: string, reposter: {
-    id: string;
-    username: string;
-    profile: {
+  const repost = (
+    await prisma.repost.findMany({
+      where: {
+        tweet: { id: { in: tweets?.map(({ id }) => id) } },
+      },
+      include: {
+        ...getRepostOptions.include,
+      },
+    })
+  ).map((r) => ({
+    ...r.tweet,
+    repostAt: r.createdAt,
+    repostId: r.id,
+    reposter: r.user,
+  })) as ((typeof tweets)[0] & {
+    repostId: string;
+    reposter: {
+      id: string;
+      username: string;
+      profile: {
         displayName: string | null;
+      };
     };
-}, repostAt: Date})[]
+    repostAt: Date;
+  })[];
 
-const isRepost = (tweet: unknown): tweet is typeof repost[number] => {
-  return typeof (tweet as typeof repost[number]).repostId !== "undefined"
-}
+  const isRepost = (tweet: unknown): tweet is (typeof repost)[number] => {
+    return typeof (tweet as (typeof repost)[number]).repostId !== "undefined";
+  };
 
-  return  [...tweets, ...repost].sort((a, b) => {
-  if (isRepost(a) && isRepost(b)) {
-    return   b.repostAt.getTime() - a.repostAt.getTime()
-  }
+  return [...tweets, ...repost].sort((a, b) => {
+    if (isRepost(a) && isRepost(b)) {
+      return b.repostAt.getTime() - a.repostAt.getTime();
+    }
 
-  if (!isRepost(a) && isRepost(b)) {
-    return b.repostAt.getTime() - a.createdAt.getTime()
-  }
+    if (!isRepost(a) && isRepost(b)) {
+      return b.repostAt.getTime() - a.createdAt.getTime();
+    }
 
     if (isRepost(a) && !isRepost(b)) {
-    return  b.createdAt.getTime() - a.repostAt.getTime()
-  }
+      return b.createdAt.getTime() - a.repostAt.getTime();
+    }
 
-    return b.createdAt.getTime() - a.createdAt.getTime()
-});
+    return b.createdAt.getTime() - a.createdAt.getTime();
+  });
 };
 
-export const getTweetReplies = async (tweetId: string,option?: GetTweetReplyOption) => {
-  const tweet  = await prisma.tweet.findUnique({ where: { id: tweetId}})
+export const getTweetReplies = async (tweetId: string, option?: GetTweetReplyOption) => {
+  const tweet = await prisma.tweet.findUnique({ where: { id: tweetId } });
 
   if (!tweet) throw new NotFoundError("Tweet not found.");
 
+  const [{ error: repliesError, data: replies }, { error: countError, data: count }] =
+    await Promise.all([
+      tryCatch(
+        prisma.tweet.findMany({
+          ...option,
+          include: {
+            ...getTweetOptions.include,
+            replies: {
+              where: { author: { primaryKey: tweet.authorPk } },
+              include: {
+                ...getTweetOptions.include,
+              },
+            },
+          },
+          where: {
+            replyTo: { id: tweetId },
+          },
+        })
+      ),
+      tryCatch(prisma.tweet.count({ where: { replyTo: { id: tweetId } } })),
+    ]);
 
-  const [{error: repliesError, data: replies}, { error: countError, data: count }] = await Promise.all([
-    tryCatch(prisma.tweet.findMany({
+  if (repliesError || countError) throw repliesError || countError;
 
-      ...option,
-    include: {
-          ...getTweetOptions.include,
-       replies: {
-                where: { author: { primaryKey: tweet.authorPk } },
-                include: {
-                  ...getTweetOptions.include,
-                },
-              }
-    },
-    where: {
-      replyTo: { id: tweetId}
-    }
-  })),
-  tryCatch(prisma.tweet.count({ where: { replyTo: { id: tweetId}}}))
-  ]);
-
-  if (repliesError || countError) throw repliesError || countError
-
-  return {replies, count}
-
-}
+  return { replies, count };
+};
 
 export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
-  const [{ error: tweetCountError, data: tweetCount }, {error: repostCountError, data: repostCount } ] = await Promise.all([ tryCatch(prisma.tweet.count({ where }), dbErrorHandler)
- , tryCatch(prisma.repost.count({ where: {
-    tweet: {
-      ...where
-    }
-  } }), dbErrorHandler)]);
+  const [
+    { error: tweetCountError, data: tweetCount },
+    { error: repostCountError, data: repostCount },
+  ] = await Promise.all([
+    tryCatch(prisma.tweet.count({ where }), dbErrorHandler),
+    tryCatch(
+      prisma.repost.count({
+        where: {
+          tweet: {
+            ...where,
+          },
+        },
+      }),
+      dbErrorHandler
+    ),
+  ]);
 
   if (tweetCountError || repostCountError) throw tweetCountError || repostCountError;
 
-  const count = tweetCount + repostCount
+  const count = tweetCount + repostCount;
 
   return count;
 };

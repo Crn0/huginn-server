@@ -75,7 +75,7 @@ export const userSchema = baseUserSchema.extend({
   followed: z.boolean().default(false),
 });
 
-export const usersSchema = z.array(userSchema)
+export const usersSchema = z.array(userSchema);
 
 export const authUserSchema = userSchema.extend({
   email: z.email().trim(),

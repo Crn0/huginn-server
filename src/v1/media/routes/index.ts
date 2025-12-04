@@ -8,6 +8,6 @@ const router = Router();
 
 router.use(readAccessToken);
 
-registerGet(router)
+registerGet(router);
 
 export { router };

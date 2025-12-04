@@ -5,13 +5,7 @@ import { getMedia } from "../api/get-media.js";
 import type { Router } from "express";
 
 export const register = (router: Router) => {
-
-
-  router.get(
-    "/",
-    ZodQueryValidator(mediaPaginationSchema),
-    getMedia,
-  );
+  router.get("/", ZodQueryValidator(mediaPaginationSchema), getMedia);
 
   return router;
 };

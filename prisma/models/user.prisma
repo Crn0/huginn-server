@@ -17,7 +17,7 @@ model User {
   following  User[]             @relation("UserFollowers")
   media      Media[]
   likes      Like[]
-  repost Repost[]
+  repost     Repost[]
 
   @@map("Users")
 }

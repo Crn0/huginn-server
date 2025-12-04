@@ -182,7 +182,10 @@ export const getMediaByTweetContentPagination = async (
     ],
   };
 
-const { media: res, count: total } = await mediaRepository.getMediaByTweetContent(content, options)
+  const { media: res, count: total } = await mediaRepository.getMediaByTweetContent(
+    content,
+    options
+  );
 
   const media =
     direction === "backward" ? res.slice(-MEDIA_PAGE_SIZE) : res.slice(0, MEDIA_PAGE_SIZE);
@@ -192,7 +195,7 @@ const { media: res, count: total } = await mediaRepository.getMediaByTweetConten
   const nextCursor = media.at?.(-1)?.id;
   const prevCursor = media.at?.(0)?.id;
 
-    const queryParam = buildQueryParam({ search: content });
+  const queryParam = buildQueryParam({ search: content });
 
   const normalizedNextHref = normalizeHref(
     media,
@@ -215,7 +218,6 @@ const { media: res, count: total } = await mediaRepository.getMediaByTweetConten
     total,
   });
 };
-
 
 export const deleteMediaByTweetId = async (tweetId: string) => {
   const media = await mediaRepository.getMediaByTweetId(tweetId);

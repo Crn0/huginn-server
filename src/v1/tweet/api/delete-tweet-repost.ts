@@ -1,4 +1,3 @@
-
 import { NO_CONTENT } from "@/v1/constants/http-status.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { deleteRepost } from "@/v1/repost/service/index.js";
@@ -16,5 +15,5 @@ export const deleteTweetRepost = async (req: Request, res: Response) => {
 
   if (error) throw error;
 
-  return res.sendStatus(NO_CONTENT)
+  return res.sendStatus(NO_CONTENT);
 };

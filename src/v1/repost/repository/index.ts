@@ -9,9 +9,9 @@ import type { CreateRepost } from "./index.types.js";
 
 export const createRepost = async (data: CreateRepost) => {
   const [tweet, user] = await Promise.all([
-    prisma.tweet.findUnique({ where: { id: data.tweetId}}),
-    prisma.user.findUnique({ where: { id: data.userId}}),
-  ])
+    prisma.tweet.findUnique({ where: { id: data.tweetId } }),
+    prisma.user.findUnique({ where: { id: data.userId } }),
+  ]);
 
   const tweetPk = tweet?.primaryKey;
   const userPk = user?.primaryKey;
@@ -23,8 +23,8 @@ export const createRepost = async (data: CreateRepost) => {
     prisma.repost.create({
       ...mutateRepostOption,
       data: {
-       tweetPk,
-       userPk,
+        tweetPk,
+        userPk,
       },
     }),
     dbErrorHandler
@@ -36,21 +36,21 @@ export const createRepost = async (data: CreateRepost) => {
 };
 
 export const getRepost = async (tweetId: string, userId: string) => {
-    const repost = await prisma.repost.findFirst({
-        where: {
-            tweet: { id: tweetId },
-            user: { id: userId }
-        }
-    })
+  const repost = await prisma.repost.findFirst({
+    where: {
+      tweet: { id: tweetId },
+      user: { id: userId },
+    },
+  });
 
-    return repost;
-}
+  return repost;
+};
 
 export const deleteRepost = async (data: CreateRepost) => {
   const [tweet, user] = await Promise.all([
-    prisma.tweet.findUnique({ where: { id: data.tweetId}}),
-    prisma.user.findUnique({ where: { id: data.userId}}),
-  ])
+    prisma.tweet.findUnique({ where: { id: data.tweetId } }),
+    prisma.user.findUnique({ where: { id: data.userId } }),
+  ]);
 
   const tweetPk = tweet?.primaryKey;
   const userPk = user?.primaryKey;
@@ -65,7 +65,7 @@ export const deleteRepost = async (data: CreateRepost) => {
         tweetPk_userPk: {
           tweetPk,
           userPk,
-     }
+        },
       },
     }),
     dbErrorHandler
