@@ -104,7 +104,7 @@ export const tweetImageSchema = z.object({
 
 export const tweetMedia = z.discriminatedUnion("type", [tweetVideoSchema, tweetImageSchema]);
 
-export const tweetSchema = z.object({
+const baseTweetSchema = z.object({
   id: z.uuidv7({ error: "Invalid ID" }),
   content: z.string().nullable(),
   author: authorSchema,
@@ -115,13 +115,32 @@ export const tweetSchema = z.object({
     .date()
     .transform((d) => d.toISOString())
     .nullable(),
+  isRepost: z.boolean(),
+  reposted: z.boolean().default(false),
   liked: z.boolean().default(false),
-  _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
+  _count: z.object({ replies: z.coerce.number(), repost: z.coerce.number(), likes: z.coerce.number() }),
 });
+
+export const tweetSchema = z.discriminatedUnion("isRepost", [
+  baseTweetSchema.extend({
+    isRepost: z.literal(false),
+  }),
+  baseTweetSchema.extend({
+    isRepost: z.literal(true),
+    repostId: z.uuidv7({ error: "Invalid ID" }),
+    reposter: z.object({
+      id: z.uuidv7({ error: "Invalid ID" }),
+      username: z.string(),
+      profile: z.object({
+        displayName: z.string(),
+      })
+    }),
+  }),
+])
 
 export const tweetsSchema = z.array(tweetSchema);
 
-export const replySchema = tweetSchema.extend({
+export const replySchema = z.intersection(tweetSchema,  z.object( {
   replies: z.array(
     z.object({
       id: z.uuidv7({ error: "Invalid ID" }),
@@ -137,10 +156,10 @@ export const replySchema = tweetSchema.extend({
         .transform((d) => d.toISOString())
         .nullable(),
       liked: z.boolean().default(false),
-      _count: z.object({ replies: z.coerce.number(), likes: z.coerce.number() }),
+      _count: z.object({ replies: z.coerce.number(), repost: z.coerce.number(),likes: z.coerce.number() }),
     })
-  ),
-});
+  )
+}));
 
 export const repliesSchema = z.array(replySchema);
 
