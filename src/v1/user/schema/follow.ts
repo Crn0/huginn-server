@@ -17,6 +17,12 @@ export type FollowUserQueryParam = z.infer<typeof followUsersQueryParamSchema>;
 
 export type FollowUsersPagination = z.infer<typeof followUsersPaginationSchema>;
 
+export const followUserSchema = usersSchema.unwrap().omit({
+    _count: true
+  })
+
+export const followUsersSchema = z.array(followUserSchema)
+
 export const followUsersPaginationSchema = paginationSchema.extend({
-  data: z.array(usersSchema),
+  data: followUsersSchema,
 });
