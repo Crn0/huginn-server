@@ -8,6 +8,7 @@ import { createTweet } from "../api/create-tweet.js";
 import { replyTweet } from "../api/reply-tweet.js";
 import { likeTweet } from "../api/like-tweet.js";
 import { checkCreateTweet } from "../middleware/check-create-tweet.js";
+import { createTweetRepost } from "../api/create-tweet-repost.js";
 
 import type { Router } from "express";
 
@@ -31,6 +32,8 @@ export const register = (router: Router) => {
   );
 
   router.post("/:tweetId/likes", ZodParamValidation(tweetIdSchema), likeTweet);
+
+  router.post("/:tweetId/repost", ZodParamValidation(tweetIdSchema), createTweetRepost);
 
   return router;
 };

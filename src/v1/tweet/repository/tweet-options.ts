@@ -37,7 +37,7 @@ const baseOptions = {
       },
     },
     likes: { select: { user: { select: { id: true } } } },
-    _count: { select: { replies: { where: {} }, likes: { where: {} } } },
+    _count: { select: { replies: { where: {} }, repost: { where: {} },likes: { where: {} } } },
   },
 } satisfies Prisma.TweetDefaultArgs;
 
@@ -60,8 +60,48 @@ export const getTweetOptions = {
         ...baseOptions.include,
       },
     },
+    repost: {
+      include: {
+        tweet: {
+          include: {
+            ...baseOptions.include,
+             replyTo: {
+              include: {
+                ...baseOptions.include
+              }
+            },
+          }
+        },
+        user: {
+          select: {
+            id: true
+          }
+        },
+      }
+    }
   },
 } satisfies Prisma.TweetDefaultArgs;
+
+export const getRepostOptions = {
+include: {
+        tweet: {
+          include: {
+            ...getTweetOptions.include,
+          }
+        },
+        user: {
+          select: {
+            id: true,
+            username: true,
+            profile: {
+              select: {
+                displayName: true,
+              }
+            }
+          }
+        },
+      }
+} satisfies Prisma.RepostDefaultArgs;
 
 export const updateTweetOptions = {
   ...baseOptions,

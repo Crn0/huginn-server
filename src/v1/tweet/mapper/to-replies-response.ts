@@ -6,13 +6,14 @@ import {
   transformProfileAvatar,
   transformProfileBanner,
 } from "@/v1/user/mapper/transform-profile-media.js";
+import { isRepost } from "@/v1/lib/is-tweet-repost.js";
 
-import type { getTweetsPagination } from "@/v1/tweet/service/tweet.js";
+import type { getRepliesPagination } from "@/v1/tweet/service/tweet.js";
 
 const debug = createDebug("user:mapper:toRepliesResponse");
 
 export const toRepliesResponse = (
-  props: Awaited<ReturnType<typeof getTweetsPagination>>,
+  props: Awaited<ReturnType<typeof getRepliesPagination>>,
   user?: { id: string }
 ) => {
   const tweets = props.data.map((tweet) => ({
@@ -29,6 +30,8 @@ export const toRepliesResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    isRepost: isRepost(tweet),
+    reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
     replies:
@@ -49,13 +52,12 @@ export const toRepliesResponse = (
           liked: !user ? false : reply.likes.some((p) => p.user.id == user.id),
           media: reply.media.map(transformTweetMedia) ?? [],
         };
-      }) ?? [],
+      })
   }));
 
   const parsedData = repliesPaginationSchema.safeParse({ ...props, data: tweets });
 
   if (!parsedData.success) {
-    console.log(parsedData.data);
     debug("issues", parsedData.error.issues);
     throw new InternalServerError("Something went wrong. Try again later");
   }

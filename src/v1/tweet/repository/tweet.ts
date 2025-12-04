@@ -6,17 +6,19 @@ import {
   replyTweetOptions,
   deleteTweetOptions,
   getTweetOptions,
+  getRepostOptions,
 } from "./tweet-options.js";
 import { toCreateTweet } from "../mapper/to-create-tweet.js";
 import { toReplyTweet } from "../mapper/to-reply-tweet.js";
 
 import type {
   CreateTweet,
+  GetTweetReplyOption,
   GetTweetsOption,
   PatchTweet,
   ReplyTweet,
-  TweetPaginationOption,
 } from "../types/repository.types.js";
+import { NotFoundError } from "@/lib/errors/notfound-error.js";
 
 export const createTweet = async (data: CreateTweet) => {
   const { error, data: createdTweet } = await tryCatch(
@@ -64,71 +66,11 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const getTweetsByAuthorUsername = async (
-  username: string,
-  option?: TweetPaginationOption
-) => {
-  const { error, data: tweets } = await tryCatch(
-    prisma.tweet.findMany({
-      ...getTweetOptions,
-      ...option,
-      where: {
-        ...option?.where,
-        author: { username: username },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
-
-  return tweets;
-};
-
-export const getTweetsByAuthorId = async (id: string, option?: TweetPaginationOption) => {
-  const { error, data: tweets } = await tryCatch(
-    prisma.tweet.findMany({
-      ...getTweetOptions,
-      ...option,
-      where: {
-        author: { id: id },
-        replyToPk: null,
-      },
-    }),
-    (e) => {
-      console.log(e);
-      return e;
-    }
-  );
-
-  if (error) throw error;
-
-  return tweets;
-};
-
 export const getTweets = async (option?: GetTweetsOption) => {
-  let tweet = null;
-
-  if (typeof option?.where?.replyTo?.id === "string") {
-    const tweetId = option.where.replyTo.id;
-
-    tweet = await prisma.tweet.findUnique({ where: { id: tweetId } });
-  }
-
   const { error, data: tweets } = await tryCatch(
     prisma.tweet.findMany({
       include: {
         ...getTweetOptions.include,
-        ...(!tweet
-          ? {}
-          : {
-              replies: {
-                where: { author: { primaryKey: tweet.authorPk } },
-                include: {
-                  ...getTweetOptions.include,
-                },
-              },
-            }),
       },
       ...option,
     }),
@@ -137,32 +79,86 @@ export const getTweets = async (option?: GetTweetsOption) => {
 
   if (error) throw error;
 
-  return tweets;
+
+    const repost = ((await prisma.repost.findMany({
+    where: {
+      tweet:{ id:  {in: tweets?.map(({id}) => id)}}
+    },
+    include: {
+      ...getRepostOptions.include,
+    }
+  })).map((r) => ({ ...r.tweet, repostAt: r.createdAt, repostId: r.id, reposter: r.user})))  as (typeof tweets[0] & { repostId: string, reposter: {
+    id: string;
+    username: string;
+    profile: {
+        displayName: string | null;
+    };
+}, repostAt: Date})[]
+
+const isRepost = (tweet: unknown): tweet is typeof repost[number] => {
+  return typeof (tweet as typeof repost[number]).repostId !== "undefined"
+}
+
+  return  [...tweets, ...repost].sort((a, b) => {
+  if (isRepost(a) && isRepost(b)) {
+    return   b.repostAt.getTime() - a.repostAt.getTime()
+  }
+
+  if (!isRepost(a) && isRepost(b)) {
+    return b.repostAt.getTime() - a.createdAt.getTime()
+  }
+
+    if (isRepost(a) && !isRepost(b)) {
+    return  b.createdAt.getTime() - a.repostAt.getTime()
+  }
+
+    return b.createdAt.getTime() - a.createdAt.getTime()
+});
 };
+
+export const getTweetReplies = async (tweetId: string,option?: GetTweetReplyOption) => {
+  const tweet  = await prisma.tweet.findUnique({ where: { id: tweetId}})
+
+  if (!tweet) throw new NotFoundError("Tweet not found.");
+
+
+  const [{error: repliesError, data: replies}, { error: countError, data: count }] = await Promise.all([
+    tryCatch(prisma.tweet.findMany({
+
+      ...option,
+    include: {
+          ...getTweetOptions.include,
+       replies: {
+                where: { author: { primaryKey: tweet.authorPk } },
+                include: {
+                  ...getTweetOptions.include,
+                },
+              }
+    },
+    where: {
+      replyTo: { id: tweetId}
+    }
+  })),
+  tryCatch(prisma.tweet.count({ where: { replyTo: { id: tweetId}}}))
+  ]);
+
+  if (repliesError || countError) throw repliesError || countError
+
+  return {replies, count}
+
+}
 
 export const getTweetsCount = async (where: GetTweetsOption["where"] = {}) => {
-  const { error, data: count } = await tryCatch(prisma.tweet.count({ where }), dbErrorHandler);
+  const [{ error: tweetCountError, data: tweetCount }, {error: repostCountError, data: repostCount } ] = await Promise.all([ tryCatch(prisma.tweet.count({ where }), dbErrorHandler)
+ , tryCatch(prisma.repost.count({ where: {
+    tweet: {
+      ...where
+    }
+  } }), dbErrorHandler)]);
 
-  if (error) throw error;
+  if (tweetCountError || repostCountError) throw tweetCountError || repostCountError;
 
-  return count;
-};
-
-export const getTweetsCountByAuthorUsername = async (
-  username: string,
-  where: GetTweetsOption["where"]
-) => {
-  const { error, data: count } = await tryCatch(
-    prisma.tweet.count({
-      where: {
-        ...where,
-        author: { username: username },
-      },
-    }),
-    dbErrorHandler
-  );
-
-  if (error) throw error;
+  const count = tweetCount + repostCount
 
   return count;
 };

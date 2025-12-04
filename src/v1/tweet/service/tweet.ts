@@ -4,9 +4,10 @@ import { NotFoundError } from "@/lib/errors/notfound-error.js";
 import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
 import * as mediaService from "@/v1/media/service/media.js";
+import { isRepost } from "@/v1/lib/is-tweet-repost.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
-import type { CreateTweet, GetTweetsOption, ReplyTweet } from "../types/repository.types.js";
+import type { CreateTweet, GetTweetReplyOption, GetTweetsOption, ReplyTweet } from "../types/repository.types.js";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import type { PatchTweetDTO } from "../schema/patch-tweet.js";
@@ -50,10 +51,14 @@ const buildFilter = (userId: string | undefined, option: GetTweetsOption, filter
   if (userId && filter.scope === "following") {
     option.where = {
       ...option.where,
-      author: {
-        id: { not: userId },
+      OR: [
+        { author: { id: userId }},
+        {author: {
         followedBy: { some: { id: userId } },
-      },
+      }}, 
+      { repost: { some: { user: { followedBy: { some: { id: userId }}}}}}
+    ]
+      ,
     };
   }
 
@@ -107,9 +112,6 @@ export const getTweetById = async (id: string) => {
   return tweet;
 };
 
-export const getTweetsByAuthorUsername = async (username: string) =>
-  tweetRepository.getTweetsByAuthorUsername(username);
-
 export const getTweetsPagination = async (
   userId: string | undefined,
   query: { cursor: PaginationCursor; filter: TweetFilter }
@@ -135,7 +137,7 @@ export const getTweetsPagination = async (
 
   const [res, total] = await Promise.all([
     tweetRepository.getTweets(options),
-    tweetRepository.getTweetsCount(),
+    tweetRepository.getTweetsCount(options.where),
   ]);
 
   const tweets =
@@ -143,8 +145,10 @@ export const getTweetsPagination = async (
 
   const hasMore = res.length > TWEETS_PAGE_SIZE;
 
-  const nextCursor = tweets.at?.(-1)?.id;
-  const prevCursor = tweets.at?.(0)?.id;
+  const filteredTweets = tweets.filter((tweet) => !isRepost(tweet))
+
+  const nextCursor = filteredTweets.at?.(-1)?.id;
+  const prevCursor = filteredTweets.at?.(0)?.id;
 
   const queryParam = buildQueryParam(filter);
 
@@ -180,9 +184,6 @@ export const getRepliesPagination = async (
 
   const options = {
     ...rest,
-    where: {
-      replyTo: { id: tweetId },
-    },
     orderBy: [
       {
         createdAt: "desc",
@@ -190,12 +191,9 @@ export const getRepliesPagination = async (
       { id: "desc" } as const,
     ],
     distinct: ["id" as const],
-  } satisfies GetTweetsOption;
+  } satisfies GetTweetReplyOption;
 
-  const [res, total] = await Promise.all([
-    tweetRepository.getTweets(options),
-    tweetRepository.getTweetsCount({ replyTo: { id: tweetId } }),
-  ]);
+  const { replies: res, count: total } = await tweetRepository.getTweetReplies(tweetId, options)
 
   const replies =
     direction === "backward" ? res.slice(-TWEETS_PAGE_SIZE) : res.slice(0, TWEETS_PAGE_SIZE);
@@ -247,7 +245,7 @@ export const getTweetsByAuthorUsernamePagination = async (
   } as GetTweetsOption;
 
   if (filter.scope === "posts") {
-    options.where = { author: { username } };
+    options.where = { OR: [{author: { username }}, { repost: { some: { user: { username}}} }] };
   }
 
   if (filter.scope === "likes") {

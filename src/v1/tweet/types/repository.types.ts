@@ -12,6 +12,8 @@ export type GetTweetsOption = Pick<
   "where" | "cursor" | "orderBy" | "skip" | "take" | "distinct"
 >;
 
+export type GetTweetReplyOption = Omit<GetTweetsOption, "where" | "include">;
+
 export type GetLikedTweetsOption = Pick<
   Prisma.Tweet$likesArgs,
   "where" | "cursor" | "orderBy" | "skip" | "take" | "distinct"

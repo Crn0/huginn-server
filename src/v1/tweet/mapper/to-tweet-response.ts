@@ -6,6 +6,7 @@ import {
   transformProfileAvatar,
   transformProfileBanner,
 } from "@/v1/user/mapper/transform-profile-media.js";
+import { isRepost } from "@/v1/lib/is-tweet-repost.js";
 
 import type { getTweetById } from "@/v1/tweet/service/tweet.js";
 
@@ -29,6 +30,8 @@ export const toTweetResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    isRepost: isRepost(tweet),
+    reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
   };

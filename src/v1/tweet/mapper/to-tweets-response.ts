@@ -6,6 +6,7 @@ import {
   transformProfileAvatar,
   transformProfileBanner,
 } from "@/v1/user/mapper/transform-profile-media.js";
+import { isRepost } from "@/v1/lib/is-tweet-repost.js";
 
 import type { getTweetsPagination } from "@/v1/tweet/service/tweet.js";
 
@@ -15,8 +16,9 @@ export const toTweetsResponse = (
   props: Awaited<ReturnType<typeof getTweetsPagination>>,
   user?: { id: string }
 ) => {
-  const tweets = props.data.map((tweet) => ({
-    ...tweet,
+  const tweets = props.data.map((tweet) => {
+    const transformedTweet = {
+          ...tweet,
     author: {
       ...tweet.author,
       followed: !user ? false : tweet.author.followedBy.some((u) => u.id === user.id),
@@ -29,10 +31,24 @@ export const toTweetsResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),
     media: tweet.media.map(transformTweetMedia) ?? [],
-  }));
+    }
 
+    if (!isRepost(tweet)) {
+      return {
+        ...transformedTweet,
+        isRepost: false
+      }
+    }
+
+    return ({
+      ...transformedTweet,
+      isRepost: true,
+      reposterId: tweet.reposterId
+  })
+  });
   const parsedData = tweetsPaginationSchema.safeParse({ ...props, data: tweets });
 
   if (!parsedData.success) {
