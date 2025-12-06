@@ -104,7 +104,7 @@ export const tweetImageSchema = z.object({
 
 export const tweetMedia = z.discriminatedUnion("type", [tweetVideoSchema, tweetImageSchema]);
 
-const baseTweetSchema = z.object({
+export const baseTweetSchema = z.object({
   id: z.uuidv7({ error: "Invalid ID" }),
   content: z.string().nullable(),
   author: authorSchema,
