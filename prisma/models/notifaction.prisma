@@ -1,0 +1,24 @@
+model Notification {
+  primaryKey Int              @id @default(autoincrement()) @map("primary_key")
+  id         String           @unique @default(uuid(7)) @db.Uuid
+  isRead     Boolean          @default(false) @map("is_read")
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime?        @map("updated_at") @db.Timestamptz
+  type       NotificationType
+
+  tweet           Tweet? @relation(fields: [tweetPrimaryKey], references: [primaryKey], onDelete: Cascade)
+  tweetPrimaryKey Int?   @map("tweet_primary_key")
+
+  sender             User? @relation(name: "NotificationSender", fields: [senderPrimaryKey], references: [primaryKey], onDelete: SetNull)
+  senderPrimaryKey   Int?  @map("sender_primary_key")
+  receiver           User @relation(name: "NotificationReceiver", fields: [receiverPrimaryKey], references: [primaryKey], onDelete: Cascade)
+  receiverPrimaryKey Int  @map("receiver_primary_key")
+
+  @@map("Notifications")
+}
+
+enum NotificationType {
+ MENTION @map("Mention")
+  REPLY @map("Reply")
+ FOLLOW @map("Follow")
+}

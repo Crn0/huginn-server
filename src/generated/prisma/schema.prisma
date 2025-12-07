@@ -72,6 +72,31 @@ enum MediaType {
   VIDEO @map("video")
 }
 
+model Notification {
+  primaryKey Int              @id @default(autoincrement()) @map("primary_key")
+  id         String           @unique @default(uuid(7)) @db.Uuid
+  isRead     Boolean          @default(false) @map("is_read")
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt  DateTime?        @map("updated_at") @db.Timestamptz
+  type       NotificationType
+
+  tweet           Tweet? @relation(fields: [tweetPrimaryKey], references: [primaryKey], onDelete: Cascade)
+  tweetPrimaryKey Int?   @map("tweet_primary_key")
+
+  sender             User? @relation(name: "NotificationSender", fields: [senderPrimaryKey], references: [primaryKey], onDelete: SetNull)
+  senderPrimaryKey   Int?  @map("sender_primary_key")
+  receiver           User  @relation(name: "NotificationReceiver", fields: [receiverPrimaryKey], references: [primaryKey], onDelete: Cascade)
+  receiverPrimaryKey Int   @map("receiver_primary_key")
+
+  @@map("Notifications")
+}
+
+enum NotificationType {
+  MENTION @map("Mention")
+  REPLY   @map("Reply")
+  FOLLOW  @map("Follow")
+}
+
 model Repost {
   id        String   @unique @default(uuid(7)) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
@@ -109,14 +134,15 @@ model Tweet {
   createdAt  DateTime  @default(now()) @map("created_at") @db.Timestamptz()
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz
 
-  authorPk  Int      @map("author_pk")
-  author    User     @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
-  media     Media[]
-  replyToPk Int?     @map("reply_pk")
-  replyTo   Tweet?   @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
-  replies   Tweet[]  @relation(name: "PostReplies")
-  likes     Like[]
-  repost    Repost[]
+  authorPk      Int            @map("author_pk")
+  author        User           @relation(fields: [authorPk], references: [primaryKey], onDelete: Cascade)
+  media         Media[]
+  replyToPk     Int?           @map("reply_pk")
+  replyTo       Tweet?         @relation(name: "PostReplies", fields: [replyToPk], references: [primaryKey])
+  replies       Tweet[]        @relation(name: "PostReplies")
+  likes         Like[]
+  repost        Repost[]
+  notifications Notification[]
 
   @@index([content(ops: raw("gin_trgm_ops"))], type: Gin)
   @@map("Tweets")
@@ -152,15 +178,17 @@ model User {
   updatedAt    DateTime?    @map("updated_at") @db.Timestamptz
   deletedAt    DateTime?    @map("deleted_at") @db.Timestamptz
 
-  profile    UserProfile?
-  openIds    UserOIDCAccount[]
-  tokens     BlacklistedToken[]
-  tweets     Tweet[]
-  followedBy User[]             @relation("UserFollowers")
-  following  User[]             @relation("UserFollowers")
-  media      Media[]
-  likes      Like[]
-  repost     Repost[]
+  profile               UserProfile?
+  openIds               UserOIDCAccount[]
+  tokens                BlacklistedToken[]
+  tweets                Tweet[]
+  followedBy            User[]             @relation("UserFollowers")
+  following             User[]             @relation("UserFollowers")
+  media                 Media[]
+  likes                 Like[]
+  repost                Repost[]
+  sentNotifications     Notification[]     @relation("NotificationSender")
+  receivedNotifications Notification[]     @relation("NotificationReceiver")
 
   @@map("Users")
 }

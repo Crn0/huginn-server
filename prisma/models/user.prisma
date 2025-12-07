@@ -9,15 +9,17 @@ model User {
   updatedAt    DateTime?    @map("updated_at") @db.Timestamptz
   deletedAt    DateTime?    @map("deleted_at") @db.Timestamptz
 
-  profile    UserProfile?
-  openIds    UserOIDCAccount[]
-  tokens     BlacklistedToken[]
-  tweets     Tweet[]
-  followedBy User[]             @relation("UserFollowers")
-  following  User[]             @relation("UserFollowers")
-  media      Media[]
-  likes      Like[]
-  repost     Repost[]
+  profile              UserProfile?
+  openIds              UserOIDCAccount[]
+  tokens               BlacklistedToken[]
+  tweets               Tweet[]
+  followedBy           User[]             @relation("UserFollowers")
+  following            User[]             @relation("UserFollowers")
+  media                Media[]
+  likes                Like[]
+  repost               Repost[]
+  sentNotifications     Notification[]     @relation("NotificationSender")
+  receivedNotifications Notification[]     @relation("NotificationReceiver")
 
   @@map("Users")
 }

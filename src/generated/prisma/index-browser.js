@@ -162,6 +162,18 @@ exports.Prisma.MediaScalarFieldEnum = {
   uploaderPk: 'uploaderPk'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  primaryKey: 'primaryKey',
+  id: 'id',
+  isRead: 'isRead',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  type: 'type',
+  tweetPrimaryKey: 'tweetPrimaryKey',
+  senderPrimaryKey: 'senderPrimaryKey',
+  receiverPrimaryKey: 'receiverPrimaryKey'
+};
+
 exports.Prisma.RepostScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -239,6 +251,12 @@ exports.MediaType = exports.$Enums.MediaType = {
   VIDEO: 'VIDEO'
 };
 
+exports.NotificationType = exports.$Enums.NotificationType = {
+  MENTION: 'MENTION',
+  REPLY: 'REPLY',
+  FOLLOW: 'FOLLOW'
+};
+
 exports.AccountLevel = exports.$Enums.AccountLevel = {
   DEMO: 'DEMO',
   USER: 'USER',
@@ -250,6 +268,7 @@ exports.Prisma.ModelName = {
   BlacklistedToken: 'BlacklistedToken',
   Like: 'Like',
   Media: 'Media',
+  Notification: 'Notification',
   Repost: 'Repost',
   Tweet: 'Tweet',
   UserProfile: 'UserProfile',
