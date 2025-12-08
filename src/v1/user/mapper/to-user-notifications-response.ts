@@ -1,0 +1,61 @@
+import { InternalServerError } from "@/lib/errors/internal-server-error.js";
+import { createDebug } from "@/v1/lib/debug.js";
+import { transformTweetMedia } from "@/v1/tweet/mapper/transform-tweet-media.js";
+import {
+  transformProfileAvatar,
+  transformProfileBanner,
+} from "@/v1/user/mapper/transform-profile-media.js";
+import { notificationsPaginationSchema } from "v1/lib/notification-schema.js";
+
+import type { getUserNotificationsPagination } from "v1/notification/service/index.js";
+
+const debug = createDebug("user:mapper:toUserNotificationsResponse");
+
+export const toUserNotificationsResponse = (
+  props: Awaited<ReturnType<typeof getUserNotificationsPagination>>
+) => {
+  const notifications = props.data.map((notification) => {
+    const sender = {
+      ...notification.sender,
+      profile: {
+        ...notification.sender?.profile,
+        avatarUrl:
+          transformProfileAvatar(notification.sender?.profile?.avatar ?? null) ??
+          notification.sender?.openIds.find((p) => typeof p.avatarUrl === "string")?.avatarUrl ??
+          null,
+        bannerUrl: transformProfileBanner(notification.sender?.profile?.banner ?? null),
+      },
+    };
+
+    if (notification.type === "FOLLOW") {
+      return {
+        ...notification,
+        sender,
+      };
+    }
+
+    return {
+      ...notification,
+      sender,
+      tweet: notification.tweet
+        ? {
+            ...notification.tweet,
+            media: notification.tweet.media.map(transformTweetMedia) ?? [],
+            author: sender,
+          }
+        : null,
+    };
+  });
+
+  const parsed = notificationsPaginationSchema.safeParse({
+    ...props,
+    data: notifications,
+  });
+
+  if (!parsed.success) {
+    debug("issues", parsed.error.issues);
+    throw new InternalServerError("Something went wrong. Try again later");
+  }
+
+  return parsed.data;
+};
