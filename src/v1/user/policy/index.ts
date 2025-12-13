@@ -18,13 +18,13 @@ export const userPolicy = {
     },
   },
   following: {
-    followUser: (user: { username: string }, targetUser: { username: string }) => {
-      if (user.username === targetUser.username) {
+    followUser: (user: { id: string }, targetUser: { id: string }) => {
+      if (user.id === targetUser.id) {
         throw new ForbiddenError("You cannot follow yourself");
       }
     },
-    unFollowUser: (user: { username: string }, targetUser: { username: string }) => {
-      if (user.username === targetUser.username) {
+    unFollowUser: (user: { id: string }, targetUser: { id: string }) => {
+      if (user.id === targetUser.id) {
         throw new ForbiddenError("You cannot un-follow yourself");
       }
     },

@@ -1,5 +1,6 @@
 import "express";
 
+import type { IO } from "@/lib/create-socket.ts";
 import type { JwtPayload } from "jsonwebtoken";
 
 declare global {
@@ -11,6 +12,9 @@ declare global {
     interface Locals<TQuery> {
       refreshToken?: JwtPayload & { username: string };
       query?: TQuery;
+    }
+    interface Application {
+      socketIO: IO;
     }
   }
 }

@@ -242,7 +242,7 @@ export const getTweetsByAuthorUsernamePagination = async (
   const options = {
     ...rest,
     where: {
-      OR: [{ author: { username } }, { repost: { some: { user: { username } } } }]
+      OR: [{ author: { username } }, { repost: { some: { user: { username } } } }],
     },
     orderBy: [
       {
@@ -262,7 +262,7 @@ export const getTweetsByAuthorUsernamePagination = async (
   if (filter.scope === "with-replies") {
     options.where = {
       ...options.where,
-      replyTo: {}
+      replyTo: {},
     };
   }
 

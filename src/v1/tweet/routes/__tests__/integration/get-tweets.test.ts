@@ -6,7 +6,7 @@ import { generateEmail } from "@/v1/lib/generate-email.js";
 import { generateDisplayName } from "@/v1/lib/generate-display-name.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { createTweet } from "@/v1/tweet/service/tweet.js";
-import { followUserByUsername } from "@/v1/user/service/follow-service.js";
+import { followUser } from "@/v1/user/service/follow-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
 import { deleteTweetById, deleteTweetsByAuthorId } from "@/v1/tweet/repository/tweet.js";
 import { app } from "v1/__mocks__/server.js";
@@ -177,7 +177,7 @@ describe("GET /api/v1/tweets", () => {
             content: `created by: ${createdUser.username}`,
             media: [],
           }),
-          followUserByUsername(authorId, createdUser.username),
+          followUser(authorId, createdUser.id),
         ]);
 
         const res = await userRequest

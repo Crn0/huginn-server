@@ -28,6 +28,9 @@ export const getNotifications = notificationRepository.getNotifications;
 
 export const getUserNotifications = notificationRepository.getUserNotifications;
 
+export const getLatestNotificationBetweenUsers =
+  notificationRepository.getLatestNotificationBetweenUsers;
+
 export const getUserNotificationsPagination = async (
   userId: string,
   query: { cursor: PaginationCursor }

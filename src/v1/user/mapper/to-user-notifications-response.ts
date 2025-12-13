@@ -12,7 +12,8 @@ import type { getUserNotificationsPagination } from "v1/notification/service/ind
 const debug = createDebug("user:mapper:toUserNotificationsResponse");
 
 export const toUserNotificationsResponse = (
-  props: Awaited<ReturnType<typeof getUserNotificationsPagination>>
+  props: Awaited<ReturnType<typeof getUserNotificationsPagination>>,
+  user: { id: string }
 ) => {
   const notifications = props.data.map((notification) => {
     const sender = {
@@ -31,6 +32,7 @@ export const toUserNotificationsResponse = (
       return {
         ...notification,
         sender,
+        isRepost: false,
       };
     }
 
@@ -40,8 +42,13 @@ export const toUserNotificationsResponse = (
       tweet: notification.tweet
         ? {
             ...notification.tweet,
+            isRepost: false,
             media: notification.tweet.media.map(transformTweetMedia) ?? [],
-            author: sender,
+            liked: notification.tweet.likes.some(({ user: u }) => u.id === user.id),
+            author: {
+              ...sender,
+              followed: sender.followedBy?.some((u) => u.id === user.id) ?? false,
+            },
           }
         : null,
     };

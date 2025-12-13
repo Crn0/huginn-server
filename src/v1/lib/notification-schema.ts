@@ -25,19 +25,11 @@ const baseNotificationSchema = z.object({
 
 const tweetNotificationSchema = baseNotificationSchema.extend({
   type: notificationType.exclude(["FOLLOW"]),
-  tweet: baseTweetSchema
-    .pick({
-      id: true,
-      content: true,
-      media: true,
-      author: true,
-      createdAt: true,
-    })
-    .nullable(),
+  tweet: baseTweetSchema.nullable(),
 });
 
 const followNotificationSchema = baseNotificationSchema.extend({
-  type: z.literal("Follow"),
+  type: z.literal("FOLLOW"),
 });
 
 export const notificationSchema = z.discriminatedUnion("type", [
@@ -47,7 +39,7 @@ export const notificationSchema = z.discriminatedUnion("type", [
 
 export type Notification = z.infer<typeof notificationSchema>;
 
-export const notificationsSchema = z.array(notificationSchema)
+export const notificationsSchema = z.array(notificationSchema);
 
 export type Notifications = z.infer<typeof notificationsSchema>;
 

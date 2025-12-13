@@ -92,8 +92,13 @@ export const getNotifications = async (ids: string[], options?: GetNotificationO
   return { notifications, count };
 };
 
-export const getLatestNotificationBetweenUsers = async (type: SendNotification["type"],senderId: string, receiverId: string, date: Date) => {
-    const { error, data: notification } = await tryCatch(
+export const getLatestNotificationBetweenUsers = async (
+  type: SendNotification["type"],
+  senderId: string,
+  receiverId: string,
+  date: Date
+) => {
+  const { error, data: notification } = await tryCatch(
     prisma.notification.findFirst({
       ...getNotificationOption,
       where: {
@@ -105,17 +110,17 @@ export const getLatestNotificationBetweenUsers = async (type: SendNotification["
           id: receiverId,
         },
         createdAt: {
-          gte: date
-        }
+          gte: date,
+        },
       },
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: "asc" },
     })
   );
 
   if (error) throw error;
 
   return notification;
-}
+};
 
 export const getUserNotifications = async (id: string, options?: GetNotificationOption) => {
   const [{ error, data: notifications }, { error: errorCount, data: count }] = await Promise.all([
@@ -125,7 +130,6 @@ export const getUserNotifications = async (id: string, options?: GetNotification
         ...options,
         ...getNotificationOption,
         where: {
-          isRead: false,
           receiver: {
             id,
           },

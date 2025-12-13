@@ -7,7 +7,7 @@ import { deleteUserById } from "@/v1/user/repository/user.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
-let followUsername: string;
+let followId: string;
 
 const userRequest = request.agent(app);
 
@@ -24,19 +24,19 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  followUsername = user.username;
+  followId = user.id;
 
   return async () => {
     await deleteUserById(user.id);
   };
 });
 
-describe("DELETE /api/v1/users/me/follow/:followUsername", () => {
+describe("DELETE /api/v1/users/me/follow/:followId", () => {
   const baseUrl = "/api/v1/users/me/follow" as const;
 
   describe("Success cases", () => {
     it("returns 204 when a user successfully unfollows another user", async () => {
-      const url = `${baseUrl}/${followUsername}`;
+      const url = `${baseUrl}/${followId}`;
 
       const res = await userRequest.delete(url).set("Authorization", `Bearer ${accessToken}`);
 
@@ -44,7 +44,7 @@ describe("DELETE /api/v1/users/me/follow/:followUsername", () => {
     });
 
     it("returns 204 even if the user is not currently followed", async () => {
-      const url = `${baseUrl}/${followUsername}` as const;
+      const url = `${baseUrl}/${followId}` as const;
 
       const res = await userRequest.delete(url).set("Authorization", `Bearer ${accessToken}`);
 

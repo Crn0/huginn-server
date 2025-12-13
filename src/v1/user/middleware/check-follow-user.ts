@@ -5,9 +5,9 @@ import type { Request, Response, NextFunction } from "express";
 
 export const checkFollowUser = async (req: Request, _res: Response, next: NextFunction) => {
   const user = req.user!;
-  const followUsername = req.body["username"] as string;
+  const followId = req.body["followId"] as string;
 
-  const targetUser = { username: followUsername };
+  const targetUser = { id: followId };
 
   const { error } = tryCatch(() => userPolicy.following.followUser(user, targetUser));
 

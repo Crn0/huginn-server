@@ -15,7 +15,7 @@ export const meDelete = (router: Router) => {
   router.delete("/me/providers/google", checkDeleteOIDCAccount, deleteOIDCAccount("google"));
 
   router.delete(
-    "/me/follow/:username",
+    "/me/follow/:followId",
     ZodParamValidation(userFollowSchema),
     checkUnFollowUser,
     unFollowUser

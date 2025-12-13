@@ -5,7 +5,7 @@ import { generateId } from "@/v1/lib/generate-id.js";
 import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
-import { followUserByUsername } from "@/v1/user/service/follow-service.js";
+import { followUser } from "@/v1/user/service/follow-service.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
@@ -43,7 +43,7 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  await Promise.all(users.map(async (user) => followUserByUsername(user.id, createdUser.username)));
+  await Promise.all(users.map(async (user) => followUser(user.id, createdUser.id)));
 
   return async () => {
     const usersToDelete = [...users, createdUser] as const;

@@ -4,6 +4,9 @@ import http from "http";
 import Debug from "debug";
 
 import { env } from "@/configs/env.js";
+import { createIO } from "@/lib/create-socket.js";
+import { register as notificationNameSpace } from "@/v1/notification/socket/register.js";
+
 import { app } from "@/app.js";
 
 const port = env.PORT;
@@ -41,6 +44,16 @@ const onListening =
 app.set("port", port);
 
 const server = http.createServer(app);
+
+const io = createIO(server, {
+  cors: {
+    origin: env.CORS_ORIGINS,
+  },
+});
+
+notificationNameSpace(io);
+
+app.set("socketIO", io);
 
 server.listen(port);
 server.on("error", onError);

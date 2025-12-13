@@ -15,5 +15,5 @@ export const getNotifications = async (req: Request, res: Response) => {
 
   const pagination = await getUserNotificationsPagination(req.user!.id, { cursor });
 
-  return res.status(OK).json({ ...toUserNotificationsResponse(pagination) });
+  return res.status(OK).json({ ...toUserNotificationsResponse(pagination, { id: req.user!.id }) });
 };

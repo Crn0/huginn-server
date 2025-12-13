@@ -8,7 +8,7 @@ import { deleteUserById } from "@/v1/user/repository/user.js";
 import { app } from "v1/__mocks__/server.js";
 
 let accessToken: string;
-let followUsername: string;
+let followId: string;
 
 const userRequest = request.agent(app);
 
@@ -25,7 +25,7 @@ beforeAll(async () => {
 
   accessToken = login.body.token;
 
-  followUsername = user.username;
+  followId = user.id;
 
   return async () => {
     await deleteUserById(user.id);
@@ -40,7 +40,7 @@ describe("POST /api/v1/users/me/follow", () => {
       const res = await userRequest
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
-        .send({ username: followUsername });
+        .send({ followId: followId });
 
       expect(res.status).toBe(204);
     });
@@ -49,7 +49,7 @@ describe("POST /api/v1/users/me/follow", () => {
       const res = await userRequest
         .post(url)
         .set("Authorization", `Bearer ${accessToken}`)
-        .send({ username: followUsername });
+        .send({ followId: followId });
 
       expect(res.status).toBe(204);
     });
@@ -61,7 +61,7 @@ describe("POST /api/v1/users/me/follow", () => {
         const res = await userRequest
           .post(url)
           .set("Authorization", `Bearer ${accessToken}`)
-          .send({ username: generateId() });
+          .send({ followId: generateId() });
 
         expect(res.status).toBe(404);
         expect(res.body).toMatchObject({ code: "NOT_FOUND", message: "User not found." });

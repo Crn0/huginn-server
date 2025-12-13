@@ -18,14 +18,11 @@ const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
   return cursor;
 };
 
-export const followUserByUsername = async (id: string, followUsername: string) =>
-  followRepository.followUserByUsername(id, followUsername);
+export const followUser = followRepository.followUser;
 
-export const followUsersByUsername = async (id: string, followUsernames: string[]) =>
-  followRepository.followUsersByUsername(id, followUsernames);
+export const followUsers = followRepository.followUsers;
 
-export const unFollowUserById = async (userId: string, unfollowUsername: string) =>
-  followRepository.unFollowUserById(userId, unfollowUsername);
+export const unFollowUser = followRepository.unFollowUser;
 
 export const getFollowByUsernamePagination = async (
   username: string,

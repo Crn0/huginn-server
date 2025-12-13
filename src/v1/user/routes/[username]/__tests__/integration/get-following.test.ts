@@ -4,7 +4,7 @@ import { beforeAll, describe, expect, it } from "vitest";
 import { testUserLoginForm } from "testing/seed.js";
 import { createUser } from "@/v1/user/service/user-service.js";
 import { deleteUserById } from "@/v1/user/repository/user.js";
-import { followUsersByUsername } from "@/v1/user/repository/follow.js";
+import { followUsers } from "@/v1/user/repository/follow.js";
 import { app } from "v1/__mocks__/server.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 
@@ -43,9 +43,9 @@ beforeAll(async () => {
 
   username = createdUser.username;
 
-  const followUsernames = users.map(({ username }) => username);
+  const followIds = users.map(({ id }) => id);
 
-  await followUsersByUsername(createdUser.id, followUsernames);
+  await followUsers(createdUser.id, followIds);
 
   return async () => {
     const usersToDelete = [...users, createdUser] as const;

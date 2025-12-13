@@ -1,5 +1,5 @@
 import z from "zod";
 
 export const userFollowSchema = z.object({
-  username: z.coerce.string({ error: "Invalid follow username" }),
+  followId: z.uuidv7({ error: "Invalid ID" }),
 });

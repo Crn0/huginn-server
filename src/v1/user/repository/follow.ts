@@ -6,14 +6,21 @@ import { getOptions, insertOptions } from "./follow-options.js";
 
 import type { GetFollowingOption, GetFollowOption } from "../types/repository.types.js";
 
-export const followUserByUsername = async (id: string, followUsername: string) => {
+export const followUser = async (id: string, followId: string) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
-      ...insertOptions,
+      select: {
+        ...insertOptions.select,
+        following: {
+          where: {
+            id: followId,
+          },
+        },
+      },
       where: { id: id },
       data: {
         following: {
-          connect: { username: followUsername },
+          connect: { id: followId },
         },
       },
     }),
@@ -25,14 +32,14 @@ export const followUserByUsername = async (id: string, followUsername: string) =
   return updatedUser;
 };
 
-export const followUsersByUsername = async (id: string, followUsernames: string[]) => {
+export const followUsers = async (id: string, followIds: string[]) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
       where: { id: id },
       data: {
         following: {
-          connect: followUsernames.map((username) => ({ username })),
+          connect: followIds.map((id) => ({ id })),
         },
       },
     }),
@@ -44,14 +51,14 @@ export const followUsersByUsername = async (id: string, followUsernames: string[
   return updatedUser;
 };
 
-export const unFollowUserById = async (id: string, unfollowUsername: string) => {
+export const unFollowUser = async (id: string, followId: string) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
       ...insertOptions,
       where: { id: id },
       data: {
         following: {
-          disconnect: { username: unfollowUsername },
+          disconnect: { id: followId },
         },
       },
     }),

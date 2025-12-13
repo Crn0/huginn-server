@@ -1,5 +1,7 @@
 import { Prisma } from "@/generated/prisma/edge.js";
 
+import { getTweetOptions } from "@/v1/tweet/repository/tweet-options.js";
+
 const baseOption = {
   include: {
     sender: {
@@ -11,6 +13,12 @@ const baseOption = {
           select: {
             avatarUrl: true,
           },
+        },
+        following: {
+          select: { id: true },
+        },
+        followedBy: {
+          select: { id: true },
         },
       },
     },
@@ -27,17 +35,7 @@ const baseOption = {
       },
     },
     tweet: {
-      include: {
-        media: {
-          include: {
-            tweet: {
-              select: {
-                id: true,
-              },
-            },
-          },
-        },
-      },
+      ...getTweetOptions,
     },
   },
 } satisfies Prisma.NotificationDefaultArgs;
