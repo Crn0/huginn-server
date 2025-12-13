@@ -17,7 +17,7 @@ const app = express();
 
 const dirname = import.meta.dirname;
 
-app.set('trust proxy', 1)
+app.set("trust proxy", 1);
 
 app.use(cors(corsConfig));
 

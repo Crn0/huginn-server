@@ -7,6 +7,11 @@ export const oidcOptions = {
       user: {
         include: {
           profile: true,
+          openIds: {
+            include: {
+              provider: true,
+            },
+          },
         },
       },
     },

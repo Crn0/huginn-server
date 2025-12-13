@@ -35,7 +35,7 @@ export const replyTweet = async (req: Request, res: Response) => {
   const replyToId = tweet.replyTo?.author.id as string;
   const replyToUsername = tweet.replyTo?.author.username as string;
 
-  if ((io && req.user) && req.user.id !== replyToId) {
+  if (io && req.user && req.user.id !== replyToId) {
     tryCatch(
       sendNotification({
         type: "REPLY",
