@@ -8,6 +8,7 @@ import { patchPassword } from "../../api/patch-password.js";
 import { patchUserProfile } from "../../api/patch-user-profile.js";
 import { readRefreshToken } from "@/v1/auth/middleware/read-refresh-token.js";
 import { logout } from "@/v1/auth/api/logout.js";
+import { checkPatchPassword } from "../../middleware/check-patch-password.js";
 
 import type { Router } from "express";
 
@@ -18,6 +19,7 @@ export const mePatch = (router: Router) => {
     "/me/password",
     readRefreshToken,
     ZodBodyValidator(patchPasswordSchema),
+    checkPatchPassword,
     patchPassword,
     logout
   );

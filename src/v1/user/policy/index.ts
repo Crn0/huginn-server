@@ -5,6 +5,11 @@ import type { UserById } from "../service/user-service.js";
 import type { AuthUser } from "@/v1/types/user.types.js";
 
 export const userPolicy = {
+  patchPassword: (user: UserById) => {
+    if (user.accountLevel === "DEMO") {
+      throw new ForbiddenError("Demo user's cannot change their password");
+    }
+  },
   delete: (user: UserById) => {
     if (isDemoUser(user)) {
       throw new ForbiddenError("Demo user cannot delete their account");
