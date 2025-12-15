@@ -17,7 +17,7 @@ export type UserFilter = z.infer<typeof userQueryFilterSchema>;
 export type UserQuery = z.infer<typeof userQuerySchema>;
 
 export const createUserSchema = z.object({
-  email: z.email().trim(),
+  email: z.email().trim().toLowerCase(),
   displayName: z.string().trim().max(36, {
     error: "Use no more than 36 characters for the 'display name'",
   }),
@@ -35,7 +35,7 @@ export const createUserSchema = z.object({
 });
 
 export const userLoginSchema = z.object({
-  email: z.email().trim(),
+  email: z.email().trim().toLowerCase(),
   password: z.coerce.string().trim().min(1, { error: "Password is required" }),
 });
 
