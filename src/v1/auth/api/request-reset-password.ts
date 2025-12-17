@@ -16,7 +16,7 @@ export const requestResetPassword = async (req: Request, res: Response) => {
   if (user) {
     const token = generateActionToken(user.id, { username: user.username }, ACCESS_TOKEN_EXP);
 
-    await sendMailPasswordReset(user, token);
+    sendMailPasswordReset(user, token).then(console.log).catch(console.error);
   }
 
   return res.sendStatus(NO_CONTENT);

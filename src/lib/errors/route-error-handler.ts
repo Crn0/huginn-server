@@ -32,7 +32,6 @@ export const routeErrorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  console.log(error)
   switch (error.kind) {
     case "AUTHENTICATION_ERROR":
     case "BAD_REQUEST_ERROR":
