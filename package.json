@@ -6,7 +6,10 @@
   "scripts": {
     "copy:src:generated": "cp -r ./src/generated ./dist/src",
     "copy:src:temp": "cp -r ./src/temp ./dist/src",
-    "copy:dir": "npm run copy:src:temp && npm run copy:src:generated",
+    "copy:src:mailer:asset": "cp -r ./src/v1/auth/mailer/asset ./dist/src/v1/auth/mailer/asset",
+    "copy:src:mailer:view": "cp -r ./src/v1/auth/mailer/view ./dist/src/v1/auth/mailer/view",
+    "copy:src:mailer": "npm run copy:src:mailer:view && npm run copy:src:mailer:asset",
+    "copy:dir": "npm run copy:src:temp && npm run copy:src:generated && npm run copy:src:mailer",
     "build": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json && npm run copy:dir",
     "exe": "node ./dist/src/bin/www.js",
     "start": "npm run build && npm run exe",
