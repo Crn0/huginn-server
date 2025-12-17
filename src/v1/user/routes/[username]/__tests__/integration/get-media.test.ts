@@ -20,7 +20,7 @@ const userRequest = request(app);
 
 beforeAll(async () => {
   const form = {
-    email: generateEmail(),
+    email: generateEmail().toLowerCase(),
     displayName: generateDisplayName("username", "get.data"),
     password: "Crnocrno123",
     birthday: new Date(),
