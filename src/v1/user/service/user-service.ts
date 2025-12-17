@@ -18,6 +18,7 @@ import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
 import * as userRepository from "../repository/user.js";
 import * as mediaService from "@/v1/media/service/media.js";
 import * as oidcService from "../oidc-account/service/oidc-account.js";
+import * as tokenService from "@/v1/black-listed-token/service/black-listed-token.js";
 import * as storage from "@/v1/storage/cloudinary-service.js";
 
 import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
@@ -25,6 +26,7 @@ import type { GetUserByEmailOptions } from "../types/service.types.js";
 import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
 import type { PatchPassword } from "../schema/patch-password.js";
+import type { BlackListToken } from "@/v1/black-listed-token/types/blacked-list-token.types.js";
 
 export type UserById = Awaited<ReturnType<typeof getUserById>>;
 export type UserByUsername = Awaited<ReturnType<typeof getUserByUsername>>;
@@ -241,6 +243,21 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
   }
 
   return userRepository.patchUserProfile(id, data);
+};
+
+export const resetPassword = async (
+  id: string,
+  { token, password }: { token: Omit<BlackListToken, "type">; password: string }
+) => {
+  const [newPassword] = await Promise.all([
+    argon2.hash(password),
+    tokenService.blackListToken({
+      ...token,
+      type: "ActionToken",
+    }),
+  ]);
+
+  return userRepository.resetPassword(id, newPassword);
 };
 
 export const deleteUserById = async (id: string) => {

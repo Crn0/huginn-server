@@ -42,3 +42,14 @@ export const generateRefreshToken = (
     subject: id,
     expiresIn: `${expiresInDays}D`,
   });
+
+export const generateActionToken = (
+  id: string,
+  payload: Payload,
+  expiresInMinutes: number = DEFAULT_EXP_ACCESS_TOKEN
+) =>
+  jwt.sign(payload, secret, {
+    jwtid: generateId(),
+    subject: id,
+    expiresIn: `${expiresInMinutes}D`,
+  });

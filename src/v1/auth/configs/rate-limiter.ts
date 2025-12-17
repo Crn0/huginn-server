@@ -38,3 +38,13 @@ export const refreshRateLimitOptions = {
   message: "Too many refresh attempts. Try again later.",
   handler: rateLimitHandler,
 } satisfies Partial<Options>;
+
+// Reset limiter config (10/hour)
+export const resetPasswordLimitOptions = {
+  windowMs: 60 * 60 * 1000,
+  limit: 10,
+  standardHeaders: "draft-6",
+  legacyHeaders: false,
+  message: "Too many reset attempts. Try again later.",
+  handler: rateLimitHandler,
+} satisfies Partial<Options>;

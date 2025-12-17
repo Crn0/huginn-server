@@ -22,6 +22,8 @@ const createEnv = () => {
     CLOUDINARY_NAME: z.string(),
     CLOUDINARY_API_KEY: z.string(),
     CLOUDINARY_SECRET: z.string(),
+    GOOGLE_APP_PASSWORD: z.string(),
+    GOOGLE_GMAIL: z.email(),
   });
 
   const envVars = Object.entries(process.env).reduce<Record<string, string | number>>(
