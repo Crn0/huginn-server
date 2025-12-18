@@ -1,7 +1,8 @@
 import fs from "fs/promises";
 
-import { createDebug } from "@/v1/lib/debug.js";
+import { TWEET_NAMESPACE } from "../socket/events.js";
 import { OK } from "@/v1/constants/http-status.js";
+import { createDebug } from "@/v1/lib/debug.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { replyTweet as reply } from "../service/tweet.js";
 import { sendNotification } from "@/v1/notification/service/index.js";
@@ -11,6 +12,7 @@ import type { Request, Response } from "express";
 import type { ReplyTweetDTO } from "../schema/reply-tweet.js";
 import type { TweetMedia } from "../types/tweet.types.js";
 import type { IO } from "@/lib/create-socket.js";
+import type { TweetNameSpace } from "../socket/register.js";
 
 const debug = createDebug("tweet:api:replyTweet");
 
@@ -35,27 +37,37 @@ export const replyTweet = async (req: Request, res: Response) => {
   const replyToId = tweet.replyTo?.author.id as string;
   const replyToUsername = tweet.replyTo?.author.username as string;
 
-  if (io && req.user && req.user.id !== replyToId) {
-    tryCatch(
-      sendNotification({
-        type: "REPLY",
-        senderId: req.user.id,
-        receiverId: replyToId,
-        tweetId: tweet.id,
-      })
-    ).then(({ error: notificationError, data: notification }) => {
-      if (notificationError) {
-        debug("notification error", notificationError);
-        return;
-      }
+  if (io && req.user) {
+    const tweetNamespace: TweetNameSpace = io.of(TWEET_NAMESPACE);
 
-      io.of(NOTIFICATION_NAMESPACE)
-        .to(replyToId)
-        .emit("notification", {
-          entity: ["notifications", "list", replyToUsername],
-          id: notification.id,
-        });
+    tweetNamespace.except(req.user.id).emit("tweet", {
+      type: "create",
+      entity: ["infinite-tweets", "list"],
+      id: tweet.id,
     });
+
+    if (req.user.id !== replyToId) {
+      tryCatch(
+        sendNotification({
+          type: "REPLY",
+          senderId: req.user.id,
+          receiverId: replyToId,
+          tweetId: tweet.id,
+        })
+      ).then(({ error: notificationError, data: notification }) => {
+        if (notificationError) {
+          debug("notification error", notificationError);
+          return;
+        }
+
+        io.of(NOTIFICATION_NAMESPACE)
+          .to(replyToId)
+          .emit("notification", {
+            entity: ["notifications", "list", replyToUsername],
+            id: notification.id,
+          });
+      });
+    }
   }
 
   return res
