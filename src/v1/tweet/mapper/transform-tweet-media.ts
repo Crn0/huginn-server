@@ -11,6 +11,11 @@ const IMAGE_SIZE = {
   large: 1280,
 } as const;
 
+const GIF_SIZE = {
+  ...IMAGE_SIZE,
+  large: 400,
+} as const;
+
 const BITRATE = {
   "360p": 800_000,
   "480p": 1_200_000,
@@ -25,11 +30,14 @@ const BASE_OPTIONS = {
     resource_type: "video",
     format: "mp4",
   } as const,
-  image: (media: Media) =>
-    ({
-      gravity: "auto",
-      fetch_format: media.type === "IMAGE" ? "webp" : "gif",
-    }) as const,
+  image: {
+    gravity: "auto",
+    fetch_format: "webp",
+  } as const,
+  gif: {
+    gravity: "auto",
+    fetch_format: "gif",
+  } as const,
 } as const;
 
 const getVideoVariant = (media: Media) => {
@@ -61,9 +69,9 @@ const getVideoVariant = (media: Media) => {
 };
 
 const getImageVariant = (media: Media) => {
-  if (media.type === "VIDEO") throw new TypeError("Invalid media type; expected IMAGE or GIF");
+  if (media.type !== "IMAGE") throw new TypeError("Invalid media type; expected IMAGE");
 
-  const baseOptions = BASE_OPTIONS.image(media);
+  const baseOptions = BASE_OPTIONS.image;
 
   const small = {
     url: getMediaUrl(media.filePath, {
@@ -71,7 +79,6 @@ const getImageVariant = (media: Media) => {
         { ...baseOptions },
         { width: IMAGE_SIZE.small, height: IMAGE_SIZE.small },
         { quality: "auto:low" },
-        media.type !== "GIF" ? null : { page: 1 },
       ],
     }),
     height: IMAGE_SIZE.small,
@@ -110,6 +117,56 @@ const getImageVariant = (media: Media) => {
   return variants;
 };
 
+const getGifVariant = (media: Media) => {
+  if (media.type !== "GIF") throw new TypeError("Invalid media type; expected GIF");
+
+  const baseOptions = BASE_OPTIONS.gif;
+
+  const small = {
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: GIF_SIZE.small, height: GIF_SIZE.small },
+        { quality: "auto:low" },
+        { page: 1 },
+      ],
+    }),
+    height: GIF_SIZE.small,
+    width: GIF_SIZE.small,
+    contentType: `image/${baseOptions.fetch_format}`,
+  } satisfies TweetImageVariant;
+
+  const medium = {
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: GIF_SIZE.medium, height: GIF_SIZE.medium },
+        { quality: "auto:good" },
+      ],
+    }),
+    width: GIF_SIZE.medium,
+    height: GIF_SIZE.medium,
+    contentType: `image/${baseOptions.fetch_format}`,
+  } satisfies TweetImageVariant;
+
+  const large = {
+    url: getMediaUrl(media.filePath, {
+      transformation: [
+        { ...baseOptions },
+        { width: GIF_SIZE.large, height: GIF_SIZE.large },
+        { quality: "auto:best" },
+      ],
+    }),
+    width: GIF_SIZE.large,
+    height: GIF_SIZE.large,
+    contentType: `image/${baseOptions.fetch_format}`,
+  } satisfies TweetImageVariant;
+
+  const variants = [small, medium, large] satisfies TweetImageVariant[];
+
+  return variants;
+};
+
 const normalizedTweetVideo = (media: Media) => {
   if (media.type !== "VIDEO") throw new TypeError("Invalid media type; expected VIDEO");
   if (typeof media.tweet?.id === "undefined") throw new TypeError("Tweet ID is undefined");
@@ -138,7 +195,7 @@ const normalizedTweetImage = (media: Media) => {
   if (media.type === "VIDEO") throw new TypeError("Invalid media type; expected IMAGE or GIF");
   if (typeof media.tweet?.id === "undefined") throw new TypeError("Tweet ID is undefined");
 
-  const baseOptions = BASE_OPTIONS.image(media);
+  const baseOptions = BASE_OPTIONS.image;
 
   const image = {
     id: media.id,
@@ -152,9 +209,28 @@ const normalizedTweetImage = (media: Media) => {
   return Object.freeze(image);
 };
 
+const normalizedTweetGif = (media: Media) => {
+  if (media.type !== "GIF") throw new TypeError("Invalid media type; expected GIF");
+  if (typeof media.tweet?.id === "undefined") throw new TypeError("Tweet ID is undefined");
+
+  const baseOptions = BASE_OPTIONS.gif;
+
+  const image = {
+    id: media.id,
+    url: getMediaUrl(media.filePath, { fetch_format: baseOptions.fetch_format }),
+    type: media.type,
+    variants: getGifVariant(media),
+    tweet: { id: media.tweet.id },
+    createdAt: media.createdAt,
+  };
+
+  return Object.freeze(image);
+};
+
 export const transformTweetMedia = (media: Media | null) => {
   if (!media) return null;
   if (media.type === "VIDEO") return normalizedTweetVideo(media);
+  if (media.type === "GIF") return normalizedTweetGif(media);
 
   return normalizedTweetImage(media);
 };
