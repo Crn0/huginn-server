@@ -6,6 +6,7 @@ import Debug from "debug";
 import { env } from "@/configs/env.js";
 import { createIO } from "@/lib/create-socket.js";
 import { register as notificationNameSpace } from "@/v1/notification/socket/register.js";
+import { register as tweetNameSpace } from "@/v1/tweet/socket/register.js";
 
 import { app } from "@/app.js";
 
@@ -52,6 +53,7 @@ const io = createIO(server, {
 });
 
 notificationNameSpace(io);
+tweetNameSpace(io);
 
 app.set("socketIO", io);
 
