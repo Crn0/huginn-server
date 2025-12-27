@@ -8,7 +8,7 @@ import {
 } from "socket.io";
 
 interface ServerToClientEvents {
-  notification: ({ entity, id }: { entity: ["notifications", "list", string]; id: string }) => void;
+  notification: ({ entity }: { entity: ["notifications", "list", string] }) => void;
 }
 
 type ClientToServerEvents = DefaultEventsMap;

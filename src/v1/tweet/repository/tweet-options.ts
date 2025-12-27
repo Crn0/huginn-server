@@ -113,5 +113,6 @@ export const deleteTweetOptions = {
   select: {
     id: true,
     author: { select: { id: true, username: true } },
+    replyTo: { include: { author: { select: { id: true, username: true } } } },
   },
 } satisfies Prisma.TweetDefaultArgs;

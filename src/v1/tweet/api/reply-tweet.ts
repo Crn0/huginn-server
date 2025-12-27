@@ -54,7 +54,7 @@ export const replyTweet = async (req: Request, res: Response) => {
           receiverId: replyToId,
           tweetId: tweet.id,
         })
-      ).then(({ error: notificationError, data: notification }) => {
+      ).then(({ error: notificationError }) => {
         if (notificationError) {
           debug("notification error", notificationError);
           return;
@@ -64,7 +64,6 @@ export const replyTweet = async (req: Request, res: Response) => {
           .to(replyToId)
           .emit("notification", {
             entity: ["notifications", "list", replyToUsername],
-            id: notification.id,
           });
       });
     }

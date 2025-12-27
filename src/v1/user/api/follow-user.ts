@@ -45,7 +45,7 @@ export const followUser = async (req: Request, res: Response) => {
           senderId: req.user!.id,
           receiverId: followId,
         })
-      ).then(({ error: notificationError, data: notification }) => {
+      ).then(({ error: notificationError }) => {
         if (notificationError) {
           debug("notification error", notificationError);
           return;
@@ -55,7 +55,6 @@ export const followUser = async (req: Request, res: Response) => {
           .to(followId)
           .emit("notification", {
             entity: ["notifications", "list", followUsername],
-            id: notification.id,
           });
       });
     }
