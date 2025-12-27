@@ -1,11 +1,13 @@
 import { NO_CONTENT } from "@/v1/constants/http-status.js";
 import { TWEET_NAMESPACE } from "../socket/events.js";
+import { NOTIFICATION_NAMESPACE } from "@/v1/notification/socket/events.js";
 import { tryCatch } from "@/v1/lib/try-catch.js";
 import { deleteTweetById } from "../service/tweet.js";
 
 import type { Request, Response } from "express";
 import type { IO } from "@/lib/create-socket.js";
 import type { TweetNameSpace } from "../socket/register.js";
+import type { NotificationNameSpace } from "@/v1/notification/socket/register.js";
 
 export const deleteTweet = async (req: Request, res: Response) => {
   const id = req.params["tweetId"] as string;
@@ -22,6 +24,14 @@ export const deleteTweet = async (req: Request, res: Response) => {
 
   if (io) {
     const namespace: TweetNameSpace = io.of(TWEET_NAMESPACE);
+
+    if (tweet.replyTo?.author) {
+      (io.of(NOTIFICATION_NAMESPACE) as NotificationNameSpace)
+        .to(tweet.replyTo.author.id)
+        .emit("notification", {
+          entity: ["notifications", "list", tweet.replyTo.author.username],
+        });
+    }
 
     namespace.emit("tweet", {
       type: "delete",
