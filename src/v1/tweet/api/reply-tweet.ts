@@ -40,7 +40,7 @@ export const replyTweet = async (req: Request, res: Response) => {
   if (io && req.user) {
     const tweetNamespace: TweetNameSpace = io.of(TWEET_NAMESPACE);
 
-    tweetNamespace.except(req.user.id).emit("tweet", {
+    tweetNamespace.emit("tweet", {
       type: "create",
       entity: ["infinite-tweets", "list"],
       id: tweet.id,

@@ -31,7 +31,7 @@ export const createTweet = async (req: Request, res: Response) => {
   if (io) {
     const namespace: TweetNameSpace = io.of(TWEET_NAMESPACE);
 
-    namespace.except(req.user!.id).emit("tweet", {
+    namespace.emit("tweet", {
       type: "create",
       entity: ["infinite-tweets", "list"],
       id: tweet.id,
