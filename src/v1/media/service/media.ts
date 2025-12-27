@@ -224,7 +224,11 @@ export const deleteMediaByTweetId = async (tweetId: string) => {
 
   if (!media.length) return { count: 0 };
 
-  await Promise.all(media.map((m) => storage.deleteMedia(m.filePath)));
+  await Promise.all(
+    media.map((m) =>
+      storage.deleteMedia(m.filePath, { resource_type: m.type === "VIDEO" ? "video" : "image" })
+    )
+  );
 
   const idsToDelete = media.map((m) => m.id);
 
