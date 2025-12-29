@@ -30,6 +30,12 @@ export const toTweetResponse = (
         bannerUrl: transformProfileBanner(tweet.author.profile!.banner),
       },
     },
+    replyTo: tweet.replyTo
+      ? {
+          id: tweet.replyTo.author.id,
+          username: tweet.replyTo.author.username,
+        }
+      : null,
     isRepost: isRepost(tweet),
     reposted: !user ? false : tweet.repost.some((p) => p.user.id == user.id),
     liked: !user ? false : tweet.likes.some((p) => p.user.id == user.id),

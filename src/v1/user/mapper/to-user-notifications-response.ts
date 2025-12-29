@@ -49,6 +49,12 @@ export const toUserNotificationsResponse = (
               ...sender,
               followed: sender.followedBy?.some((u) => u.id === user.id) ?? false,
             },
+            replyTo: notification.tweet.replyTo
+              ? {
+                  id: notification.tweet.replyTo.author.id,
+                  username: notification.tweet.replyTo.author.username,
+                }
+              : null,
           }
         : null,
     };

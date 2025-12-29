@@ -76,7 +76,7 @@ export const createGoogleStrategy = () =>
           throw new ForbiddenError("Email is not verified");
         }
 
-        const _user = await getUserByEmail(email, { shouldThrow: false })
+        const _user = await getUserByEmail(email, { shouldThrow: false });
 
         if (
           _user &&

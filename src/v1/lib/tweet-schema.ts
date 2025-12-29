@@ -109,7 +109,12 @@ export const baseTweetSchema = z.object({
   content: z.string().nullable(),
   author: authorSchema,
   media: z.array(tweetMedia),
-  replyTo: z.object({ id: z.uuidv7({ error: "Invalid ID" }) }).nullable(),
+  replyTo: authorSchema
+    .pick({
+      id: true,
+      username: true,
+    })
+    .nullable(),
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
   updatedAt: z.coerce
     .date()
@@ -153,9 +158,12 @@ export const replySchema = z.intersection(
         content: z.string().nullable(),
         author: authorSchema,
         media: z.array(tweetMedia),
-        replyTo: z.object({
-          id: z.uuidv7({ error: "Invalid ID" }),
-        }),
+        replyTo: authorSchema
+          .pick({
+            id: true,
+            username: true,
+          })
+          .nullable(),
         createdAt: z.coerce.date().transform((d) => d.toISOString()),
         updatedAt: z.coerce
           .date()
