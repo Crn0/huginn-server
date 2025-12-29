@@ -4,6 +4,7 @@ import { env } from "@/configs/env.js";
 import { authenticateGoogle } from "@/v1/auth/service/auth-service.js";
 import { ForbiddenError } from "@/lib/errors/forbidden-error.js";
 import { createDebug } from "./debug.js";
+import { getUserByEmail } from "../user/service/user-service.js";
 
 const debug = createDebug("passport-google-strategy");
 
@@ -61,15 +62,27 @@ export const createGoogleStrategy = () =>
         const firstName = profile.name?.givenName as string;
         const lastName = profile.name?.familyName as string;
 
-        const isEmailVerified = profile._json.email_verified;
-
-        const email = profile._json.email;
+        const email = profile._json?.email;
+        const isEmailVerified = profile._json.email_verified ?? false;
 
         const avatarUrl = photos?.[0]?.value ?? null;
 
-        if (!isEmailVerified || !email) {
-          debug(`Failed to authenticate: { isEmailVerified: ${isEmailVerified}, email: ${email}}`);
+        if (!email) {
           throw new ForbiddenError("Something went wrong");
+        }
+
+        if (provider === "google" && !isEmailVerified) {
+          debug(`OAuth failed: email not verified (provider=${provider})`);
+          throw new ForbiddenError("Email is not verified");
+        }
+
+        const _user = await getUserByEmail(email, { shouldThrow: false })
+
+        if (
+          _user &&
+          !_user.openIds.some((openId) => openId.sub === sub && openId.provider.key === provider)
+        ) {
+          throw new ForbiddenError("This email is already associated with another sign-in method");
         }
 
         const birthday = await getBirthDay(accessToken);
