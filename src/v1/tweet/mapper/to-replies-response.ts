@@ -33,6 +33,7 @@ export const toRepliesResponse = (
     replyTo: tweet.replyTo
       ? {
           id: tweet.replyTo.author.id,
+          tweetId: tweet.replyTo.id,
           username: tweet.replyTo.author.username,
         }
       : null,
@@ -57,6 +58,7 @@ export const toRepliesResponse = (
         replyTo: reply.replyTo
           ? {
               id: reply.replyTo.author.id,
+              tweetId: reply.replyTo.id,
               username: reply.replyTo.author.username,
             }
           : null,

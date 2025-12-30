@@ -34,6 +34,7 @@ export const toTweetsResponse = (
       replyTo: tweet.replyTo
         ? {
             id: tweet.replyTo.author.id,
+            tweetId: tweet.replyTo.id,
             username: tweet.replyTo.author.username,
           }
         : null,

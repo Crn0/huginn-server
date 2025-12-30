@@ -114,6 +114,9 @@ export const baseTweetSchema = z.object({
       id: true,
       username: true,
     })
+    .extend({
+      tweetId: z.uuidv7({ error: "Invalid ID" }),
+    })
     .nullable(),
   createdAt: z.coerce.date().transform((d) => d.toISOString()),
   updatedAt: z.coerce
@@ -162,6 +165,9 @@ export const replySchema = z.intersection(
           .pick({
             id: true,
             username: true,
+          })
+          .extend({
+            tweetId: z.uuidv7({ error: "Invalid ID" }),
           })
           .nullable(),
         createdAt: z.coerce.date().transform((d) => d.toISOString()),

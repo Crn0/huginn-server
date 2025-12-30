@@ -52,6 +52,7 @@ export const toUserNotificationsResponse = (
             replyTo: notification.tweet.replyTo
               ? {
                   id: notification.tweet.replyTo.author.id,
+                  tweetId: notification.tweet.replyTo.id,
                   username: notification.tweet.replyTo.author.username,
                 }
               : null,
