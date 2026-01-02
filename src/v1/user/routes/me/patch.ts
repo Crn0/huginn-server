@@ -1,3 +1,5 @@
+import rateLimit from "express-rate-limit";
+
 import { ZodBodyValidator } from "@/v1/lib/validator.js";
 import { patchUsernameSchema } from "../../schema/patch-username.js";
 import { patchUserProfileSchema } from "../../schema/patch-user-profile.js";
@@ -9,15 +11,22 @@ import { patchUserProfile } from "../../api/patch-user-profile.js";
 import { readRefreshToken } from "@/v1/auth/middleware/read-refresh-token.js";
 import { logout } from "@/v1/auth/api/logout.js";
 import { checkPatchPassword } from "../../middleware/check-patch-password.js";
+import { updateRateLimitOptions } from "../../configs/rate-limiter.js";
 
 import type { Router } from "express";
 
 export const mePatch = (router: Router) => {
-  router.patch("/me/username", ZodBodyValidator(patchUsernameSchema), patchUsername);
+  router.patch(
+    "/me/username",
+    rateLimit(updateRateLimitOptions("username")),
+    ZodBodyValidator(patchUsernameSchema),
+    patchUsername
+  );
 
   router.patch(
     "/me/password",
     readRefreshToken,
+    rateLimit(updateRateLimitOptions("password")),
     ZodBodyValidator(patchPasswordSchema),
     checkPatchPassword,
     patchPassword,
@@ -27,6 +36,7 @@ export const mePatch = (router: Router) => {
   router.patch(
     "/me/profile",
     profileMediaProcessor,
+    rateLimit(updateRateLimitOptions("profile")),
     ZodBodyValidator(patchUserProfileSchema),
     patchUserProfile
   );
