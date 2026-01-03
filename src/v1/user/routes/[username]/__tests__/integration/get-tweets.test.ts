@@ -71,8 +71,6 @@ describe("GET /api/v1/users/:username/tweets", () => {
         .get(`${url}&after=${nextCursor}`)
         .set("Authorization", `Bearer ${accessToken}`);
 
-      console.log(res.body.issues);
-
       expect(res.status).toBe(200);
       expect(res.body).toMatchObject({
         data: expect.any(Array),
