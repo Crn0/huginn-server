@@ -19,11 +19,11 @@ const rateLimitHandler: Options["handler"] = (
   });
 };
 
-// Login limiter (5/min)
+// Login limiter (20/min)
 export const updateRateLimitOptions = (resource: "username" | "profile" | "password") =>
   ({
     windowMs: 60 * 1000,
-    limit: 5,
+    limit: 20,
     standardHeaders: "draft-6",
     legacyHeaders: false,
     message: `Too many ${resource} update attempts. Try again later.`,
