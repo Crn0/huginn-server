@@ -1,8 +1,10 @@
-import * as followRepository from "../repository/follow.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
+import { buildQueryParam } from "@/v1/lib/build-query-param.js";
+import * as cache from "@/v1/lib/cache.js";
+import * as followRepository from "../repository/follow.js";
+
 import type { FollowUsersQueryParam } from "../schema/follow.js";
 import type { GetFollowOption } from "../types/repository.types.js";
-import { buildQueryParam } from "@/v1/lib/build-query-param.js";
 
 const FOLLOW_PAGE_SIZE = 20 as const;
 
@@ -18,11 +20,23 @@ const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
   return cursor;
 };
 
-export const followUser = followRepository.followUser;
+export const followUser = async (id: string, followId: string) => {
+  const user = await followRepository.followUser(id, followId);
+
+  cache.delNamespace("user:follow", user.username);
+
+  return user;
+};
 
 export const followUsers = followRepository.followUsers;
 
-export const unFollowUser = followRepository.unFollowUser;
+export const unFollowUser = async (id: string, followId: string) => {
+  const user = await followRepository.unFollowUser(id, followId);
+
+  cache.delNamespace("user:follow", user.username);
+
+  return user;
+};
 
 export const getFollowByUsernamePagination = async (
   username: string,

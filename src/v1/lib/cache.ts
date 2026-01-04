@@ -8,8 +8,8 @@ export type NameSpace =
   | "user:auth"
   | "user:follow"
   | "user:tweets"
+  | "user:likes"
   | "user:media"
-  | "user:replies"
   | "tweet:detail"
   | "tweet:list"
   | `tweet:${string}:replies`

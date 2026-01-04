@@ -1,8 +1,12 @@
 import { BadRequestError } from "@/lib/errors/bad-request-error.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import * as notificationRepository from "../repository/index.js";
+import * as cache from "@/v1/lib/cache.js";
 
 import type { GetNotificationOption } from "../repository/index.types.js";
+import type { toUserNotificationsResponse } from "@/v1/user/mapper/to-user-notifications-response.js";
+
+type CachedUserNotifications = ReturnType<Awaited<typeof toUserNotificationsResponse>>;
 
 const NOTIFICATIONS_PAGE_SIZE = 20 as const;
 
@@ -18,9 +22,54 @@ const normalizeCursor = (cursor: string | undefined, hasHref: boolean) => {
   return cursor;
 };
 
-export const sendNotification = notificationRepository.sendNotification;
+export const sendNotification: typeof notificationRepository.sendNotification = async (DTO) => {
+  const notification = await notificationRepository.sendNotification(DTO);
 
-export const readNotification = notificationRepository.readNotification;
+  const receiver = notification.receiver;
+
+  cache.delNamespace("notification", receiver.username);
+
+  return notification;
+};
+
+/**
+ * Preconditions:
+ * - All notification IDs belong to the authenticated receiver
+ * - Ownership is enforced by `checkPatchNotification` middleware
+ */
+export const readNotification = async (ids: string[]) => {
+  const notifications = await notificationRepository.readNotification(ids);
+
+  if (notifications.length > 0) {
+    const receiver = notifications[0]?.receiver;
+
+    if (!receiver) return notifications;
+
+    const notificationIds = new Set(notifications.map(({ id }) => id));
+    const cached = Object.entries(cache.getByNamespace("notification", receiver.username));
+
+    cached.forEach(([key, value]) => {
+      const v = value as CachedUserNotifications;
+      const { data } = v;
+
+      if (data.some((d) => notificationIds.has(d.id))) {
+        cache.update(key, {
+          ...v,
+          data: v.data.map((d) =>
+            !notificationIds.has(d.id)
+              ? d
+              : {
+                  ...d,
+                  isRead: true,
+                }
+          ),
+        });
+      }
+    });
+  }
+
+  return notifications;
+};
 
 export const deleteNotificationsFromDate = notificationRepository.deleteNotificationsFromDate;
 

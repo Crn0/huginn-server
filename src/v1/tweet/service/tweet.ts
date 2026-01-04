@@ -1,10 +1,11 @@
 import { env } from "@/configs/env.js";
 import { buildQueryParam } from "@/v1/lib/build-query-param.js";
 import { NotFoundError } from "@/lib/errors/notfound-error.js";
-import * as tweetRepository from "../repository/tweet.js";
 import { toPrismaPagination } from "@/v1/lib/prisma-pagination.js";
-import * as mediaService from "@/v1/media/service/media.js";
 import { isRepost } from "@/v1/lib/is-tweet-repost.js";
+import * as cache from "@/v1/lib/cache.js";
+import * as mediaService from "@/v1/media/service/media.js";
+import * as tweetRepository from "../repository/tweet.js";
 
 import type { CreateTweetDTO } from "../schema/create-tweet.js";
 import type {
@@ -92,7 +93,16 @@ export const createTweet = async (DTO: CreateTweetDTO) => {
 
   await handleMediaUpload(data, DTO.media, data.authorId);
 
-  return tweetRepository.createTweet(data);
+  const tweet = await tweetRepository.createTweet(data);
+
+  cache.delNamespace("tweet:list");
+  cache.delNamespace("user:tweets", tweet.author.username);
+
+  if (tweet.media.length > 0) {
+    cache.delNamespace("user:media", tweet.author.username);
+  }
+
+  return tweet;
 };
 
 export const replyTweet = async (DTO: ReplyTweetDTO) => {
@@ -105,7 +115,21 @@ export const replyTweet = async (DTO: ReplyTweetDTO) => {
 
   await handleMediaUpload(data, DTO.media, data.authorId);
 
-  return tweetRepository.replyTweet(data);
+  const tweet = await tweetRepository.replyTweet(data);
+
+  cache.delNamespace("tweet:list");
+  cache.delNamespace(`tweet:${tweet.id}:replies`);
+  cache.del("user:tweets", tweet.author.username);
+
+  if (tweet.replyTo?.author) {
+    cache.del("notification", tweet.replyTo.author.username);
+  }
+
+  if (tweet.media.length > 0) {
+    cache.delNamespace("user:media", tweet.author.username);
+  }
+
+  return tweet;
 };
 
 export const getTweetById = async (id: string) => {
@@ -322,6 +346,12 @@ export const deleteTweetById = async (id: string) => {
   const { count: mediaCount } = await mediaService.deleteMediaByTweetId(id);
 
   const tweet = await tweetRepository.deleteTweetById(id);
+
+  cache.delNamespace("user:tweets");
+  cache.delNamespace("user:likes");
+  cache.delNamespace("tweet:detail", tweet.id);
+  cache.delNamespace("tweet:list");
+  cache.delNamespace(`tweet:${tweet.id}:replies`);
 
   return Object.freeze({ tweet, mediaCount });
 };
