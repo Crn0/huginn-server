@@ -46,8 +46,8 @@ export const sendNotificationOption = {
 
 export const mutateNotificationOption = {
   include: {
-    sender: { select: { id: true } },
-    receiver: { select: { id: true } },
+    sender: { select: { id: true, username: true } },
+    receiver: { select: { id: true, username: true } },
     tweet: { select: { id: true } },
   },
 } satisfies Prisma.NotificationDefaultArgs;
