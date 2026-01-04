@@ -23,7 +23,7 @@ export const createLikeOptions = {
 
 export const unlikeOptions = {
   select: {
-    user: { select: { id: true } },
+    user: { select: { id: true, username: true } },
     tweet: { select: { id: true } },
   },
 } satisfies Prisma.LikeDefaultArgs;

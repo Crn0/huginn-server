@@ -15,13 +15,19 @@ import { uploadMedia } from "@/v1/storage/cloudinary-service.js";
 import { generateId } from "@/v1/lib/generate-id.js";
 import { toPrismaPagination, type PaginationCursor } from "@/v1/lib/prisma-pagination.js";
 import { EMAIL_CONFLICT } from "@/v1/constants/error-codes.js";
+import {
+  transformProfileAvatar,
+  transformProfileBanner,
+} from "../mapper/transform-profile-media.js";
+import { cacheConfig } from "@/v1/configs/cache.js";
 import * as userRepository from "../repository/user.js";
 import * as mediaService from "@/v1/media/service/media.js";
 import * as oidcService from "../oidc-account/service/oidc-account.js";
 import * as tokenService from "@/v1/black-listed-token/service/black-listed-token.js";
 import * as storage from "@/v1/storage/cloudinary-service.js";
+import * as cache from "@/v1/lib/cache.js";
 
-import type { CreateUserDTO, UserFilter } from "@/v1/lib/user-schema.js";
+import type { AuthUser, CreateUserDTO, User, UserFilter } from "@/v1/lib/user-schema.js";
 import type { GetUserByEmailOptions } from "../types/service.types.js";
 import type { PatchUserProfileDTO } from "../schema/patch-user-profile.js";
 import type { PatchUserProfile } from "../types/repository.types.js";
@@ -181,8 +187,31 @@ export const getUsersPagination = async (query: {
 export const isUsernameAvailable = async (username: string) =>
   userRepository.isUsernameAvailable(username);
 
-export const patchUsernameById = async (id: string, username: string) =>
-  userRepository.patchUsernameById(id, username);
+export const patchUsernameById = async (id: string, username: string) => {
+  const updatedUser = await userRepository.patchUsernameById(id, username);
+
+  const userUrlCacheKey = cache.getCacheKey("user:detail", updatedUser.username);
+  const authUserCacheKey = cache.getCacheKey("user:auth", updatedUser.username);
+
+  const cachedUser = cache.get("user:detail", userUrlCacheKey);
+  const cachedAuthUser = cache.get("user:auth", authUserCacheKey);
+
+  if (cachedUser) {
+    cache.set("user:detail", userUrlCacheKey, {
+      ...cachedUser,
+      username: updatedUser.username,
+    });
+  }
+
+  if (cachedAuthUser) {
+    cache.set("user:auth", authUserCacheKey, {
+      ...cachedAuthUser,
+      username: updatedUser.username,
+    });
+  }
+
+  return updatedUser;
+};
 
 export const patchPasswordById = async (id: string, DTO: PatchPassword) => {
   const user = await userRepository.getUserById(id);
@@ -242,7 +271,52 @@ export const patchUserProfileById = async (id: string, DTO: PatchUserProfileDTO)
     };
   }
 
-  return userRepository.patchUserProfile(id, data);
+  const updatedUser = await userRepository.patchUserProfile(id, data);
+
+  const userUrlCacheKey = cache.getCacheKey("user:detail", updatedUser.username);
+  const authUserCacheKey = cache.getCacheKey("user:auth", updatedUser.username);
+
+  const cachedUser = cache.get("user:detail", userUrlCacheKey) as User | null;
+  const cachedAuthUser = cache.get("user:auth", authUserCacheKey) as AuthUser | null;
+
+  if (cachedUser) {
+    const { displayName, bio, location, website, avatar, banner } = updatedUser.profile!;
+
+    const newData = {
+      ...cachedUser,
+      profile: {
+        displayName,
+        bio,
+        location,
+        website,
+        avatarUrl: transformProfileAvatar(avatar),
+        bannerUrl: transformProfileBanner(banner),
+      },
+    } satisfies User;
+
+    cache.set("user:detail", userUrlCacheKey, newData, cacheConfig.popularQueryTTL);
+  }
+
+  if (cachedAuthUser) {
+    const { displayName, bio, birthday, location, website, avatar, banner } = updatedUser.profile!;
+
+    const newData = {
+      ...cachedAuthUser,
+      profile: {
+        displayName,
+        bio,
+        birthday,
+        location,
+        website,
+        avatarUrl: transformProfileAvatar(avatar),
+        bannerUrl: transformProfileBanner(banner),
+      },
+    } satisfies AuthUser;
+
+    cache.set("user:auth", authUserCacheKey, newData, cacheConfig.popularQueryTTL);
+  }
+
+  return updatedUser;
 };
 
 export const resetPassword = async (
@@ -303,6 +377,12 @@ export const deleteUserById = async (id: string) => {
     },
     { maxWait: env.TRANSACTION_MAX_TIMEOUT }
   );
+
+  cache.del("user:detail", transaction.user.username);
+  cache.del("user:auth", transaction.user.username);
+  cache.del("user:tweets", transaction.user.username);
+  cache.del("user:media", transaction.user.username);
+  cache.del("user:follow", transaction.user.username);
 
   return transaction;
 };

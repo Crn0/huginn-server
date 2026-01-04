@@ -216,7 +216,7 @@ export const patchPasswordById = async (id: string, password: string) => {
 export const patchUserProfile = async (id: string, data: PatchUserProfile) => {
   const { error, data: updatedUser } = await tryCatch(
     prisma.user.update({
-      ...updateUserOptions,
+      ...getUserOptions,
       where: { id },
       data: {
         profile: {
